@@ -9,8 +9,8 @@ const Login = () => {
   const title = isLoginPageActive ? "Login" : "Registrar";
   const Form = isLoginPageActive ? FormLogin : FormRegister;
   const buttonText = isLoginPageActive
-    ? "Criar uma conta"
-    : "Voltar para o login";
+    ? "Criar uma conta "
+    : "Voltar para o login ";
 
   return (
     <LoginSection>

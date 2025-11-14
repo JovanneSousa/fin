@@ -9,6 +9,21 @@ export const LoginSection = styled.section`
     gap: 44px;
     height: 650px;
 
+    .img {
+        perspective: 600px;
+        display: inline-block;
+
+        img {      
+            width: 300px;
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+        
+        &:hover img {
+            transform: rotateX(10deg) rotateY(10deg);
+        }
+
+    }
 
     .input-wrapper {
         position: relative;

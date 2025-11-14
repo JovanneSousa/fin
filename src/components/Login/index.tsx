@@ -16,13 +16,12 @@ const Login = () => {
           {isLoginPageActive ? "Login" : "Registar"}
         </span>
         {isLoginPageActive ? (
-          <FormLogin onClick={() => setIsLoginPageActive(false)} />
+          <FormLogin />
         ) : (
           <FormRegister />
         )}
         {isLoginPageActive ? (
           <button
-            onClick={() => setIsLoginPageActive(!isLoginPageActive)}
             className="create"
           >
             Criar uma conta{" "}
@@ -30,7 +29,6 @@ const Login = () => {
           </button>
         ) : (
           <button
-            onClick={() => setIsLoginPageActive(!isLoginPageActive)}
             className="create"
           >
             Voltar para o login{" "}

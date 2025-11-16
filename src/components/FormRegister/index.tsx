@@ -1,20 +1,16 @@
 import { useDispatch } from "react-redux";
 import Button from "../Button";
 import type { AppDispatch } from "../../Store";
-import { useState } from "react";
 import { register } from "../../Store/reducers/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../validations/registerSchema";
+import * as yup from "yup";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 const FormRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const [nome, setNome] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
 
   const {
     register: registerInput,
@@ -37,31 +33,24 @@ const FormRegister = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* NOME */}
       <input
         type="text"
         placeholder="Nome"
         {...registerInput("nome")}
       />
       {errors.nome && <span>{errors.nome.message}</span>}
-
-      {/* EMAIL */}
       <input
         type="email"
         placeholder="Email"
         {...registerInput("email")}
       />
       {errors.email && <span>{errors.email.message}</span>}
-
-      {/* PASSWORD */}
       <input
         type="password"
         placeholder="Senha"
         {...registerInput("password")}
       />
       {errors.password && <span>{errors.password.message}</span>}
-
-      {/* CONFIRM PASSWORD */}
       <input
         type="password"
         placeholder="Confirme a senha"

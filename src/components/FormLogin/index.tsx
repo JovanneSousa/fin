@@ -2,55 +2,53 @@ import { useDispatch } from "react-redux";
 import Button from "../Button";
 import "font-awesome/css/font-awesome.min.css";
 import { type AppDispatch } from "../../Store";
-import React, { useState } from "react";
 import { login } from "../../Store/reducers/auth";
+import { useForm } from "react-hook-form";
+import { loginSchema } from "../../validations/loginSchema";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+type LoginFormData = yup.InferType<typeof loginSchema>;
 
 const FormLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register: loginInput,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+  });
 
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      const result = await dispatch(login({ email, password })).unwrap();
-
+      const result = await dispatch(login(data)).unwrap();
       localStorage.setItem("token", result.token);
-      clearInput();
+      reset();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const clearInput = () => {
-    setPassword("");
-    setEmail("");
-  };
-
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-wrapper">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            id="email"
-          />
+          <input type="email" placeholder="Email" {...loginInput("email")} />
           <i className="fa fa-envelope" aria-hidden="true"></i>
         </div>
+        {errors.email && <span>{errors.email.message}</span>}
         <div className="input-wrapper">
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
-            id="senha"
+            {...loginInput("password")}
           />
           <i className="fa fa-lock" aria-hidden="true"></i>
         </div>
+        {errors.password && <span>{errors.password.message}</span>}
         <Button children="LOGIN" type="submit" />
       </form>
     </>

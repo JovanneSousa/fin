@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../validations/registerSchema";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 const FormRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const {
     register: registerInput,
@@ -26,6 +28,7 @@ const FormRegister = () => {
       const result = await dispatch(register(data)).unwrap();
       localStorage.setItem("token", result.token);
       reset();
+      navigate("/home");
     } catch (err) {
       console.log(err);
     }

@@ -1,18 +1,20 @@
-import { GlobalStyle } from './globalStyles'
-import Login from './components/Login'
-import { Provider } from 'react-redux'
-import { store } from './Store'
+import { GlobalStyle } from "./globalStyles";
+import { Provider } from "react-redux";
+import { store } from "./Store";
+import { BrowserRouter } from "react-router-dom";
+import Rotas from "./routes";
 
 function App() {
-
   return (
     <Provider store={store}>
-    <GlobalStyle />
-      <div className="container">
-        <Login />
-      </div>
+      <GlobalStyle />
+      <BrowserRouter>
+        <div className="container">
+          <Rotas />
+        </div>
+      </BrowserRouter>
     </Provider>
-  )
+  );
 }
 
-export default App
+export default App;

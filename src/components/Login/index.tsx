@@ -20,13 +20,13 @@ const Login = () => {
       <div className="form">
         <span className="title">{title}</span>
         <Form />
-        <button
+        <a
           onClick={() => setIsLoginPageActive(!isLoginPageActive)}
           className="create"
         >
           {buttonText}
           <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-        </button>
+        </a>
       </div>
     </LoginSection>
   );

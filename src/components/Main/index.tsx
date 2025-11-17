@@ -1,4 +1,5 @@
 import Header from "../Header";
+import Seletor from "../Seletor";
 
 const Main = () => {
 
@@ -6,7 +7,7 @@ const Main = () => {
     <>
     <Header />
     <div className="container">
-        Teste
+        <Seletor />
     </div></>
   );
 };

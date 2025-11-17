@@ -1,10 +1,43 @@
-const Header = () => {
-    return(
-        <header>
-            <h1>Teste</h1>
-            <a href="#">Sair</a>
-        </header>
-    )
+import { jwtDecode } from "jwt-decode";
+import { HeaderSection } from "./styles";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../Store";
+import { logout } from "../../Store/reducers/auth";
+import { useNavigate } from "react-router-dom";
+
+interface MyJwtPayload {
+  unique_name: string;
+  exp: number;
+  iat: number;
+  iss: string;
 }
 
-export default Header
+const Header = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>();
+  const token = localStorage.getItem("token");
+  let decoded = null;
+
+  const deslogar = () => {
+    dispatch(logout());
+    navigate('/')
+  }
+
+  if (token) {
+    decoded = jwtDecode<MyJwtPayload>(token);
+  }
+
+  return (
+    <HeaderSection>
+      <div className="container">
+        <div>
+          <h1>FinControl</h1>
+          <p>Olá, <span>{decoded ? decoded.unique_name : "Visitante"}</span></p>
+        </div>
+        <a onClick={deslogar} href="#">Sair</a>
+      </div>
+    </HeaderSection>
+  );
+};
+
+export default Header;

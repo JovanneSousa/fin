@@ -1,23 +1,22 @@
 import { createGlobalStyle } from "styled-components";
 
 export const colors = {
-    rosa: "#c850c0",
-    roxo : "#4158d0",
-    gradient: `linear-gradient(-135deg, #c850c0, #4158d0)`,
-    branco: '#fff',
-    gray: '#666666',
-    lightGray: '#e6e6e6',
-    darkGray: "#333333",
-    verde: '#57b846',
-    vermelho: '#e63946'
-}
+  rosa: "#c850c0",
+  roxo: "#4158d0",
+  gradient: `linear-gradient(-135deg, #c850c0, #4158d0)`,
+  branco: "#fff",
+  gray: "#666666",
+  lightGray: "#e6e6e6",
+  darkGray: "#333333",
+  verde: "#57b846",
+  vermelho: "#e63946",
+};
 
 export const breakpoints = {
-  desktop: '1024px',
-  tablet: '768px',
-  containerMaxWidth: '1200px',
-}
-
+  desktop: "1024px",
+  tablet: "768px",
+  containerMaxWidth: "1200px",
+};
 export const GlobalStyle = createGlobalStyle`
 * {
     box-sizing: border-box;
@@ -26,7 +25,11 @@ export const GlobalStyle = createGlobalStyle`
     font-family: lexend , sans-serif;
     list-style: none;
     text-decoration: none;
+    
+}
 
+html, #root {
+    height: 100%;
 }
 
 body {
@@ -34,9 +37,11 @@ body {
     background-repeat: no-repeat;
     min-height: 100vh;
     height: 100%;
+    position: relative;
 
     @media (max-width: ${breakpoints.tablet}) {
         padding: 15px;
+        overflow-x: hidden;
     }
 }
 
@@ -46,7 +51,7 @@ body {
     display: flex;
     justify-content: center;
     align-items:center;
-    min-height: 100vh;
+    min-height: 100%;
     height: 100%;
 }
 
@@ -57,4 +62,4 @@ body {
         position: relative;
     }
 }
-`
+`;

@@ -9,9 +9,7 @@ function App() {
     <Provider store={store}>
       <GlobalStyle />
       <BrowserRouter>
-        <div className="container">
           <Rotas />
-        </div>
       </BrowserRouter>
     </Provider>
   );

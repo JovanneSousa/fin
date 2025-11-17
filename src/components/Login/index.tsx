@@ -7,7 +7,7 @@ import { clearState } from "../../Store/reducers/auth";
 
 const Login = () => {
   const [isLoginPageActive, setIsLoginPageActive] = useState(true);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const title = isLoginPageActive ? "Login" : "Registrar";
   const Form = isLoginPageActive ? FormLogin : FormRegister;
@@ -21,19 +21,21 @@ const Login = () => {
   };
 
   return (
-    <LoginSection>
-      <div className="img">
-        <img src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" />
-      </div>
-      <div className="form">
-        <span className="title">{title}</span>
-        <Form key={isLoginPageActive ? "login" : "register"} />
-        <a onClick={handleToggle} className="create">
-          {buttonText}
-          <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-        </a>
-      </div>
-    </LoginSection>
+    <div className="container">
+      <LoginSection>
+        <div className="img">
+          <img src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" />
+        </div>
+        <div className="form">
+          <span className="title">{title}</span>
+          <Form key={isLoginPageActive ? "login" : "register"} />
+          <a onClick={handleToggle} className="create">
+            {buttonText}
+            <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+          </a>
+        </div>
+      </LoginSection>
+    </div>
   );
 };
 

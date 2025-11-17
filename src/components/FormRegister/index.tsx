@@ -38,10 +38,12 @@ const FormRegister = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <input type="text" placeholder="Nome" {...registerInput("nome")} />
+        <i className="fa fa-user"></i>
       </div>
       <span className="error-span">{errors.nome?.message}</span>
       <div className="input-wrapper">
         <input type="email" placeholder="Email" {...registerInput("email")} />
+        <i className="fa fa-envelope" aria-hidden="true"></i>
       </div>
       <span>{errors.email?.message}</span>
       <div className="input-wrapper">
@@ -50,6 +52,7 @@ const FormRegister = () => {
           placeholder="Senha"
           {...registerInput("password")}
         />
+        <i className="fa fa-lock" aria-hidden="true"></i>
       </div>
       <span>{errors.password?.message}</span>
       <div className="input-wrapper">
@@ -58,6 +61,7 @@ const FormRegister = () => {
           placeholder="Confirme a senha"
           {...registerInput("confirmPassword")}
         />
+        <i className="fa fa-lock" aria-hidden="true"></i>
       </div>
       <span className="error-span">{errors.confirmPassword?.message}</span>
 

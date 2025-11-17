@@ -31,7 +31,7 @@ export const LoginSection = styled.section`
     i {
       position: absolute;
       left: 24px;
-      top: 40%;
+      top: 50%;
       transform: translateY(-50%);
       color: ${colors.gray};
       font-size: 16px;

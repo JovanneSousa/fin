@@ -3,7 +3,8 @@ import { ButtonStyled } from "./styles"
 
 interface ButtonProps {
     children: React.ReactNode,
-    type: 'button' | 'submit' | 'reset'
+    type: 'button' | 'submit' | 'reset',
+    disabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({

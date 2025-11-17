@@ -2,15 +2,23 @@ import { useState } from "react";
 import FormRegister from "../FormRegister";
 import { LoginSection } from "./styles";
 import FormLogin from "../FormLogin";
+import { useDispatch } from "react-redux";
+import { clearState } from "../../Store/reducers/auth";
 
 const Login = () => {
   const [isLoginPageActive, setIsLoginPageActive] = useState(true);
+  const dispatch = useDispatch()
 
   const title = isLoginPageActive ? "Login" : "Registrar";
   const Form = isLoginPageActive ? FormLogin : FormRegister;
   const buttonText = isLoginPageActive
     ? "Criar uma conta "
     : "Voltar para o login ";
+
+  const handleToggle = () => {
+    dispatch(clearState());
+    setIsLoginPageActive(!isLoginPageActive);
+  };
 
   return (
     <LoginSection>
@@ -19,11 +27,8 @@ const Login = () => {
       </div>
       <div className="form">
         <span className="title">{title}</span>
-        <Form />
-        <a
-          onClick={() => setIsLoginPageActive(!isLoginPageActive)}
-          className="create"
-        >
+        <Form key={isLoginPageActive ? "login" : "register"} />
+        <a onClick={handleToggle} className="create">
           {buttonText}
           <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
         </a>

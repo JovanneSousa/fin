@@ -1,6 +1,6 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
-import type { AppDispatch } from "../../Store";
+import type { AppDispatch, RootReducer } from "../../Store";
 import { register } from "../../Store/reducers/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +13,7 @@ type RegisterFormData = yup.InferType<typeof registerSchema>;
 const FormRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state: RootReducer) => state.auth);
 
   const {
     register: registerInput,
@@ -65,7 +66,10 @@ const FormRegister = () => {
       </div>
       <span className="error-span">{errors.confirmPassword?.message}</span>
 
-      <Button type="submit">Cadastrar</Button>
+      <Button type="submit" disabled={loading}>
+        {loading ? "Cadastrando..." : "Cadastrar"}
+      </Button>
+      {error && <span className="error-message-span">{error}</span>}
     </form>
   );
 };

@@ -39,7 +39,7 @@ const FormLogin = () => {
           <input type="email" placeholder="Email" {...loginInput("email")} />
           <i className="fa fa-envelope" aria-hidden="true"></i>
         </div>
-        {errors.email && <span>{errors.email.message}</span>}
+        <span>{errors.email?.message}</span>
         <div className="input-wrapper">
           <input
             type="password"
@@ -47,8 +47,7 @@ const FormLogin = () => {
             {...loginInput("password")}
           />
           <i className="fa fa-lock" aria-hidden="true"></i>
-        </div>
-        {errors.password && <span>{errors.password.message}</span>}
+        </div><span>{errors.password?.message}</span>
         <Button children="LOGIN" type="submit" />
       </form>
     </>

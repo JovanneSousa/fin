@@ -33,30 +33,30 @@ const FormRegister = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="text"
-        placeholder="Nome"
-        {...registerInput("nome")}
-      />
-      {errors.nome && <span>{errors.nome.message}</span>}
-      <input
-        type="email"
-        placeholder="Email"
-        {...registerInput("email")}
-      />
-      {errors.email && <span>{errors.email.message}</span>}
-      <input
-        type="password"
-        placeholder="Senha"
-        {...registerInput("password")}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
-      <input
-        type="password"
-        placeholder="Confirme a senha"
-        {...registerInput("confirmPassword")}
-      />
-      {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
+      <div className="input-wrapper">
+        <input type="text" placeholder="Nome" {...registerInput("nome")} />
+      </div>
+      <span className="error-span">{errors.nome?.message}</span>
+      <div className="input-wrapper">
+        <input type="email" placeholder="Email" {...registerInput("email")} />
+      </div>
+      <span>{errors.email?.message}</span>
+      <div className="input-wrapper">
+        <input
+          type="password"
+          placeholder="Senha"
+          {...registerInput("password")}
+        />
+      </div>
+      <span>{errors.password?.message}</span>
+      <div className="input-wrapper">
+        <input
+          type="password"
+          placeholder="Confirme a senha"
+          {...registerInput("confirmPassword")}
+        />
+      </div>
+      <span className="error-span">{errors.confirmPassword?.message}</span>
 
       <Button type="submit">Cadastrar</Button>
     </form>

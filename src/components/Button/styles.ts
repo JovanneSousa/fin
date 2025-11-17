@@ -9,7 +9,7 @@ export const ButtonStyled = styled.button`
     color: ${colors.branco};
     padding: 16px 32px;
     border-radius: 32px;
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: 16px;
     transition: all 0.4s ease;
     cursor: pointer;

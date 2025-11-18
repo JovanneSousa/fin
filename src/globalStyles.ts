@@ -41,7 +41,7 @@ body {
 
     @media (max-width: ${breakpoints.tablet}) {
         padding: 15px;
-        overflow-x: hidden;
+        overflow: hidden;
     }
 }
 

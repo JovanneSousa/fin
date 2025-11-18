@@ -4,6 +4,7 @@ export const colors = {
   rosa: "#c850c0",
   roxo: "#4158d0",
   gradient: `linear-gradient(-135deg, #c850c0, #4158d0)`,
+  preto: "#000",
   branco: "#fff",
   gray: "#666666",
   lightGray: "#e6e6e6",
@@ -43,6 +44,17 @@ body {
         padding: 15px;
         overflow: hidden;
     }
+}
+
+.col {
+    flex-direction: column;
+}
+
+.grid-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
 }
 
 .container {

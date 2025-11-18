@@ -9,6 +9,7 @@ export const SeletorSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 16px;
 
   .title-mes {
     text-align: center;

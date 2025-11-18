@@ -57,6 +57,10 @@ body {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
     margin-bottom: 24px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .container {

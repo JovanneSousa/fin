@@ -5,6 +5,7 @@ export const colors = {
   roxo: "#4158d0",
   gradient: `linear-gradient(-135deg, #c850c0, #4158d0)`,
   preto: "#000",
+  shadow: "0 1px 3px 0 rgba(0, 0, 0, 0.3)",
   branco: "#fff",
   gray: "#666666",
   lightGray: "#e6e6e6",
@@ -55,6 +56,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
+    margin-bottom: 24px;
 }
 
 .container {

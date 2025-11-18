@@ -5,7 +5,7 @@ export const CardStyled = styled.div`
     background-color: ${colors.branco};
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: ${colors.shadow};
 
     .valor {
         font-size: 24px;

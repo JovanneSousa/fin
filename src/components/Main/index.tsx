@@ -1,3 +1,4 @@
+import AnalysisSection from "../Analysis/indes";
 import ContainerCategories from "../ContainerCategories";
 import Header from "../Header";
 import Seletor from "../Seletor";
@@ -10,6 +11,7 @@ const Main = () => {
     <div className="container col">
         <Seletor />
         <ContainerCategories />
+        <AnalysisSection />
     </div></>
   );
 };

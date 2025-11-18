@@ -29,8 +29,12 @@ export const SeletorSection = styled.section`
   .input-mes {
     label {
       color: ${colors.gray};
-      display: block;
       padding-bottom: 8px;
+
+      
+    @media (max-width: ${breakpoints.tablet}) {
+      display: block;
+    }
     }
 
     select {

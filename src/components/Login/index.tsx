@@ -2,15 +2,18 @@ import { useState } from "react";
 import FormRegister from "../FormRegister";
 import { LoginSection } from "./styles";
 import FormLogin from "../FormLogin";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearState } from "../../Store/reducers/auth";
+import type { RootReducer } from "../../Store";
+import Loader from "../Loader";
 
 const Login = () => {
   const [isLoginPageActive, setIsLoginPageActive] = useState(true);
   const dispatch = useDispatch();
+  const { loading } = useSelector((state: RootReducer) => state.auth)
 
   const title = isLoginPageActive ? "Login" : "Registrar";
-  const Form = isLoginPageActive ? FormLogin : FormRegister;
+  const Form = loading? Loader : isLoginPageActive ? FormLogin : FormRegister;
   const buttonText = isLoginPageActive
     ? "Criar uma conta "
     : "Voltar para o login ";

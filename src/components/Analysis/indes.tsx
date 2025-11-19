@@ -20,8 +20,9 @@ const AnalysisSection = () => {
                     </li>
                 </ul>
             </nav>
-            <div>
-                <New />
+            <div className="container-analysis">
+                <div></div>
+                <New /> 
             </div>
         </Analysis>
     )

@@ -8,6 +8,7 @@ import { loginSchema } from "../../validations/loginSchema";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
+import { colors } from "../../globalStyles";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
@@ -51,7 +52,7 @@ const FormLogin = () => {
           />
           <i className="fa fa-lock" aria-hidden="true"></i>
         </div><span>{errors.password?.message}</span>
-        <Button disabled={loading} children="LOGIN" type="submit" />
+        <Button padding="big" bgColor={colors.verde} disabled={loading} children="LOGIN" type="submit" />
         {error && <span className="error-message-span">{error}</span>}
       </form>
     </>

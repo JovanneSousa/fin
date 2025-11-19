@@ -1,7 +1,4 @@
-import { colors } from "../../globalStyles";
-import Button from "../Button";
-
-const FormReceita = () => {
+const FormDespesa = () => {
   return (
     <form>
       <div className="input-wrapper">
@@ -26,13 +23,12 @@ const FormReceita = () => {
         <label htmlFor="date">Data</label>
         <input id="date" type="date" />
       </div>
-      <div className="input-check">
+      <div className="input-wrapper">
+        <label htmlFor="recurrency"></label>
         <input id="recurrency" type="checkbox" />
-        <label htmlFor="recurrency">Receita Recorrente</label>
       </div>
-      <Button padding="small" bgColor={colors.verde} type="submit" children="Adicionar Transação" />
     </form>
   );
 };
 
-export default FormReceita
+export default FormDespesa

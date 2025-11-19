@@ -1,19 +1,37 @@
+import { colors } from "../../globalStyles";
 import Button from "../Button";
 import FormReceita from "../FormReceita";
+import { NewSection } from "./styles";
 
 const New = () => {
   return (
-    <div>
-      <p>Nova Transação</p>
+    <NewSection>
+      <div className="padding">
+        <p className="new-title">Nova Transação</p>
 
-      <div className="type">
-        <p>tipo</p>
-        <Button children="Receita" type="button" />
-        <Button children="Despesa" type="button" />
+        <div>
+          <div className="type">
+            <p>tipo</p>
+            <div className="button-wrapper">
+              <Button
+                bgColor={colors.lightGray}
+                padding="small"
+                children="Receita"
+                type="button"
+              />
+              <Button
+                bgColor={colors.lightGray}
+                padding="small"
+                children="Despesa"
+                type="button"
+              />
+            </div>
+          </div>
+          <FormReceita />
+        </div>
       </div>
-      <FormReceita />
-    </div>
+    </NewSection>
   );
 };
 
-export default New
+export default New;

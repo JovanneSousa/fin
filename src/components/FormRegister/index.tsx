@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../validations/registerSchema";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { colors } from "../../globalStyles";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
@@ -66,7 +67,7 @@ const FormRegister = () => {
       </div>
       <span className="error-span">{errors.confirmPassword?.message}</span>
 
-      <Button type="submit" disabled={loading}>
+      <Button padding="big" bgColor={colors.verde} type="submit" disabled={loading}>
         {loading ? "Cadastrando..." : "Cadastrar"}
       </Button>
       {error && <span className="error-message-span">{error}</span>}

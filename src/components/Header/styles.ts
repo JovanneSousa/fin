@@ -7,7 +7,7 @@ export const HeaderSection = styled.header`
   position: sticky;
   top: 0;
   left: 0;
-  width: 100vw;
+  max-width: 100vw;
 
   p {
     span {

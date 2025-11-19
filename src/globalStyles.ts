@@ -31,7 +31,7 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 .main {
-    min-height: 100%;
+    width: 100%;
 }
 
 #root {

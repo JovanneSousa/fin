@@ -30,20 +30,21 @@ export const GlobalStyle = createGlobalStyle`
     
 }
 
-html, #root {
-    height: 100%;
+#root {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 body {
     background: ${colors.gradient};
     background-repeat: no-repeat;
     min-height: 100vh;
-    height: 100%;
     position: relative;
+    background-size: cover;
 
     @media (max-width: ${breakpoints.tablet}) {
         padding: 15px;
-        overflow: hidden;
     }
 }
 
@@ -71,6 +72,7 @@ body {
     align-items:center;
     min-height: 100%;
     height: 100%;
+    width: 100%;
 }
 
 .relative {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 export const Analysis = styled.div`
     background-color: ${colors.lightGray};
@@ -18,6 +18,9 @@ export const Analysis = styled.div`
             text-align: center;
             cursor: pointer;
             font-size: 14px;
+            @media (max-width: ${breakpoints.tablet}) {
+                font-size: 12px;
+            }
         }
 
         .is-active {

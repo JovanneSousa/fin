@@ -67,7 +67,7 @@ const FormRegister = () => {
       </div>
       <span className="error-span">{errors.confirmPassword?.message}</span>
 
-      <Button padding="big" bgColor={colors.verde} type="submit" disabled={loading}>
+      <Button padding="big" bgColor={colors.verde} type="submit">
         {loading ? "Cadastrando..." : "Cadastrar"}
       </Button>
       {error && <span className="error-message-span">{error}</span>}

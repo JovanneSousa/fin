@@ -1,4 +1,4 @@
-import AnalysisSection from "../Analysis/indes";
+import AnalysisSection from "../Analysis";
 import ContainerCategories from "../ContainerCategories";
 import Header from "../Header";
 import Seletor from "../Seletor";

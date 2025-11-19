@@ -56,10 +56,10 @@ export const NewSection = styled.section`
   }
 
   .input-check {
-    margin: 16px 0;
   }
 
   .input-check,
+  .container-check,
   input[type="checkbox"] {
     display: flex;
     width: auto;
@@ -74,6 +74,25 @@ export const NewSection = styled.section`
 
     &:checked {
       background-color: ${colors.verde};
+    }
+  }
+  .container-check {
+    display: block;
+
+    &>.input-check {
+        padding-left: 0;
+        margin-top: 0;
+    }
+    .parcelas {
+      margin-top: 8px;
+      label {
+        font-size: 12px;
+        display: block;
+        padding: 8px 0;
+      }
+      input {
+        background-color: ${colors.lighterGray};
+      }
     }
   }
 `;

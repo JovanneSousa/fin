@@ -7,7 +7,8 @@ export const HeaderSection = styled.header`
   position: sticky;
   top: 0;
   left: 0;
-  max-width: 100vw;
+  width: 100vw;
+  box-shadow: ${colors.shadow};
 
   p {
     span {

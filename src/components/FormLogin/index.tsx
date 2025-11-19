@@ -15,7 +15,7 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 const FormLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate()
-  const { loading, error } = useSelector((state: RootReducer) => state.auth)
+  const { error } = useSelector((state: RootReducer) => state.auth)
 
   const {
     register: loginInput,
@@ -52,7 +52,7 @@ const FormLogin = () => {
           />
           <i className="fa fa-lock" aria-hidden="true"></i>
         </div><span>{errors.password?.message}</span>
-        <Button padding="big" bgColor={colors.verde} disabled={loading} children="LOGIN" type="submit" />
+        <Button padding="big" bgColor={colors.verde} children="LOGIN" type="submit" />
         {error && <span className="error-message-span">{error}</span>}
       </form>
     </>

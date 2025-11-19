@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import FormReceita from "../FormReceita";
+import FormDespesa from "../FormDespesa";
 import { NewSection } from "./styles";
+import FormReceita from "../FormReceita";
 
 const New = () => {
+  const [isReceita, setIsReceitaActive] = useState(true);
+  const Form = isReceita ? FormReceita : FormDespesa;
+
   return (
     <NewSection>
       <div className="padding">
@@ -11,23 +16,25 @@ const New = () => {
 
         <div>
           <div className="type">
-            <p>tipo</p>
+            <p>Tipo</p>
             <div className="button-wrapper">
               <Button
-                bgColor={colors.lightGray}
+                bgColor={isReceita ? colors.verde : colors.lightGray}
                 padding="small"
                 children="Receita"
                 type="button"
+                onClick={() => setIsReceitaActive(true)}
               />
               <Button
-                bgColor={colors.lightGray}
+                bgColor={!isReceita ? colors.vermelho : colors.lightGray}
                 padding="small"
                 children="Despesa"
                 type="button"
+                onClick={() => setIsReceitaActive(false)}
               />
             </div>
           </div>
-          <FormReceita />
+          <Form />
         </div>
       </div>
     </NewSection>

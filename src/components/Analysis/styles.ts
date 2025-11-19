@@ -39,5 +39,10 @@ export const Analysis = styled.div`
     display: grid;
     grid-template-columns: .7fr .3fr;
     gap: 20px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        grid-template-columns: 1fr;
+    }
+
   }
 `;

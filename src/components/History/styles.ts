@@ -24,6 +24,10 @@ export const HistorySection = styled.section`
     display: flex;
     justify-content: space-between;
 
+    &:hover {
+        background-color: ${colors.lighterGray};
+    }
+
     .icon-hist,
     .value-hist {
       display: flex;

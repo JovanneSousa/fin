@@ -1,6 +1,7 @@
 import AnalysisSection from "../Analysis";
 import ContainerCategories from "../ContainerCategories";
 import Header from "../Header";
+import History from "../History";
 import Seletor from "../Seletor";
 
 const Main = () => {
@@ -11,6 +12,7 @@ const Main = () => {
         <Seletor />
         <ContainerCategories />
         <AnalysisSection />
+        <History />
       </div>
     </div>
   );

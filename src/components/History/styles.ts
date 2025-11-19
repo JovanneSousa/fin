@@ -1,0 +1,103 @@
+import styled from "styled-components";
+import { breakpoints, colors } from "../../globalStyles";
+import { hexToRgb } from "../../Utils";
+
+export const HistorySection = styled.section`
+  background-color: ${colors.branco};
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .title-hist {
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .container-transacao {
+    border-radius: 16px;
+    border: 1px solid ${colors.lightGray};
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+
+    .icon-hist,
+    .value-hist {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 20px;
+    }
+
+    .icon-hist {
+      @media (max-width: ${breakpoints.tablet}) {
+        max-width: 40%;
+      }
+    }
+  }
+
+  .value-hist {
+    justify-content: flex-end;
+  }
+
+  p.value {
+    color: ${colors.verde};
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  p.data {
+    color: ${colors.gray};
+    font-weight: 300;
+    font-size: 14px;
+  }
+
+  p.cat {
+    color: ${colors.gray};
+    font-weight: 300;
+    font-size: 12px;
+  }
+
+  .container-value {
+    display: flex;
+    gap: 20px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      display: block;
+    }
+  }
+`;
+
+export const IconBox = styled.div<{ color: string }>`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  background-color: ${({ color }) => `rgba(${hexToRgb(color)}, 0.2)`};
+  color: ${({ color }) => color || "#57b846"};
+`;
+
+export const CloseBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: ${colors.vermelho};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(${hexToRgb(colors.vermelho)}, 0.2);
+  }
+`;

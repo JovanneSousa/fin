@@ -12,6 +12,7 @@ export const colors = {
   lighterGray: "#f5f5f5",
   darkGray: "#333333",
   verde: "#57b846",
+  verdeRgb: 'rgb(87, 184, 70)',
   vermelho: "#e63946"
 };
 

@@ -18,6 +18,7 @@ export const Analysis = styled.div`
             text-align: center;
             cursor: pointer;
             font-size: 14px;
+            line-height: 24px;
             @media (max-width: ${breakpoints.tablet}) {
                 font-size: 12px;
             }

@@ -30,10 +30,13 @@ export const GlobalStyle = createGlobalStyle`
     
 }
 
+.main {
+    min-height: 100%;
+}
+
 #root {
     min-height: 100vh;
     display: flex;
-    align-items: center;
 }
 
 body {
@@ -42,14 +45,11 @@ body {
     min-height: 100vh;
     position: relative;
     background-size: cover;
-
-    @media (max-width: ${breakpoints.tablet}) {
-        padding: 15px;
-    }
 }
 
 .col {
     flex-direction: column;
+    padding: 20px 0;
 }
 
 .grid-card {
@@ -70,9 +70,11 @@ body {
     display: flex;
     justify-content: center;
     align-items:center;
-    min-height: 100%;
-    height: 100%;
     width: 100%;
+    
+    @media (max-width: ${breakpoints.tablet}) {
+        padding: 15px;
+    }
 }
 
 .relative {

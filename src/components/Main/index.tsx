@@ -4,15 +4,15 @@ import Header from "../Header";
 import Seletor from "../Seletor";
 
 const Main = () => {
-
-  return(
-    <>
-    <Header />
-    <div className="container col">
+  return (
+    <div className="main">
+      <Header />
+      <div className="col container">
         <Seletor />
         <ContainerCategories />
         <AnalysisSection />
-    </div></>
+      </div>
+    </div>
   );
 };
 export default Main;

@@ -1,3 +1,4 @@
+import New from "../New"
 import { Analysis } from "./styles"
 
 const AnalysisSection = () => {
@@ -19,6 +20,9 @@ const AnalysisSection = () => {
                     </li>
                 </ul>
             </nav>
+            <div>
+                <New />
+            </div>
         </Analysis>
     )
 }

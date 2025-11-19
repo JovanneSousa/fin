@@ -3,19 +3,19 @@ import { colors } from "../../globalStyles";
 
 export const HeaderSection = styled.header`
   background-color: ${colors.branco};
-  padding: 8px 0;
-  position: absolute;
+  padding: 8px;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100vw;
 
-  p{
+  p {
     span {
-        font-size: 20px;
-        background: ${colors.gradient};
-        font-weight: bold;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      font-size: 20px;
+      background: ${colors.gradient};
+      font-weight: bold;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 
@@ -32,12 +32,12 @@ export const HeaderSection = styled.header`
     border: 3px solid ${colors.lightGray};
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease ;
+    transition: all 0.3s ease;
 
     &:hover {
-        background-color: ${colors.verde};
-        color: ${colors.lightGray};
-        box-shadow: 0 0 12px ${colors.verde};
+      background-color: ${colors.verde};
+      color: ${colors.lightGray};
+      box-shadow: 0 0 12px ${colors.verde};
     }
   }
 `;

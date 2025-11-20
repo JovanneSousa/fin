@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 import type { ButtonProps } from ".";
 
 export const ButtonStyled = styled.button<ButtonProps>`
@@ -20,7 +20,9 @@ export const ButtonStyled = styled.button<ButtonProps>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${colors.darkGray};
-    color: ${colors.branco};
+    @media (min-width: ${breakpoints.tablet}) {
+      background-color: ${colors.darkGray};
+      color: ${colors.branco};
+    }
   }
 `;

@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormRegister from "../FormRegister";
 import { LoginSection } from "./styles";
 import FormLogin from "../FormLogin";
 import { useDispatch, useSelector } from "react-redux";
-import { clearState } from "../../Store/reducers/auth";
-import type { RootReducer } from "../../Store";
+import { clearState, wake } from "../../Store/reducers/auth";
+import type { AppDispatch, RootReducer } from "../../Store";
 import Loader from "../Loader";
 
 const Login = () => {
   const [isLoginPageActive, setIsLoginPageActive] = useState(true);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootReducer) => state.auth)
+
+  useEffect(() => {
+    dispatch(wake());
+  }, [dispatch]);
 
   const title = isLoginPageActive ? "Login" : "Registrar";
   const Form = loading? Loader : isLoginPageActive ? FormLogin : FormRegister;

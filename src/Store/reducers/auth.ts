@@ -77,6 +77,18 @@ export const register = createAsyncThunk<
   }
 });
 
+export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
+  "wake-up",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get<string>(`api/auth/wake-up`);
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err.message ?? "Erro ao acordar API");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -90,7 +102,7 @@ const authSlice = createSlice({
     },
     clearState: (state) => {
       state.loading = false;
-      state.error = null
+      state.error = null;
     },
   },
   extraReducers: (builder) => {

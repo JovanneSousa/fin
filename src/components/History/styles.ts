@@ -25,7 +25,7 @@ export const HistorySection = styled.section`
     justify-content: space-between;
 
     &:hover {
-        background-color: ${colors.lighterGray};
+      background-color: ${colors.lighterGray};
     }
 
     .icon-hist,
@@ -34,6 +34,7 @@ export const HistorySection = styled.section`
       align-items: center;
       width: 100%;
       gap: 20px;
+      text-align: center;
     }
 
     .icon-hist {
@@ -43,20 +44,25 @@ export const HistorySection = styled.section`
     }
   }
 
-  .value-hist {
-    justify-content: flex-end;
-  }
-
   p.value {
     color: ${colors.verde};
     font-weight: bold;
     font-size: 16px;
+    
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 14px;
+    }
   }
 
   p.data {
     color: ${colors.gray};
     font-weight: 300;
     font-size: 14px;
+
+    
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 12px;
+    }
   }
 
   p.cat {
@@ -72,6 +78,11 @@ export const HistorySection = styled.section`
     @media (max-width: ${breakpoints.tablet}) {
       display: block;
     }
+  }
+
+
+  .value-hist {
+    justify-content: flex-end;
   }
 `;
 

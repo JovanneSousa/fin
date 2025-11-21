@@ -18,7 +18,6 @@ export const ContainerListCat = styled.div`
     button {
       max-width: 25%;
     }
-
   }
 
   .remove-btn {
@@ -39,7 +38,6 @@ export const ContainerListCat = styled.div`
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background-color: rgba(${hexToRgb(colors.verde)}, 0.2);
       color: ${colors.verde};
       padding: 8px 12px;
       font-size: 14px;
@@ -57,6 +55,16 @@ export const ContainerListCat = styled.div`
     }
   }
 
+  .receita-list .tag {
+    background-color: rgba(${hexToRgb(colors.verde)}, 0.2);
+    color: ${colors.verde};
+  }
+
+  .despesa-list .tag {
+    background-color: rgba(${hexToRgb(colors.vermelho)}, 0.2);
+    color: ${colors.vermelho};
+  }
+
   p {
     padding: 8px;
   }
@@ -68,14 +76,14 @@ export const ContainerListCat = styled.div`
   }
 
   .receita-list {
+    color: ${colors.verde};
     p {
-      color: ${colors.verde};
     }
   }
 
   .despesa-list {
+    color: ${colors.vermelho};
     p {
-      color: ${colors.vermelho};
     }
   }
 `;

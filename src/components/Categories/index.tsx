@@ -5,7 +5,7 @@ import { ContainerCat } from "./styles";
 import CategorieList from "../CategoriesList";
 
 const Categories = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <ContainerCat>

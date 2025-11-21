@@ -1,7 +1,15 @@
+import React from "react";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
 
-const FormCategoria = () => {
+interface FormCategoriaProps {
+  onListarCategorias?: () => void;
+}
+
+const FormCategoria: React.FC<FormCategoriaProps> = ({
+  onListarCategorias,
+}) => {
+
   return (
     <>
       <form>
@@ -28,6 +36,7 @@ const FormCategoria = () => {
         bgColor={colors.azul}
         padding="small"
         children="Listar Categorias"
+        onClick={onListarCategorias}
       />
     </>
   );

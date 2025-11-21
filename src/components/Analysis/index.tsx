@@ -2,12 +2,10 @@ import { useState } from "react";
 import New from "../New";
 import { Analysis } from "./styles";
 import Categories from "../Categories";
-
 type tabKey = "new" | "categories"
 
 const AnalysisSection = () => {
   const [activeTab, setActiveTab] = useState<tabKey>("new");
-
   const Components = {
     new: <New />,
     categories: <Categories />,

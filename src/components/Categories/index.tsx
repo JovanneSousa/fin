@@ -1,12 +1,21 @@
-import FormCategoria from "../FormCategoria"
-import { ContainerCat } from "./styles"
+import { useState } from "react";
+import FormCategoria from "../FormCategoria";
+import Modal from "../ModalContainer";
+import { ContainerCat } from "./styles";
+import CategorieList from "../CategoriesList";
 
 const Categories = () => {
-    return (
-        <ContainerCat>
-            <FormCategoria />
-        </ContainerCat>
-    )
-}
+  const [isOpen, setIsOpen] = useState(true);
 
-export default Categories
+  return (
+    <ContainerCat>
+      <FormCategoria onListarCategorias={() => setIsOpen(true)} />
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
+        <CategorieList onClose={() => setIsOpen(false)} />
+      </Modal>
+    </ContainerCat>
+  );
+};
+
+export default Categories;

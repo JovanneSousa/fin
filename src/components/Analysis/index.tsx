@@ -1,31 +1,43 @@
-import New from "../New"
-import { Analysis } from "./styles"
+import { useState } from "react";
+import New from "../New";
+import { Analysis } from "./styles";
+import Categories from "../Categories";
+
+type tabKey = "new" | "categories"
 
 const AnalysisSection = () => {
-    return (
-        <Analysis>
-            <nav>
-                <ul>
-                    <li className="is-active">
-                        Visão Geral
-                    </li>
-                    <li>
-                        Categorias
-                    </li>
-                    <li>
-                        Comparação
-                    </li>
-                    <li>
-                        Projeção
-                    </li>
-                </ul>
-            </nav>
-            <div className="container-analysis">
-                <div></div>
-                <New /> 
-            </div>
-        </Analysis>
-    )
-}
+  const [activeTab, setActiveTab] = useState<tabKey>("new");
 
-export default AnalysisSection
+  const Components = {
+    new: <New />,
+    categories: <Categories />,
+  };
+  return (
+    <Analysis>
+      <nav>
+        <ul>
+          <li
+            className={activeTab === "new" ? "is-active" : ""}
+            onClick={() => setActiveTab("new")}
+          >
+            Visão Geral
+          </li>
+          <li
+            className={activeTab === "categories" ? "is-active" : ""}
+            onClick={() => setActiveTab("categories")}
+          >
+            Categorias
+          </li>
+          <li>Comparação</li>
+          <li>Projeção</li>
+        </ul>
+      </nav>
+      <div className="container-analysis">
+        <div></div>
+        {Components[activeTab]}
+      </div>
+    </Analysis>
+  );
+};
+
+export default AnalysisSection;

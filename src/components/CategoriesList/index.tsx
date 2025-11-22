@@ -34,7 +34,7 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
         />
       </div>
 
-      {loading ? (
+      {error? <p>Erro ao carregar categorias</p> :loading ? (
         <Loader />
       ) : (
         <>

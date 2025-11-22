@@ -46,7 +46,8 @@ export const Feedback = () => {
         padding="small"
         type="button"
         onClick={() => {
-          dispatch(clearError(), clearSuccess());
+          dispatch(clearError());
+          dispatch(clearSuccess());
         }}
       />
       {success ? (

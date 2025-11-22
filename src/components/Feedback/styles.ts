@@ -15,7 +15,7 @@ export const ContainerFeedback = styled.div`
 
   span {
     padding: 16px;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
   }
   .success {

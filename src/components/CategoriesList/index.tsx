@@ -10,6 +10,7 @@ import {
   getCategories,
 } from "../../Store/reducers/categories";
 import Loader from "../Loader";
+import Feedback from "../Feedback";
 
 interface CategorieListProps {
   onClose?: () => void;
@@ -17,7 +18,7 @@ interface CategorieListProps {
 
 const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { receita, despesa, error, loading } = useSelector(
+  const { receita, despesa, error, loading, success } = useSelector(
     (state: RootReducer) => state.categories
   );
 
@@ -37,7 +38,9 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
         />
       </div>
 
-      {error ? (
+      {success ? (
+        <Feedback />
+      ) : error ? (
         <p>Erro ao carregar categorias</p>
       ) : loading ? (
         <Loader />

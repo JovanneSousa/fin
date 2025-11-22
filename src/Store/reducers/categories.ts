@@ -149,6 +149,7 @@ const categoriesSlice = createSlice({
         state.loading = false;
         state.receita = state.receita.filter((c) => c.id !== action.payload);
         state.despesa = state.despesa.filter((c) => c.id !== action.payload);
+        state.success = state.success || "Categoria deletada com sucesso"
       }
     );
   },

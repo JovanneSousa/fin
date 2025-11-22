@@ -1,7 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../Services/api";
 import type { RootReducer } from "..";
 
@@ -36,6 +33,29 @@ export const getCategories = createAsyncThunk<Category[]>(
         Authorization: `Bearer ${token}`,
       },
     });
+
+    return response.data;
+  }
+);
+
+export const postCategories = createAsyncThunk<
+  Category,
+  { name: string; type: number }
+>(
+  "categories/post",
+  async ({ name, type }, { getState }) => {
+    const state = getState() as RootReducer;
+    const token = state.auth.token || localStorage.getItem("token");
+
+    const response = await api.post<Category>(
+      "api/categories",
+      { name, type },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response.data;
   }

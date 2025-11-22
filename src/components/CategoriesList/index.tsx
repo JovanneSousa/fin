@@ -5,7 +5,10 @@ import { colors } from "../../globalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import { useEffect } from "react";
-import { getCategories } from "../../Store/reducers/categories";
+import {
+  deleteCategories,
+  getCategories,
+} from "../../Store/reducers/categories";
 import Loader from "../Loader";
 
 interface CategorieListProps {
@@ -34,7 +37,9 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
         />
       </div>
 
-      {error? <p>Erro ao carregar categorias</p> :loading ? (
+      {error ? (
+        <p>Erro ao carregar categorias</p>
+      ) : loading ? (
         <Loader />
       ) : (
         <>
@@ -44,7 +49,12 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
               {receita.map((cat) => (
                 <div key={cat.id} className="tag">
                   {cat.name}
-                  <button className="remove-btn">X</button>
+                  <button
+                    className="remove-btn"
+                    onClick={() => dispatch(deleteCategories(cat.id))}
+                  >
+                    X
+                  </button>
                 </div>
               ))}
             </div>
@@ -55,7 +65,12 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
               {despesa.map((cat) => (
                 <div key={cat.id} className="tag">
                   {cat.name}
-                  <button className="remove-btn">X</button>
+                  <button
+                    className="remove-btn"
+                    onClick={() => dispatch(deleteCategories(cat.id))}
+                  >
+                    X
+                  </button>
                 </div>
               ))}
             </div>

@@ -43,13 +43,13 @@ const FormCategoria: React.FC<FormCategoriaProps> = ({ onListarCategorias }) => 
             <option value={1}>Receita</option>
             <option value={0}>Despesa</option>
           </select>
-          {errors.type && <p className="error">{errors.type.message}</p>}
+          <span>{errors.type?.message}</span>
         </div>
 
         <div className="input-wrapper">
           <label htmlFor="cat-name">Nome da Categoria</label>
           <input id="cat-name" type="text" {...register("name")} />
-          {errors.name && <p className="error">{errors.name.message}</p>}
+          <span>{errors.name?.message}</span>
         </div>
 
         <Button

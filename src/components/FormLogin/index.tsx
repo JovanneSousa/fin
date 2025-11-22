@@ -14,8 +14,8 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 
 const FormLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
-  const { error } = useSelector((state: RootReducer) => state.auth)
+  const navigate = useNavigate();
+  const { error } = useSelector((state: RootReducer) => state.auth);
 
   const {
     register: loginInput,
@@ -30,7 +30,7 @@ const FormLogin = () => {
     try {
       await dispatch(login(data)).unwrap();
       reset();
-      navigate('/home');
+      navigate("/home");
     } catch (err) {
       console.log(err);
     }
@@ -51,8 +51,14 @@ const FormLogin = () => {
             {...loginInput("password")}
           />
           <i className="fa fa-lock" aria-hidden="true"></i>
-        </div><span>{errors.password?.message}</span>
-        <Button padding="big" bgColor={colors.verde} children="LOGIN" type="submit" />
+        </div>
+        <span>{errors.password?.message}</span>
+        <Button
+          padding="big"
+          bgColor={colors.verde}
+          children="LOGIN"
+          type="submit"
+        />
         {error && <span className="error-message-span">{error}</span>}
       </form>
     </>

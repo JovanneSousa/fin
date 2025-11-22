@@ -7,9 +7,10 @@ export const ContainerLoader = styled.div`
     justify-content: center;
     flex-direction: column;
     gap: 20px;
-    margin-bottom: 40px;
+    padding: 40px;
 
     p {
+        margin-top: 40px;
         color: ${colors.gray};
     }
 `

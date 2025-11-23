@@ -6,3 +6,10 @@ export const hexToRgb = (hex: string) => {
   const b = bigint & 255;
   return `${r}, ${g}, ${b}`;
 };
+
+export const formatCurrency = (valor: number): string => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(valor);
+}

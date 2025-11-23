@@ -15,6 +15,7 @@ import Feedback from "../Feedback";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { faCircleInfo, faPen } from "@fortawesome/free-solid-svg-icons";
+import { formatCurrency } from "../../Utils";
 
 const History = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,14 +49,8 @@ const History = () => {
                 <p className="value">
                   <p className="value">
                     {item.type === 0
-                      ? `+ ${new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.valor)}`
-                      : `- ${new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.valor)}`}
+                      ? `+ ${formatCurrency(item.valor)}`
+                      : `- ${formatCurrency(item.valor)}`}
                   </p>
                 </p>
                 <p className="data">

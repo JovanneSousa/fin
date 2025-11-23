@@ -4,16 +4,19 @@ import { FontAwesomeIcon as FontAwesomeIconError } from "@fortawesome/react-font
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { ContainerFeedback, ProgressBar } from "./styles";
 import { colors } from "../../globalStyles";
-import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootReducer } from "../../Store";
-import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../Store";
+import React, { useEffect, useState } from "react";
 import { clearError, clearSuccess } from "../../Store/reducers/categories";
 import Button from "../Button";
 
-export const Feedback = () => {
-  const { success, error } = useSelector(
-    (state: RootReducer) => state.categories
-  );
+type FeedbackProps = {
+  success?: string;
+  error?: string;
+  onClose?: () => void;
+};
+
+export const Feedback: React.FC<FeedbackProps> = ({ error, success}) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const duration = success ? 3000 : 5000;

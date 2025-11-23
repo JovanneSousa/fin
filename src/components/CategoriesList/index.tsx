@@ -39,7 +39,7 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
       </div>
 
       {success ? (
-        <Feedback />
+        <Feedback success={success} />
       ) : error ? (
         <p>Erro ao carregar categorias</p>
       ) : loading ? (

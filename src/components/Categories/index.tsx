@@ -37,9 +37,9 @@ const Categories = () => {
   return (
     <ContainerCat>
       {success ? (
-        <Feedback />
+        <Feedback success={success} />
       ) : error ? (
-        <Feedback />
+        <Feedback error={error} />
       ) : loading ? (
         <Loader />
       ) : (

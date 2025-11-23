@@ -91,7 +91,7 @@ const transactionSlice = createSlice({
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Erro ao carregar transações";
+        state.error = action.payload || "Erro ao carregar transações, recarregue a página!";
       });
   },
 });

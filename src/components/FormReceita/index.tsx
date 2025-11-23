@@ -43,10 +43,12 @@ const FormReceita = () => {
       <div className="input-wrapper">
         <label htmlFor="descript">Descrição</label>
         <input id="descript" type="text" {...register("titulo")} />
+        <span>{errors.titulo?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
         <input id="value" type="number" {...register("valor")} />
+        <span>{errors.valor?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="cat-receita">Categoria</label>
@@ -58,14 +60,18 @@ const FormReceita = () => {
             </option>
           ))}
         </select>
+        <span>{errors.categoriaId?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="createdAt">Data</label>
+
         <input id="createdAt" type="date" {...register("createdAt")} />
+        <span>{errors.createdAt?.message}</span>
       </div>
       <div className="input-check">
         <input id="recurrency" type="checkbox" {...register("isRecurring")} />
         <label htmlFor="recurrency">Receita Recorrente</label>
+        <span>{errors.isRecurring?.message}</span>
       </div>
       <Button
         padding="small"

@@ -5,8 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { postCategories } from "../../Store/reducers/categories";
-import { categoriaSchema } from "../../validations/categoriaScheme";
 import { type AppDispatch } from "../../Store";
+import { categoriaSchema } from "../../validations/categoriaSchema";
 
 interface FormCategoriaProps {
   onListarCategorias?: () => void;

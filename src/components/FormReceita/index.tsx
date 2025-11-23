@@ -4,8 +4,8 @@ import Button from "../Button";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { receitaSchema } from "../../validations/receitaScheme";
 import { createTransaction } from "../../Store/reducers/transactions";
+import { receitaSchema } from "../../validations/receitaSchema";
 
 type ReceitaFormData = {
   titulo: string;
@@ -13,6 +13,7 @@ type ReceitaFormData = {
   categoriaId: string;
   createdAt: string;
   isRecurring: boolean;
+  type?: number;
 };
 
 const FormReceita = () => {

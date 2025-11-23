@@ -35,43 +35,51 @@ const History = () => {
       ) : error ? (
         <Feedback noButton={true} error={error} />
       ) : (
-        items.map((item) => (
-          <div className="container-transacao" key={item.id}>
-            <div className="icon-hist">
-              <IconBox color={colors.verde}>+</IconBox>
-              <div className="container-titulo-nome">
-                <p className="desc">{item.titulo}</p>
-                <p className="cat">{item.categoria?.name}</p>
+        items
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .map((item) => (
+            <div className="container-transacao" key={item.id}>
+              <div className="icon-hist">
+                <IconBox
+                  color={item.type === 0 ? colors.verde : colors.vermelho}
+                >
+                  {item.type === 0 ? "+" : "-"}
+                </IconBox>
+                <div className="container-titulo-nome">
+                  <p className="desc">{item.titulo}</p>
+                  <p className="cat">{item.categoria?.name}</p>
+                </div>
               </div>
-            </div>
-            <div className="value-hist">
-              <div className="container-value">
-                <p className="value">
-                  <p className="value">
+              <div className="value-hist">
+                <div className="container-value">
+                  <p className={`value ${item.type === 1 ? "despesa" : ""}`}>
                     {item.type === 0
                       ? `+ ${formatCurrency(item.valor)}`
                       : `- ${formatCurrency(item.valor)}`}
                   </p>
-                </p>
-                <p className="data">
-                  {" "}
-                  {new Date(item.createdAt).toLocaleDateString("pt-BR")}
-                </p>
-              </div>
-              <div className="button-container">
-                <DetailBox>
-                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                </DetailBox>
-                <EditBox>
-                  <FontAwesomeIcon icon={faPen} size="lg" />
-                </EditBox>
-                <CloseBox>
-                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                </CloseBox>
+                  <p className="data">
+                    {" "}
+                    {new Date(item.createdAt).toLocaleDateString("pt-BR")}
+                  </p>
+                </div>
+                <div className="button-container">
+                  <DetailBox>
+                    <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                  </DetailBox>
+                  <EditBox>
+                    <FontAwesomeIcon icon={faPen} size="lg" />
+                  </EditBox>
+                  <CloseBox>
+                    <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                  </CloseBox>
+                </div>
               </div>
             </div>
-          </div>
-        ))
+          ))
       )}
     </HistorySection>
   );

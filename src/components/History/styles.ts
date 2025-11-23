@@ -116,6 +116,10 @@ export const HistorySection = styled.section`
   @media (max-width: ${breakpoints.tablet}) {
     padding: 16px;
   }
+
+  p.despesa {
+    color: ${colors.vermelho};
+  }
 `;
 
 export const IconBox = styled.div<{ color: string }>`
@@ -128,7 +132,7 @@ export const IconBox = styled.div<{ color: string }>`
   font-weight: 600;
   font-size: 0.875rem;
   background-color: ${({ color }) => `rgba(${hexToRgb(color)}, 0.2)`};
-  color: ${({ color }) => color || "#57b846"};
+  color: ${({ color }) => color || colors.verde};
 `;
 
 export const CloseBox = styled.div`

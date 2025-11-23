@@ -37,10 +37,21 @@ export const HistorySection = styled.section`
       text-align: center;
     }
 
+    .value-hist {
+      @media (max-width: ${breakpoints.tablet}) {
+        gap: 0;
+      }
+    }
+
     .icon-hist {
       @media (max-width: ${breakpoints.tablet}) {
-        max-width: 40%;
+        padding-bottom: 10px;
+        border-bottom: 1px solid ${colors.lightGray};
       }
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+      flex-direction: column;
     }
   }
 
@@ -48,10 +59,19 @@ export const HistorySection = styled.section`
     color: ${colors.verde};
     font-weight: bold;
     font-size: 16px;
-    
+
     @media (max-width: ${breakpoints.tablet}) {
-      font-size: 14px;
+      font-size: 16px;
     }
+  }
+  .container-titulo-nome {
+    overflow: hidden;
+    width: 80%;
+  }
+
+  .desc {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   p.data {
@@ -59,7 +79,6 @@ export const HistorySection = styled.section`
     font-weight: 300;
     font-size: 14px;
 
-    
     @media (max-width: ${breakpoints.tablet}) {
       font-size: 12px;
     }
@@ -80,9 +99,21 @@ export const HistorySection = styled.section`
     }
   }
 
-
   .value-hist {
     justify-content: flex-end;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      justify-content: space-around;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding: 16px;
   }
 `;
 

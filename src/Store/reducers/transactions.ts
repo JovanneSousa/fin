@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../Services/api";
 import type { RootReducer } from "..";
+import type { Category } from "./categories";
 
 export interface Transacao {
   id?: string;
@@ -9,6 +10,8 @@ export interface Transacao {
   categoriaId: string;
   createdAt: string;
   isRecurring: boolean;
+  type?: number;
+  categoria?: Category
 }
 
 interface TransactionState {
@@ -50,7 +53,7 @@ export const fetchTransactions = createAsyncThunk<
     const state = getState() as RootReducer;
     const token = state.auth.token || localStorage.getItem("token");
 
-    const response = await api.get("/transacoes", {
+    const response = await api.get("api/transacoes", {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -93,4 +96,5 @@ const transactionSlice = createSlice({
   },
 });
 
+export const {} = transactionSlice.actions
 export default transactionSlice.reducer;

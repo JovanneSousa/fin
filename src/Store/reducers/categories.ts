@@ -6,7 +6,7 @@ import {
 import api from "../../Services/api";
 import type { RootReducer } from "..";
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
   type: number;

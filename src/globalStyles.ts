@@ -12,9 +12,9 @@ export const colors = {
   lighterGray: "#f5f5f5",
   darkGray: "#333333",
   verde: "#57b846",
-  verdeRgb: 'rgb(87, 184, 70)',
   vermelho: "#e63946",
-  azul: "#3498db"
+  azul: "#3498db",
+  laranja: "#f39c12"
 };
 
 export const breakpoints = {

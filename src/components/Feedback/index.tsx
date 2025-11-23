@@ -13,11 +13,14 @@ import Button from "../Button";
 type FeedbackProps = {
   success?: string;
   error?: string;
-  onClose?: () => void;
+  noButton?: boolean;
 };
 
-export const Feedback: React.FC<FeedbackProps> = ({ error, success}) => {
-
+export const Feedback: React.FC<FeedbackProps> = ({
+  error,
+  success,
+  noButton = false,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const duration = success ? 3000 : 5000;
   const [progress, setProgress] = useState(100);
@@ -43,16 +46,20 @@ export const Feedback: React.FC<FeedbackProps> = ({ error, success}) => {
 
   return (
     <ContainerFeedback>
-      <Button
-        children="X"
-        bgColor={colors.lightGray}
-        padding="small"
-        type="button"
-        onClick={() => {
-          dispatch(clearError());
-          dispatch(clearSuccess());
-        }}
-      />
+      {noButton === false ? (
+        <Button
+          children="X"
+          bgColor={colors.lightGray}
+          padding="small"
+          type="button"
+          onClick={() => {
+            dispatch(clearError());
+            dispatch(clearSuccess());
+          }}
+        />
+      ) : (
+        null
+      )}
       {success ? (
         <FontAwesomeIconSucess
           style={{ color: colors.verde }}

@@ -104,6 +104,7 @@ export const HistorySection = styled.section`
 
     @media (max-width: ${breakpoints.tablet}) {
       justify-content: space-around;
+      padding-top: 8px;
     }
   }
 
@@ -145,5 +146,41 @@ export const CloseBox = styled.div`
 
   &:hover {
     background-color: rgba(${hexToRgb(colors.vermelho)}, 0.2);
+  }
+`;
+
+export const DetailBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: ${colors.azul};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(${hexToRgb(colors.azul)}, 0.2);
+  }
+`;
+
+export const EditBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: ${colors.laranja};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(${hexToRgb(colors.laranja)}, 0.2);
   }
 `;

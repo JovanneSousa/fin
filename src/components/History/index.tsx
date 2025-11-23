@@ -1,11 +1,20 @@
 import { useEffect } from "react";
 import { colors } from "../../globalStyles";
-import { CloseBox, HistorySection, IconBox } from "./styles";
+import {
+  CloseBox,
+  DetailBox,
+  EditBox,
+  HistorySection,
+  IconBox,
+} from "./styles";
 import { fetchTransactions } from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import Loader from "../Loader";
 import Feedback from "../Feedback";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { faCircleInfo, faPen } from "@fortawesome/free-solid-svg-icons";
 
 const History = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +31,9 @@ const History = () => {
 
       {loading ? (
         <Loader />
-      ) : error ? <Feedback error={error} /> : (
+      ) : error ? (
+        <Feedback noButton={true} error={error} />
+      ) : (
         items.map((item) => (
           <div className="container-transacao" key={item.id}>
             <div className="icon-hist">
@@ -53,9 +64,15 @@ const History = () => {
                 </p>
               </div>
               <div className="button-container">
-                <CloseBox>X</CloseBox>
-                <CloseBox>X</CloseBox>
-                <CloseBox>X</CloseBox>
+                <DetailBox>
+                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                </DetailBox>
+                <EditBox>
+                  <FontAwesomeIcon icon={faPen} size="lg" />
+                </EditBox>
+                <CloseBox>
+                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                </CloseBox>
               </div>
             </div>
           </div>

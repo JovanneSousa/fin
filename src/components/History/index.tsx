@@ -3,7 +3,6 @@ import { colors } from "../../globalStyles";
 import {
   CloseBox,
   DetailBox,
-  EditBox,
   HistorySection,
   IconBox,
 } from "./styles";
@@ -18,7 +17,7 @@ import Loader from "../Loader";
 import Feedback from "../Feedback";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
-import { faCircleInfo, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { formatCurrency } from "../../Utils";
 import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";

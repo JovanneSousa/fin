@@ -77,14 +77,11 @@ const History = () => {
                   <DetailBox
                     onClick={() => {
                       dispatch(getTransacao(item.id!));
-                      setIsOpen(true)
+                      setIsOpen(true);
                     }}
                   >
                     <FontAwesomeIcon icon={faCircleInfo} size="lg" />
                   </DetailBox>
-                  <EditBox>
-                    <FontAwesomeIcon icon={faPen} size="lg" />
-                  </EditBox>
                   <CloseBox
                     onClick={() => dispatch(deleteTransations(item.id!))}
                   >

@@ -40,7 +40,6 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<EditFormTransacao>({
     resolver: yupResolver(schema),
     defaultValues: selected!,

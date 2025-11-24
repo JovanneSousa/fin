@@ -11,7 +11,7 @@ export interface Transacao {
   createdAt: string;
   isRecurring: boolean;
   type?: number;
-  categoria?: Category
+  categoria?: Category;
 }
 
 interface TransactionState {
@@ -62,6 +62,24 @@ export const fetchTransactions = createAsyncThunk<
   }
 });
 
+export const deleteTransations = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("transactions/delete", async (id, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootReducer;
+    const token = state.auth.token || localStorage.getItem("token");
+
+    await api.delete(`api/transacoes/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return id;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data || "Erro ao deletar transações");
+  }
+});
+
 const transactionSlice = createSlice({
   name: "transactions",
   initialState,
@@ -91,10 +109,17 @@ const transactionSlice = createSlice({
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Erro ao carregar transações, recarregue a página!";
+        state.error =
+          action.payload || "Erro ao carregar transações, recarregue a página!";
+      })
+
+      .addCase(deleteTransations.fulfilled, (state, action) => {
+        state.items = state.items.filter((item) => item.id !== action.payload);
+      })
+      .addCase(deleteTransations.rejected, (state, action) => {
+        state.error = action.payload || "Erro ao deletar transação";
       });
   },
 });
 
-export const {} = transactionSlice.actions
 export default transactionSlice.reducer;

@@ -7,7 +7,10 @@ import {
   HistorySection,
   IconBox,
 } from "./styles";
-import { fetchTransactions } from "../../Store/reducers/transactions";
+import {
+  deleteTransations,
+  fetchTransactions,
+} from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import Loader from "../Loader";
@@ -73,7 +76,9 @@ const History = () => {
                   <EditBox>
                     <FontAwesomeIcon icon={faPen} size="lg" />
                   </EditBox>
-                  <CloseBox>
+                  <CloseBox
+                    onClick={() => dispatch(deleteTransations(item.id!))}
+                  >
                     <FontAwesomeIcon icon={faCircleXmark} size="lg" />
                   </CloseBox>
                 </div>

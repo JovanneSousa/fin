@@ -15,17 +15,35 @@ export interface Category {
 interface CategoriesState {
   receita: Category[];
   despesa: Category[];
-  loading: boolean;
-  error: string | null;
-  success: string | null;
+
+  loadingGet: boolean;
+  errorGet: string | null;
+  successGet: string | null;
+
+  loadingPost: boolean;
+  errorPost: string | null;
+  successPost: string | null;
+
+  loadingDelete: boolean;
+  errorDelete: string | null;
+  successDelete: string | null;
 }
 
 const initialState: CategoriesState = {
   receita: [] as Category[],
   despesa: [] as Category[],
-  loading: false,
-  error: null as string | null,
-  success: null as string | null,
+
+  loadingGet: false,
+  errorGet: null as string | null,
+  successGet: null as string | null,
+
+  loadingPost: false,
+  errorPost: null as string | null,
+  successPost: null as string | null,
+
+  loadingDelete: false,
+  errorDelete: null as string | null,
+  successDelete: null as string | null,
 };
 
 export const getCategories = createAsyncThunk<Category[]>(
@@ -68,18 +86,28 @@ export const postCategories = createAsyncThunk<
   }
 });
 
-export const deleteCategories = createAsyncThunk<number, number>(
+export const deleteCategories = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>(
   "categories/delete",
-  async (id, { getState }) => {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
 
-    await api.delete<number>(`api/categories/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return id;
+  async (id, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootReducer;
+      const token = state.auth.token || localStorage.getItem("token");
+
+      await api.delete(`api/categories/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return id;
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || "Erro inesperado ao deletar categoria";
+      return rejectWithValue(message);
+    }
   }
 );
 
@@ -88,72 +116,77 @@ const categoriesSlice = createSlice({
   initialState,
   reducers: {
     clearError(state) {
-      state.error = null;
+      state.errorPost = null;
+      state.errorGet = null;
+      state.errorDelete = null;
     },
     clearSuccess(state) {
-      state.success = null;
+      state.successGet = null;
+      state.successPost = null;
+      state.successDelete = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCategories.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.loadingGet = true;
+        state.errorGet = null;
       })
       .addCase(getCategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingGet = false;
         state.receita = action.payload.filter((c) => c.type === 1);
         state.despesa = action.payload.filter((c) => c.type === 0);
       })
       .addCase(getCategories.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Erro ao carregar categorias";
+        state.loadingGet = false;
+        state.errorGet = action.error.message || "Erro ao carregar categorias";
       });
 
     builder.addCase(postCategories.pending, (state) => {
-      state.loading = true;
-      state.error = null;
+      state.loadingPost = true;
+      state.errorPost = null;
     });
     builder.addCase(
       postCategories.fulfilled,
       (state, action: PayloadAction<Category>) => {
-        state.loading = false;
+        state.loadingPost = false;
         if (action.payload.type === 1) {
           state.receita.push(action.payload);
         } else {
           state.despesa.push(action.payload);
         }
-        state.success = "Categoria adicionada com sucesso!";
+        state.successPost = "Categoria adicionada com sucesso!";
       }
     );
     builder.addCase(postCategories.rejected, (state, action) => {
-      state.loading = false;
+      state.loadingPost = false;
       if (action.payload) {
-        state.error = action.payload as string;
+        state.errorPost = action.payload as string;
       } else {
-        state.error = action.error.message || "Erro ao adicionar categoria";
+        state.errorPost = action.error.message || "Erro ao adicionar categoria";
       }
     });
 
     builder.addCase(deleteCategories.pending, (state) => {
-      state.loading = true;
-      state.error = null;
+      state.loadingDelete = true;
+      state.errorDelete = null;
     });
     builder.addCase(deleteCategories.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message || "Erro ao deletar categoria";
+      state.loadingDelete = false;
+      state.errorDelete = action.payload as string;
     });
     builder.addCase(
       deleteCategories.fulfilled,
       (state, action: PayloadAction<number>) => {
-        state.loading = false;
+        state.loadingDelete = false;
         state.receita = state.receita.filter((c) => c.id !== action.payload);
         state.despesa = state.despesa.filter((c) => c.id !== action.payload);
-        state.success = state.success || "Categoria deletada com sucesso"
+        state.successDelete =
+          state.successDelete || "Categoria deletada com sucesso";
       }
     );
   },
 });
 
-export const { clearError, clearSuccess } = categoriesSlice.actions
+export const { clearError, clearSuccess } = categoriesSlice.actions;
 export default categoriesSlice.reducer;

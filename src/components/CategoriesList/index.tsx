@@ -18,7 +18,7 @@ interface CategorieListProps {
 
 const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { receita, despesa, error, loading, success } = useSelector(
+  const { receita, despesa, errorDelete, loadingDelete, successDelete } = useSelector(
     (state: RootReducer) => state.categories
   );
 
@@ -38,11 +38,11 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
         />
       </div>
 
-      {success ? (
-        <Feedback success={success} />
-      ) : error ? (
-        <p>Erro ao carregar categorias</p>
-      ) : loading ? (
+      {successDelete ? (
+        <Feedback success={successDelete} />
+      ) : errorDelete ? (
+        <Feedback error={errorDelete} />
+      ) : loadingDelete ? (
         <Loader />
       ) : (
         <>

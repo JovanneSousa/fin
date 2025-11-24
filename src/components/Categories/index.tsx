@@ -10,37 +10,37 @@ import Feedback from "../Feedback";
 import { clearError, clearSuccess } from "../../Store/reducers/categories";
 
 const Categories = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
-  const { success, loading, error } = useSelector(
+  const { successPost, loadingPost, errorPost } = useSelector(
     (state: RootReducer) => state.categories
   );
 
   useEffect(() => {
-    if (success) {
+    if (successPost) {
       const timer = setTimeout(() => {
         dispatch(clearSuccess());
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [success, dispatch]);
+  }, [successPost, dispatch]);
 
   useEffect(() => {
-    if (error) {
+    if (errorPost) {
       const timer = setTimeout(() => {
         dispatch(clearError());
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [error, dispatch]);
+  }, [errorPost, dispatch]);
 
   return (
     <ContainerCat>
-      {success ? (
-        <Feedback success={success} />
-      ) : error ? (
-        <Feedback error={error} />
-      ) : loading ? (
+      {successPost ? (
+        <Feedback success={successPost} />
+      ) : errorPost ? (
+        <Feedback error={errorPost} />
+      ) : loadingPost ? (
         <Loader />
       ) : (
         <FormCategoria onListarCategorias={() => setIsOpen(true)} />

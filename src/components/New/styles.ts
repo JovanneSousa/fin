@@ -79,9 +79,9 @@ export const NewSection = styled.section`
   .container-check {
     display: block;
 
-    &>.input-check {
-        padding-left: 0;
-        margin-top: 0;
+    & > .input-check {
+      padding-left: 0;
+      margin-top: 0;
     }
     .parcelas {
       margin-top: 8px;
@@ -94,5 +94,12 @@ export const NewSection = styled.section`
         background-color: ${colors.lighterGray};
       }
     }
+  }
+
+  span {
+    color: ${colors.vermelho};
+    margin: 0 6px 6px;
+    height: 8px;
+    font-size: 12px;
   }
 `;

@@ -59,7 +59,7 @@ const FormDespesa = () => {
       <div className="input-wrapper">
         <label htmlFor="">Categoria</label>
         <select {...register("categoriaId")}>
-          <option>Selecione uma categoria</option>
+          <option value=''>Selecione uma categoria</option>
           {despesa.map((des) => (
             <option key={des.id} value={des.id}>
               {des.name}

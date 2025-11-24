@@ -12,7 +12,10 @@ export const receitaSchema = yup.object().shape({
     .positive("Valor deve ser maior que zero")
     .required("Valor é obrigatório"),
 
-  categoriaId: yup.string().required("Categoria é obrigatória"),
+  categoriaId: yup
+    .string()
+    .required("Categoria é obrigatória")
+    .default(new Date().toISOString().split("T")[0]),
 
   createdAt: yup
     .string()

@@ -17,7 +17,8 @@ export const despesaSchema = yup.object().shape({
   createdAt: yup
     .string()
     .required("Data obrigatória")
-    .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+    .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida")
+    .default(new Date().toISOString().split("T")[0]),
 
   isRecurring: yup.boolean().default(false),
 

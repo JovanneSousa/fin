@@ -54,7 +54,7 @@ const FormReceita = () => {
       <div className="input-wrapper">
         <label htmlFor="cat-receita">Categoria</label>
         <select id="cat-receita" {...register("categoriaId")}>
-          <option>Selecione uma categoria</option>
+          <option value="">Selecione uma categoria</option>
           {receita.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.name}

@@ -11,7 +11,7 @@ export interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  type,
+  type = "button",
   bgColor,
   padding,
   onClick,

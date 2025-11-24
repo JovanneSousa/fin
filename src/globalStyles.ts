@@ -14,7 +14,7 @@ export const colors = {
   verde: "#57b846",
   vermelho: "#e63946",
   azul: "#3498db",
-  laranja: "#f39c12"
+  laranja: "#f39c12",
 };
 
 export const breakpoints = {
@@ -87,4 +87,72 @@ body {
         position: relative;
     }
 }
+
+form {
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+    }
+
+    input,
+    select, 
+    .input-span {
+      padding: 8px 12px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      background-color: ${colors.lightGray};
+      color: ${colors.gray};
+      font-weight: 500;
+      width: 100%;
+      transition: box-shadow 0.5s ease;
+
+      &:focus {
+        box-shadow: 0 0 12px ${colors.verde};
+      }
+    }
+  }
+
+  .input-check {
+  }
+
+  .input-check,
+  .container-check,
+  input[type="checkbox"] {
+    display: flex;
+    width: auto;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: ${colors.lightGray};
+    color: ${colors.gray};
+    font-weight: 500;
+    cursor: pointer;
+    gap: 8px;
+
+    &:checked {
+      background-color: ${colors.verde};
+    }
+  }
+  .container-check {
+    display: block;
+
+    & > .input-check {
+      padding-left: 0;
+      margin-top: 0;
+    }
+    .parcelas {
+      margin-top: 8px;
+      label {
+        font-size: 12px;
+        display: block;
+        padding: 8px 0;
+      }
+      input {
+        background-color: ${colors.lighterGray};
+      }
+    }
+  }
 `;

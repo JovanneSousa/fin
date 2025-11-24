@@ -36,7 +36,7 @@ const FormDespesa = () => {
       ...data,
       createdAt: new Date(data.createdAt).toISOString(),
       type: 1,
-      parcelas: data.isRecurring ? data.parcelas : null,
+      parcelas: data.isRecurring ? data.parcelas : undefined,
     };
     dispatch(createTransaction(payload));
     reset();

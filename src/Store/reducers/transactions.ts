@@ -12,18 +12,43 @@ export interface Transacao {
   isRecurring: boolean;
   type?: number;
   categoria?: Category;
+  parcelas?: number
 }
 
 interface TransactionState {
   items: Transacao[];
-  loading: boolean;
-  error: string | null;
+  selected?: Transacao | null;
+
+  loadingGet: boolean;
+  errorGet: string | null;
+
+  loadingGetItem: boolean;
+  errorGetItem: string | null;
+
+  loadingPost: boolean;
+  errorPost: string | null;
+
+  loadingDelete: boolean;
+  errorDelete: string | null;
+
+  // loading: boolean;
+  // error: string | null;
 }
 
 const initialState: TransactionState = {
   items: [],
-  loading: false,
-  error: null,
+
+  loadingGet: false,
+  errorGet: null,
+
+  loadingGetItem: false,
+  errorGetItem: null,
+
+  loadingPost: false,
+  errorPost: null,
+
+  loadingDelete: false,
+  errorDelete: null,
 };
 
 export const createTransaction = createAsyncThunk<
@@ -62,6 +87,24 @@ export const fetchTransactions = createAsyncThunk<
   }
 });
 
+export const getTransacao = createAsyncThunk<
+  Transacao,
+  string,
+  { rejectValue: string }
+>("transaction/fetch", async (id, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootReducer;
+    const token = state.auth.token || localStorage.getItem("token");
+
+    const response = await api.get(`api/transacoes/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data || "Erro ao buscar transação");
+  }
+});
+
 export const deleteTransations = createAsyncThunk<
   string,
   string,
@@ -87,37 +130,52 @@ const transactionSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createTransaction.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.loadingPost = true;
+        state.errorPost = null;
       })
       .addCase(createTransaction.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingPost = false;
         state.items.push(action.payload);
       })
       .addCase(createTransaction.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || "Erro ao criar transação";
+        state.loadingPost = false;
+        state.errorPost = action.payload || "Erro ao criar transação";
       })
 
       .addCase(fetchTransactions.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.loadingGet = true;
+        state.errorGet = null;
       })
       .addCase(fetchTransactions.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingGet = false;
         state.items = action.payload;
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
+        state.loadingGet = false;
+        state.errorGet =
           action.payload || "Erro ao carregar transações, recarregue a página!";
       })
 
+      .addCase(getTransacao.pending, (state) => {
+        state.loadingGetItem = true;
+        state.errorGetItem = null;
+      })
+      .addCase(getTransacao.fulfilled, (state, action) => {
+        state.loadingGetItem = false;
+        state.selected = action.payload;
+      })
+      .addCase(getTransacao.rejected, (state, action) => {
+        state.loadingGetItem = false;
+        state.errorGetItem = action.payload || "Erro ao carregar transação";
+      })
+
       .addCase(deleteTransations.fulfilled, (state, action) => {
+        state.loadingDelete = false;
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
       .addCase(deleteTransations.rejected, (state, action) => {
-        state.error = action.payload || "Erro ao deletar transação";
+        state.loadingDelete = true;
+        state.errorDelete = action.payload || "Erro ao deletar transação";
       });
   },
 });

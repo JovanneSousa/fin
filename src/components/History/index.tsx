@@ -10,6 +10,7 @@ import {
 import {
   deleteTransations,
   fetchTransactions,
+  getTransacao,
 } from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
@@ -23,9 +24,9 @@ import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
 
 const History = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { items, loading, error } = useSelector(
+  const { items, loadingGet, errorGet } = useSelector(
     (state: RootReducer) => state.transactions
   );
 
@@ -36,10 +37,10 @@ const History = () => {
     <HistorySection>
       <p className="title-hist">Histórico de Transações</p>
 
-      {loading ? (
+      {loadingGet ? (
         <Loader />
-      ) : error ? (
-        <Feedback noButton={true} error={error} />
+      ) : errorGet ? (
+        <Feedback noButton={true} error={errorGet} />
       ) : (
         items
           .slice()
@@ -73,7 +74,12 @@ const History = () => {
                   </p>
                 </div>
                 <div className="button-container">
-                  <DetailBox>
+                  <DetailBox
+                    onClick={() => {
+                      dispatch(getTransacao(item.id!));
+                      setIsOpen(true)
+                    }}
+                  >
                     <FontAwesomeIcon icon={faCircleInfo} size="lg" />
                   </DetailBox>
                   <EditBox>

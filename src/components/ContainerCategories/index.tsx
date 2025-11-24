@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CardCategories from "../CardCategories";
-import type { AppDispatch, RootReducer } from "../../Store";
+import type { AppDispatch } from "../../Store";
 import { useEffect } from "react";
 import { fetchTransactions } from "../../Store/reducers/transactions";
 

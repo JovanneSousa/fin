@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { CardStyled } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
@@ -16,17 +16,24 @@ const CardCategories: React.FC<CardProps> = ({ type }) => {
     dispatch(fetchTransactions());
   }, [dispatch]);
 
-  let valorTotal;
-
-  if (type) {
-    valorTotal = items.reduce((acc, item) => {
-      return item.type === type ? acc + item.valor : acc;
-    }, 0);
-  } else {
-    valorTotal = items.reduce((acc, item) => {
-      return acc + item.valor;
-    }, 0);
-  }
+  const valorTotal = useMemo(() => {
+    if (type !== undefined && type !== null) {
+      return items.reduce(
+        (acc, item) => (item.type === (type) ? acc + item.valor : acc),
+        0
+      );
+    } else {
+      const valorReceita = items.reduce(
+        (acc, item) => (item.type === 0 ? acc + item.valor : acc),
+        0
+      );
+      const valorDespesa = items.reduce(
+        (acc, item) => (item.type === 1 ? acc + item.valor : acc),
+        0
+      );
+      return valorReceita - valorDespesa;
+    }
+  }, [items, type]);
 
   return (
     <CardStyled

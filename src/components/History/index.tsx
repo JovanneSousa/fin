@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "../../globalStyles";
 import {
   CloseBox,
@@ -19,8 +19,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { faCircleInfo, faPen } from "@fortawesome/free-solid-svg-icons";
 import { formatCurrency } from "../../Utils";
+import Modal from "../ModalContainer";
+import TransacaoDetails from "../TransactionDetails";
 
 const History = () => {
+  const [isOpen, setIsOpen] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const { items, loading, error } = useSelector(
     (state: RootReducer) => state.transactions
@@ -86,6 +89,9 @@ const History = () => {
             </div>
           ))
       )}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
+        <TransacaoDetails onClose={() => setIsOpen(false)} />
+      </Modal>
     </HistorySection>
   );
 };

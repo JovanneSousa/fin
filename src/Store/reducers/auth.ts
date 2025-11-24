@@ -50,7 +50,7 @@ export const login = createAsyncThunk<
         details: error.response.data.detail,
       });
     }
-    return rejectWithValue({ status: 500, details: "Erro desconhecido" });
+    return rejectWithValue({ status: 500, details: "Falha na conexão" });
   }
 });
 

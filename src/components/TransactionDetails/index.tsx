@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { ContainerDetails } from "./styles";
-import type { RootReducer } from "../../Store";
+import { type AppDispatch, type RootReducer } from "../../Store";
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
 import Feedback from "../Feedback";
@@ -10,6 +10,7 @@ import { receitaSchema } from "../../validations/receitaSchema";
 import { despesaSchema } from "../../validations/despesaSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { updateTransaction } from "../../Store/reducers/transactions";
 
 interface TransacaoDetailsProps {
   onClose: () => void;
@@ -25,9 +26,15 @@ type EditFormTransacao = {
 };
 
 const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
-  const { selected, loadingGetItem, errorGetItem } = useSelector(
-    (state: RootReducer) => state.transactions
-  );
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    selected,
+    loadingGetItem,
+    errorGetItem,
+    loadingUpdate,
+    errorUpdate,
+    successUpdate,
+  } = useSelector((state: RootReducer) => state.transactions);
 
   const { despesa, receita } = useSelector(
     (state: RootReducer) => state.categories
@@ -36,18 +43,22 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
 
   const schema = selected?.type === 0 ? receitaSchema : despesaSchema;
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<EditFormTransacao>({
+  const { register, handleSubmit, reset, watch } = useForm<EditFormTransacao>({
     resolver: yupResolver(schema),
     defaultValues: selected!,
   });
 
   const onSubmit = (data: EditFormTransacao) => {
-    console.log("Enviado:", data);
+    const payload = {
+      ...data,
+      id: selected?.id,
+    };
+    dispatch(updateTransaction(payload));
+    reset();
+    setIsEditing(false);
   };
+
+  const isParcelado = watch("isRecurring");
 
   useEffect(() => {
     if (selected) {
@@ -65,10 +76,14 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
   return (
     <ContainerDetails>
       <p>Detalhes da Transação</p>
-      {loadingGetItem ? (
+      {loadingGetItem || loadingUpdate ? (
         <Loader />
       ) : errorGetItem ? (
         <Feedback error={errorGetItem} />
+      ) : errorUpdate ? (
+        <Feedback error={errorUpdate} />
+      ) : successUpdate ? (
+        <Feedback success={successUpdate} />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input-wrapper">
@@ -145,17 +160,19 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
                   id="edit-recurrency"
                   type="checkbox"
                   {...register("isRecurring")}
+                  disabled={!isEditing}
                 />
                 <label htmlFor="edit-recurrency">Despesa Parcelada</label>
                 {/* <span>{errors.isRecurring?.message}</span> */}
               </div>
-              {selected?.isRecurring && (
+              {isParcelado && (
                 <div className="parcelas">
                   <label htmlFor="edit-parc">Quantidade de parcelas</label>
                   <input
                     type="number"
                     id="edit-parc"
                     {...register("parcelas")}
+                    disabled={!isEditing}
                   />
                   {/* <span>{errors.parcelas?.message}</span> */}
                 </div>

@@ -12,7 +12,7 @@ export interface Transacao {
   isRecurring: boolean;
   type?: number;
   categoria?: Category;
-  parcelas?: number
+  parcelas?: number;
 }
 
 interface TransactionState {
@@ -30,13 +30,18 @@ interface TransactionState {
 
   loadingDelete: boolean;
   errorDelete: string | null;
+  successUpdate: string | null;
 
-  // loading: boolean;
-  // error: string | null;
+  loadingUpdate: boolean;
+  errorUpdate: string | null;
 }
 
 const initialState: TransactionState = {
   items: [],
+
+  loadingUpdate: false,
+  errorUpdate: null,
+  successUpdate: null,
 
   loadingGet: false,
   errorGet: null,
@@ -69,6 +74,28 @@ export const createTransaction = createAsyncThunk<
   }
 });
 
+export const updateTransaction = createAsyncThunk<
+  Transacao,
+  Transacao,
+  { rejectValue: string }
+>("transactions/update", async (transaction, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootReducer;
+    const token = state.auth.token || localStorage.getItem("token");
+
+    const response = await api.post(
+      `api/transacoes/${transaction.id}`,
+      transaction,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data || "Erro ao atualizar transação");
+  }
+});
+
 export const fetchTransactions = createAsyncThunk<
   Transacao[],
   void,
@@ -83,7 +110,9 @@ export const fetchTransactions = createAsyncThunk<
     });
     return response.data;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Erro ao carregar transações");
+    return rejectWithValue(
+      err.response?.data || "Erro ao carregar transações, recarregue a página!"
+    );
   }
 });
 
@@ -126,7 +155,19 @@ export const deleteTransations = createAsyncThunk<
 const transactionSlice = createSlice({
   name: "transactions",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError(state) {
+      state.errorPost = null;
+      state.errorGet = null;
+      state.errorDelete = null;
+    },
+    clearSuccess(state) {
+      // state.successGet = null;
+      // state.successPost = null;
+      // state.successDelete = null;
+      state.successUpdate = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createTransaction.pending, (state) => {
@@ -140,6 +181,22 @@ const transactionSlice = createSlice({
       .addCase(createTransaction.rejected, (state, action) => {
         state.loadingPost = false;
         state.errorPost = action.payload || "Erro ao criar transação";
+      })
+
+      .addCase(updateTransaction.pending, (state) => {
+        state.loadingUpdate = true;
+        state.errorUpdate = null;
+      })
+      .addCase(updateTransaction.fulfilled, (state, action) => {
+        state.loadingUpdate = false;
+        state.items = state.items.map((t) =>
+          t.id === action.payload.id ? action.payload : t
+        );
+        state.successUpdate = "Transação atualizada com sucesso";
+      })
+      .addCase(updateTransaction.rejected, (state, action) => {
+        state.loadingUpdate = false;
+        state.errorUpdate = action.payload || "Erro ao atualizar transação";
       })
 
       .addCase(fetchTransactions.pending, (state) => {
@@ -180,4 +237,5 @@ const transactionSlice = createSlice({
   },
 });
 
+export const { clearError, clearSuccess } = transactionSlice.actions;
 export default transactionSlice.reducer;

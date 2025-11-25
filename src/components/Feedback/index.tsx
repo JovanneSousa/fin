@@ -7,7 +7,14 @@ import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
 import React, { useEffect, useState } from "react";
-import { clearError, clearSuccess } from "../../Store/reducers/categories";
+import {
+  clearError as clearErrorCategories,
+  clearSuccess as clearSucessCategories,
+} from "../../Store/reducers/categories";
+import {
+  clearError as clearErrorTransactions,
+  clearSuccess as clearSucessTransactions,
+} from "../../Store/reducers/transactions";
 import Button from "../Button";
 
 type FeedbackProps = {
@@ -34,6 +41,11 @@ export const Feedback: React.FC<FeedbackProps> = ({
         setProgress((prev) => {
           if (prev <= 0) {
             clearInterval(timer);
+
+            dispatch(clearErrorCategories());
+            dispatch(clearSucessCategories());
+            dispatch(clearErrorTransactions());
+            dispatch(clearSucessTransactions());
             return 0;
           }
           return prev - step;
@@ -42,7 +54,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
 
       return () => clearInterval(timer);
     }
-  }, [success, error, duration]);
+  }, [success, error, duration, dispatch]);
 
   return (
     <ContainerFeedback>
@@ -53,13 +65,13 @@ export const Feedback: React.FC<FeedbackProps> = ({
           padding="small"
           type="button"
           onClick={() => {
-            dispatch(clearError());
-            dispatch(clearSuccess());
+            dispatch(clearErrorCategories());
+            dispatch(clearSucessCategories());
+            dispatch(clearErrorTransactions());
+            dispatch(clearSucessTransactions());
           }}
         />
-      ) : (
-        null
-      )}
+      ) : null}
       {success ? (
         <FontAwesomeIconSucess
           style={{ color: colors.verde }}

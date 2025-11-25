@@ -75,7 +75,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
 
   return (
     <ContainerDetails>
-      <p>Detalhes da Transação</p>
+      <p>{isEditing ? "Editando Transação" : "Detalhes da Transação"}</p>
       {loadingGetItem || loadingUpdate ? (
         <Loader />
       ) : errorGetItem ? (
@@ -85,7 +85,10 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
       ) : successUpdate ? (
         <Feedback success={successUpdate} />
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={isEditing ? "is-editing" : ""}
+        >
           <div className="input-wrapper">
             <label htmlFor="edit-descript">Descrição</label>
 

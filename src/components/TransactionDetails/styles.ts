@@ -15,6 +15,13 @@ export const ContainerDetails = styled.div`
 
   form {
     padding-top: 16px;
+
+    &.is-editing {
+      input {
+        background-color: ${colors.lighterGray};
+        border: 1px solid ${colors.lightGray};
+      }
+    }
   }
 
   @media (max-width: ${breakpoints.tablet}) {

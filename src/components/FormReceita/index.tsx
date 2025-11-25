@@ -48,7 +48,7 @@ const FormReceita = () => {
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
-        <input id="value" type="number" {...register("valor")} />
+        <input id="value" type="text" {...register("valor")} />
         <span>{errors.valor?.message}</span>
       </div>
       <div className="input-wrapper">

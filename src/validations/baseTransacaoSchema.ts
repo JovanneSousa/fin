@@ -8,6 +8,13 @@ export const baseTransacaoSchema = yup.object({
 
   valor: yup
     .number()
+    .transform((value, originalValue) => {
+      if (typeof originalValue === "string") {
+        const normalizado = originalValue.replace(",", ".");
+        return parseFloat(normalizado);
+      }
+      return value;
+    })
     .typeError("Valor deve ser numérico")
     .positive("Valor deve ser maior que zero")
     .required("Valor é obrigatório"),

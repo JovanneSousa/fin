@@ -27,6 +27,7 @@ interface TransactionState {
 
   loadingPost: boolean;
   errorPost: string | null;
+  successPost: string | null;
 
   loadingDelete: boolean;
   errorDelete: string | null;
@@ -52,6 +53,7 @@ const initialState: TransactionState = {
 
   loadingPost: false,
   errorPost: null,
+  successPost: null,
 
   loadingDelete: false,
   errorDelete: null,
@@ -165,7 +167,7 @@ const transactionSlice = createSlice({
     },
     clearSuccess(state) {
       // state.successGet = null;
-      // state.successPost = null;
+      state.successPost = null;
       state.successDelete = null;
       state.successUpdate = null;
     },
@@ -179,6 +181,7 @@ const transactionSlice = createSlice({
       .addCase(createTransaction.fulfilled, (state, action) => {
         state.loadingPost = false;
         state.items.push(action.payload);
+        state.successPost = "Transação criada com sucesso";
       })
       .addCase(createTransaction.rejected, (state, action) => {
         state.loadingPost = false;

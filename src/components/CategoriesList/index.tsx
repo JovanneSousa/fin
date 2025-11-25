@@ -4,10 +4,8 @@ import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
-import { useEffect } from "react";
 import {
   deleteCategories,
-  getCategories,
 } from "../../Store/reducers/categories";
 import Loader from "../Loader";
 import Feedback from "../Feedback";
@@ -21,10 +19,6 @@ const CategorieList: React.FC<CategorieListProps> = ({ onClose }) => {
   const { receita, despesa, errorDelete, loadingDelete, successDelete } = useSelector(
     (state: RootReducer) => state.categories
   );
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
   return (
     <ContainerListCat>
       <div className="container-title-categories">

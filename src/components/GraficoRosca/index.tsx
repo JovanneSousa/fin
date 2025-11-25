@@ -1,0 +1,79 @@
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import type { RootReducer } from "../../Store";
+
+const DESPESA_COLORS = [
+  "#e63946",
+  "#ff6b6b",
+  "#c850c0",
+  "#d6336c",
+  "#9b59b6",
+  "#8e44ad",
+  "#f06292",
+  "#ff4d4d",
+];
+
+const RECEITA_COLORS = [
+  "#57b846",
+  "#6fcf97",
+  "#27ae60",
+  "#3498db",
+  "#5dade2",
+  "#f39c12",
+  "#f1c40f",
+  "#2ecc71",
+];
+
+interface GraficoRoscaProps {
+  tipo: 0 | 1;
+}
+
+const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
+  const { items } = useSelector((state: RootReducer) => state.transactions);
+  const data = useMemo(() => {
+    const transacoesFiltradas = items.filter((t) => t.type === tipo);
+
+    const mapa = new Map<string, number>();
+    transacoesFiltradas.forEach((t) => {
+      const nomeCategoria = t.categoria?.name || "Sem categoria";
+      mapa.set(nomeCategoria, (mapa.get(nomeCategoria) || 0) + t.valor);
+    });
+
+    return Array.from(mapa.entries()).map(([name, value]) => ({ name, value }));
+  }, [items, tipo]);
+
+  const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
+
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <PieChart>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          innerRadius={70}
+          outerRadius={120}
+          label
+        >
+          {data.map((_, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`} />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default GraficoRosca;

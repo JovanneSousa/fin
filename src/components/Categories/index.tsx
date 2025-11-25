@@ -36,6 +36,7 @@ const Categories = () => {
 
   return (
     <ContainerCat>
+      <p className="new-title">Criar uma categoria</p>
       {successPost ? (
         <Feedback success={successPost} />
       ) : errorPost ? (

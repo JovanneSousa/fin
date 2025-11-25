@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
-export const Analysis = styled.div`
+type AnalysisProp = {
+  isComparison?: boolean;
+};
+
+export const Analysis = styled.div<AnalysisProp>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -39,12 +43,53 @@ export const Analysis = styled.div`
   }
   .container-analysis {
     display: grid;
-    grid-template-columns: 0.7fr 0.3fr;
+    grid-template-columns: ${({ isComparison }) =>
+      isComparison ? "1fr" : "0.7fr 0.3fr"};
     gap: 20px;
 
     @media (max-width: ${breakpoints.tablet}) {
       grid-template-columns: 1fr;
     }
   }
-  
+
+  .conteudo {
+    background-color: ${colors.branco};
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .title-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    p {
+      font-size: 24px;
+      font-weight: bold;
+      color: ${colors.darkGray};
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 8px;
+
+    button {
+      max-width: 100px;
+      margin: 0;
+    }
+
+    &.is-active {
+    }
+  }
 `;

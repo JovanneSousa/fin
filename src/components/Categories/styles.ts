@@ -5,7 +5,10 @@ export const ContainerCat = styled.div`
   background-color: ${colors.lightGray};
   padding: 16px;
   border-radius: 8px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
   span {
     color: ${colors.vermelho};
     margin: 0 6px 6px;
@@ -16,5 +19,11 @@ export const ContainerCat = styled.div`
   #cat-name,
   #categoria-desp {
     background-color: ${colors.lighterGray};
+  }
+
+  .new-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 24px;
   }
 `;

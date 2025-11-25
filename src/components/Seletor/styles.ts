@@ -94,6 +94,7 @@ export const SeletorSection = styled.section`
       padding-left: 32px;
       border-radius: 8px;
       font-size: 14px;
+      z-index: 0;
 
       &:focus {
         outline: 2px solid ${colors.roxo};

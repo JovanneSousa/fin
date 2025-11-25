@@ -4,10 +4,11 @@ import { PillStyled } from "./styles";
 interface PillProps {
   children: string;
   className?: string;
+  onClick?: () => void
 }
 
-const ButtonPill: React.FC<PillProps> = ({ children, className }) => {
-  return <PillStyled className={className}>{children}</PillStyled>;
+const ButtonPill: React.FC<PillProps> = ({ children, className, onClick }) => {
+  return <PillStyled onClick={onClick} className={className}>{children}</PillStyled>;
 };
 
 export default ButtonPill

@@ -5,9 +5,86 @@ import { SeletorSection } from "./styles";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ButtonPill from "../ButtonPill";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../Store";
+import {
+  fetchTransactionsPeriod,
+  type TransactionFilter,
+} from "../../Store/reducers/transactions";
 
 const Seletor = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [isFilterPeriodoActive, setIsFilterPeriodoActive] = useState(false);
+  const [dataInicio, setDataInicio] = useState("");
+  const [dataFim, setDataFim] = useState("");
+  const [mesSelecionado, setMesSelecionado] = useState(new Date());
+
+  const handleMonthChange = (direction: "anterior" | "proximo") => {
+    const novoMes = new Date(mesSelecionado);
+
+    if (direction === "anterior") {
+      novoMes.setMonth(novoMes.getMonth() - 1);
+    } else {
+      novoMes.setMonth(novoMes.getMonth() + 1);
+    }
+
+    setMesSelecionado(novoMes);
+
+    const data: TransactionFilter = {
+      startDate: new Date(
+        novoMes.getFullYear(),
+        novoMes.getMonth(),
+        1
+      ).toISOString(),
+      endDate: new Date(
+        novoMes.getFullYear(),
+        novoMes.getMonth() + 1,
+        0
+      ).toISOString(),
+    };
+
+    dispatch(fetchTransactionsPeriod(data));
+  };
+
+  const filtrarMesAtual = () => {
+    const hoje = new Date();
+
+    const data: TransactionFilter = {
+      startDate: new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString(),
+
+      endDate: new Date(
+        hoje.getFullYear(),
+        hoje.getMonth() + 1,
+        0
+      ).toISOString(),
+    };
+
+    dispatch(fetchTransactionsPeriod(data));
+  };
+
+  const filtrarIntervaloMeses = (qtd: number) => {
+    const inicio = new Date();
+    inicio.setMonth(inicio.getMonth() - qtd);
+
+    const data: TransactionFilter = {
+      startDate: inicio.toISOString(),
+      endDate: new Date().toISOString(),
+    };
+
+    dispatch(fetchTransactionsPeriod(data));
+  };
+
+  const aplicarFiltroPeriodo = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data: TransactionFilter = {
+      startDate: new Date(dataInicio).toISOString(),
+      endDate: new Date(dataFim).toISOString(),
+    };
+
+    dispatch(fetchTransactionsPeriod(data));
+  };
 
   return (
     <SeletorSection>
@@ -19,14 +96,19 @@ const Seletor = () => {
             type="button"
             children=""
             icon="left"
+            onClick={() => handleMonthChange("anterior")}
           />
-          <p>Novembro de 2025</p>
+          <p>
+            {mesSelecionado.toLocaleString("pt-BR", { month: "long" })} de{" "}
+            {mesSelecionado.getFullYear()}
+          </p>
           <Button
             padding="small"
             bgColor={colors.lightGray}
             type="button"
             children=""
             icon="right"
+            onClick={() => handleMonthChange("proximo")}
           />
         </div>
         <div className="input-mes">
@@ -41,10 +123,23 @@ const Seletor = () => {
         </div>
       </div>
       <div className="container-pill">
-        <ButtonPill className="is-active" children="Mês Atual" />
-        <ButtonPill children="3 Meses" />
-        <ButtonPill children="6 Meses" />
-        <ButtonPill children="1 Ano" />
+        <ButtonPill
+          className="is-active"
+          children="Mês Atual"
+          onClick={filtrarMesAtual}
+        />
+        <ButtonPill
+          children="3 Meses"
+          onClick={() => filtrarIntervaloMeses(3)}
+        />
+        <ButtonPill
+          children="6 Meses"
+          onClick={() => filtrarIntervaloMeses(6)}
+        />
+        <ButtonPill
+          children="1 Ano"
+          onClick={() => filtrarIntervaloMeses(12)}
+        />
       </div>
       {!isFilterPeriodoActive ? (
         <Button
@@ -66,15 +161,25 @@ const Seletor = () => {
 
       {isFilterPeriodoActive ? (
         <>
-          <form>
+          <form onSubmit={aplicarFiltroPeriodo}>
             <div className="input-container">
               <div className="input-wrapper">
                 <label htmlFor="date">Data Inicial</label>
-                <input id="date" type="date" />
+                <input
+                  id="date"
+                  type="date"
+                  value={dataInicio}
+                  onChange={(e) => setDataInicio(e.target.value)}
+                />
               </div>
               <div className="input-wrapper">
                 <label htmlFor="date">Data Final</label>
-                <input id="date" type="date" />
+                <input
+                  id="date"
+                  type="date"
+                  value={dataFim}
+                  onChange={(e) => setDataFim(e.target.value)}
+                />
               </div>
             </div>
             <Button

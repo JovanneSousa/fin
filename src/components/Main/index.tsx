@@ -9,10 +9,10 @@ import { useEffect } from "react";
 import { getCategories } from "../../Store/reducers/categories";
 
 const Main = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
+  // const dispatch = useDispatch<AppDispatch>();
+  // useEffect(() => {
+  //   dispatch(getCategories());
+  // }, [dispatch]);
 
   return (
     <div className="main">

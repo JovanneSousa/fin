@@ -3,6 +3,12 @@ import api from "../../Services/api";
 import type { RootReducer } from "..";
 import type { Category } from "./categories";
 
+export interface TransactionFilter {
+  startDate: string;
+  endDate: string;   
+}
+
+
 export interface Transacao {
   id?: string;
   titulo: string;
@@ -112,6 +118,30 @@ export const fetchTransactions = createAsyncThunk<
     const response = await api.get("api/transacoes", {
       headers: { Authorization: `Bearer ${token}` },
     });
+    return response.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data || "Erro ao carregar transações, recarregue a página!"
+    );
+  }
+});
+
+export const fetchTransactionsPeriod = createAsyncThunk<
+  Transacao[],
+  TransactionFilter,
+  { rejectValue: string }
+>("transactionsPeriod/fetch", async ({ startDate, endDate }, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootReducer;
+    const token = state.auth.token || localStorage.getItem("token");
+
+    const response = await api.get(
+      `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
     return response.data;
   } catch (err: any) {
     return rejectWithValue(

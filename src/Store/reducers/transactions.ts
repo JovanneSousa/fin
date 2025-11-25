@@ -30,10 +30,11 @@ interface TransactionState {
 
   loadingDelete: boolean;
   errorDelete: string | null;
-  successUpdate: string | null;
+  successDelete: string | null;
 
   loadingUpdate: boolean;
   errorUpdate: string | null;
+  successUpdate: string | null;
 }
 
 const initialState: TransactionState = {
@@ -54,6 +55,7 @@ const initialState: TransactionState = {
 
   loadingDelete: false,
   errorDelete: null,
+  successDelete: null,
 };
 
 export const createTransaction = createAsyncThunk<
@@ -134,7 +136,7 @@ export const getTransacao = createAsyncThunk<
   }
 });
 
-export const deleteTransations = createAsyncThunk<
+export const deleteTransactions = createAsyncThunk<
   string,
   string,
   { rejectValue: string }
@@ -164,7 +166,7 @@ const transactionSlice = createSlice({
     clearSuccess(state) {
       // state.successGet = null;
       // state.successPost = null;
-      // state.successDelete = null;
+      state.successDelete = null;
       state.successUpdate = null;
     },
   },
@@ -226,12 +228,17 @@ const transactionSlice = createSlice({
         state.errorGetItem = action.payload || "Erro ao carregar transação";
       })
 
-      .addCase(deleteTransations.fulfilled, (state, action) => {
+      .addCase(deleteTransactions.pending, (state) => {
+        state.loadingDelete = true;
+        state.errorDelete = null;
+      })
+      .addCase(deleteTransactions.fulfilled, (state, action) => {
         state.loadingDelete = false;
         state.items = state.items.filter((item) => item.id !== action.payload);
+        state.successDelete = "Transação excluida com sucesso";
       })
-      .addCase(deleteTransations.rejected, (state, action) => {
-        state.loadingDelete = true;
+      .addCase(deleteTransactions.rejected, (state, action) => {
+        state.loadingDelete = false;
         state.errorDelete = action.payload || "Erro ao deletar transação";
       });
   },

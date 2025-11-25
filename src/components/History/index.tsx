@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { colors } from "../../globalStyles";
-import {
-  CloseBox,
-  DetailBox,
-  HistorySection,
-  IconBox,
-} from "./styles";
+import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
 import {
   deleteTransations,
   fetchTransactions,
@@ -25,9 +20,14 @@ import TransacaoDetails from "../TransactionDetails";
 const History = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { items, loadingGet, errorGet } = useSelector(
-    (state: RootReducer) => state.transactions
-  );
+  const {
+    items,
+    loadingGet,
+    errorGet,
+    loadingDelete,
+    errorDelete,
+    successDelete,
+  } = useSelector((state: RootReducer) => state.transactions);
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -36,10 +36,14 @@ const History = () => {
     <HistorySection>
       <p className="title-hist">Histórico de Transações</p>
 
-      {loadingGet ? (
+      {loadingGet || loadingDelete ? (
         <Loader />
       ) : errorGet ? (
         <Feedback noButton={true} error={errorGet} />
+      ) : errorDelete ? (
+        <Feedback error={errorDelete} />
+      ) : successDelete ? (
+        <Feedback success={successDelete} />
       ) : (
         items
           .slice()

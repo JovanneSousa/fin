@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { colors } from "../../globalStyles";
 import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
 import {
-  deleteTransations,
+  deleteTransactions,
   fetchTransactions,
   getTransacao,
 } from "../../Store/reducers/transactions";
@@ -86,7 +86,7 @@ const History = () => {
                     <FontAwesomeIcon icon={faCircleInfo} size="lg" />
                   </DetailBox>
                   <CloseBox
-                    onClick={() => dispatch(deleteTransations(item.id!))}
+                    onClick={() => dispatch(deleteTransactions(item.id!))}
                   >
                     <FontAwesomeIcon icon={faCircleXmark} size="lg" />
                   </CloseBox>

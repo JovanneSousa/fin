@@ -20,6 +20,7 @@ const Seletor = () => {
   const [dataFim, setDataFim] = useState("");
   const [mesSelecionado, setMesSelecionado] = useState(new Date());
   const [pillAtiva, setPillAtiva] = useState<null | string>("mes-atual");
+  const [titlePeriod, setTitlePeriod] = useState(false);
 
   const criarFiltro = (inicio: Date, fim: Date): TransactionFilter => ({
     startDate: inicio.toISOString(),
@@ -28,31 +29,41 @@ const Seletor = () => {
 
   const handleMonthChange = (direction: "anterior" | "proximo") => {
     const novoMes = new Date(mesSelecionado);
-    // const isMesAtual =
-    //   novoMes.getMonth() === new Date().getMonth() &&
-    //   novoMes.getFullYear() === new Date().getFullYear();
 
     if (direction === "anterior") {
       novoMes.setMonth(novoMes.getMonth() - 1);
     } else {
       novoMes.setMonth(novoMes.getMonth() + 1);
     }
-    // setPillAtiva(isMesAtual ? "mes-atual" : "");
     setMesSelecionado(novoMes);
+    setTitlePeriod(false);
 
     const inicio = new Date(novoMes.getFullYear(), novoMes.getMonth(), 1);
     const fim = new Date(novoMes.getFullYear(), novoMes.getMonth() + 1, 0);
 
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
+
+    const hoje = new Date();
+    const isMesAtual =
+      novoMes.getMonth() === hoje.getMonth() &&
+      novoMes.getFullYear() === hoje.getFullYear();
+
+    setPillAtiva(isMesAtual ? "mes-atual" : null);
+  };
+
+  const criarFiltroMesAtual = () => {
+    const hoje = new Date();
+    const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const fim = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+    return criarFiltro(inicio, fim);
   };
 
   const filtrarMesAtual = () => {
     const hoje = new Date();
-
-    const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
-    const fim = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
-
-    dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
+    setMesSelecionado(hoje);
+    setPillAtiva("mes-atual");
+    setTitlePeriod(false);
+    dispatch(fetchTransactionsPeriod(criarFiltroMesAtual()));
   };
 
   const filtrarIntervaloMeses = (qtd: number) => {
@@ -61,6 +72,8 @@ const Seletor = () => {
 
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
     setPillAtiva(`${qtd}m`);
+    setTitlePeriod(false);
+    setMesSelecionado(fim);
   };
 
   const aplicarFiltroPeriodo = (e: React.FormEvent) => {
@@ -69,11 +82,14 @@ const Seletor = () => {
     const inicio = new Date(dataInicio);
     const fim = new Date(dataFim);
 
+    setTitlePeriod(true);
+    setIsFilterPeriodoActive(false);
+    setPillAtiva(null);
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
   };
 
   useEffect(() => {
-    filtrarMesAtual();
+    dispatch(fetchTransactionsPeriod(criarFiltroMesAtual()));
   }, []);
 
   return (
@@ -89,8 +105,10 @@ const Seletor = () => {
             onClick={() => handleMonthChange("anterior")}
           />
           <p>
-            {mesSelecionado.toLocaleString("pt-BR", { month: "long" })} de{" "}
-            {mesSelecionado.getFullYear()}
+            {titlePeriod
+              ? "Filtro por periodo"
+              : `${mesSelecionado.toLocaleString("pt-BR", { month: "long" })} de
+              ${mesSelecionado.getFullYear()}`}
           </p>
           <Button
             padding="small"
@@ -116,10 +134,7 @@ const Seletor = () => {
         <ButtonPill
           className={pillAtiva === "mes-atual" ? "is-active" : ""}
           children="Mês Atual"
-          onClick={() => {
-            filtrarMesAtual();
-            setPillAtiva("mes-atual");
-          }}
+          onClick={filtrarMesAtual}
         />
         <ButtonPill
           children="3 Meses"

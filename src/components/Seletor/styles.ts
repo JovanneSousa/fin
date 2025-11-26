@@ -97,7 +97,7 @@ export const SeletorSection = styled.section`
       z-index: 0;
 
       &:focus {
-        outline: 2px solid ${colors.roxo};
+        outline: 2px solid ${colors.verde};
       }
 
       @media (max-width: ${breakpoints.tablet}) {

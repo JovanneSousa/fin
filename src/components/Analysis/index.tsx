@@ -72,6 +72,9 @@ const AnalysisSection = () => {
           {activeTab === "categories" ? (
             <>
               <div className="title-container">
+                <p>
+                  {isReceita ? "Ganhos por categoria" : "Gastos por categoria"}
+                </p>
                 <div className="button-container">
                   <Button
                     bgColor={isReceita ? colors.verde : colors.lightGray}
@@ -88,9 +91,6 @@ const AnalysisSection = () => {
                     onClick={() => setIsReceita(false)}
                   />
                 </div>
-                <p>
-                  {isReceita ? "Ganhos por categoria" : "Gastos por categoria"}
-                </p>
               </div>
               <GraficoRosca tipo={isReceita ? 0 : 1} />
             </>

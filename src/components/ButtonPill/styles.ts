@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 export const PillStyled = styled.button`
   background-color: ${colors.branco};
@@ -15,9 +15,11 @@ export const PillStyled = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: ${colors.verde};
-    color: ${colors.lighterGray};
-    border-color: ${colors.verde};
+    @media (max-width: ${breakpoints.tablet}) {
+      background-color: ${colors.verde};
+      color: ${colors.lighterGray};
+      border-color: ${colors.verde};
+    }
   }
 
   &.is-active {

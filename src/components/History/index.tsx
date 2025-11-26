@@ -15,9 +15,25 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { formatCurrency, toLocalDateIgnoreTimezone } from "../../Utils";
 import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
+import Button from "../Button";
+import FilterHistory from "../FilterHistory";
+
+interface Filters {
+  type: string;
+  categories: string[];
+  recurring: boolean;
+  sort: string;
+}
 
 const History = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    type: "",
+    categories: [],
+    recurring: false,
+    sort: "",
+  });
   const dispatch = useDispatch<AppDispatch>();
   const {
     items,
@@ -28,9 +44,61 @@ const History = () => {
     successDelete,
   } = useSelector((state: RootReducer) => state.transactions);
 
+  let filtered = items.slice();
+
+  if (filters.type === "receita")
+    filtered = filtered.filter((i) => i.type === 0);
+  if (filters.type === "despesa")
+    filtered = filtered.filter((i) => i.type === 1);
+  if (filters.categories.length > 0) {
+    filtered = filtered.filter((i) =>
+      filters.categories.includes(i.categoriaId)
+    );
+  }
+  if (filters.recurring !== false) {
+    filtered = filtered.filter((i) => i.isRecurring === filters.recurring);
+  }
+  if (filters.sort === "dataAsc") {
+    filtered.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+  }
+  if (filters.sort === "dataDesc") {
+    filtered.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+  if (filters.sort === "valorAsc") {
+    filtered.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
+  }
+  if (filters.sort === "valorDesc") {
+    filtered.sort((a, b) => b.valor - a.valor);
+  }
+
   return (
     <HistorySection>
-      <p className="title-hist">Histórico de Transações</p>
+      <div className="container-hist-title">
+        <p className="title-hist">Histórico de Transações</p>
+        <Button
+          bgColor={colors.verde}
+          children="Filtros"
+          padding="small"
+          type="button"
+          onClick={() => setIsFilterOpen(true)}
+        />
+      </div>
+
+      <Modal
+        onClose={() => setIsFilterOpen(!isFilterOpen)}
+        isOpen={isFilterOpen}
+      >
+        <FilterHistory
+          onApplyFilters={(f) => setFilters(f)}
+          onClose={() => setIsFilterOpen(false)}
+        />
+      </Modal>
 
       {loadingGet || loadingDelete ? (
         <Loader />
@@ -46,56 +114,49 @@ const History = () => {
           noButton={true}
         />
       ) : (
-        items
-          .slice()
-          .sort(
-            (a, b) =>
-              toLocalDateIgnoreTimezone(b.createdAt).getTime() -
-              toLocalDateIgnoreTimezone(a.createdAt).getTime()
-          )
-          .map((item) => (
-            <div className="container-transacao" key={item.id}>
-              <div className="icon-hist">
-                <IconBox
-                  color={item.type === 0 ? colors.verde : colors.vermelho}
-                >
-                  {item.type === 0 ? "+" : "-"}
-                </IconBox>
-                <div className="container-titulo-nome">
-                  <p className="desc">{item.titulo}</p>
-                  <p className="cat">{item.categoria?.name}</p>
-                </div>
-              </div>
-              <div className="value-hist">
-                <div className="container-value">
-                  <p className={`value ${item.type === 1 ? "despesa" : ""}`}>
-                    {item.type === 0
-                      ? `+ ${formatCurrency(item.valor)}`
-                      : `- ${formatCurrency(item.valor)}`}
-                  </p>
-                  <p className="data">
-                    {" "}
-                    {toLocalDateIgnoreTimezone(item.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="button-container">
-                  <DetailBox
-                    onClick={() => {
-                      dispatch(getTransacao(item.id!));
-                      setIsOpen(true);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                  </DetailBox>
-                  <CloseBox
-                    onClick={() => dispatch(deleteTransactions(item.id!))}
-                  >
-                    <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                  </CloseBox>
-                </div>
+        filtered.slice().map((item) => (
+          <div className="container-transacao" key={item.id}>
+            <div className="icon-hist">
+              <IconBox color={item.type === 0 ? colors.verde : colors.vermelho}>
+                {item.type === 0 ? "+" : "-"}
+              </IconBox>
+              <div className="container-titulo-nome">
+                <p className="desc">{item.titulo}</p>
+                <p className="cat">{item.categoria?.name}</p>
               </div>
             </div>
-          ))
+            <div className="value-hist">
+              <div className="container-value">
+                <p className={`value ${item.type === 1 ? "despesa" : ""}`}>
+                  {item.type === 0
+                    ? `+ ${formatCurrency(item.valor)}`
+                    : `- ${formatCurrency(item.valor)}`}
+                </p>
+                <p className="data">
+                  {" "}
+                  {toLocalDateIgnoreTimezone(
+                    item.createdAt
+                  ).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="button-container">
+                <DetailBox
+                  onClick={() => {
+                    dispatch(getTransacao(item.id!));
+                    setIsOpen(true);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                </DetailBox>
+                <CloseBox
+                  onClick={() => dispatch(deleteTransactions(item.id!))}
+                >
+                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                </CloseBox>
+              </div>
+            </div>
+          </div>
+        ))
       )}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
         <TransacaoDetails onClose={() => setIsOpen(false)} />

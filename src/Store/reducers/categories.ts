@@ -7,7 +7,7 @@ import api from "../../Services/api";
 import type { RootReducer } from "..";
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   type: number;
 }
@@ -87,8 +87,8 @@ export const postCategories = createAsyncThunk<
 });
 
 export const deleteCategories = createAsyncThunk<
-  number,
-  number,
+  string,
+  string,
   { rejectValue: string }
 >(
   "categories/delete",
@@ -177,7 +177,7 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(
       deleteCategories.fulfilled,
-      (state, action: PayloadAction<number>) => {
+      (state, action: PayloadAction<string>) => {
         state.loadingDelete = false;
         state.receita = state.receita.filter((c) => c.id !== action.payload);
         state.despesa = state.despesa.filter((c) => c.id !== action.payload);

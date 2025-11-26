@@ -23,6 +23,7 @@ export interface Transacao {
 interface TransactionState {
   items: Transacao[];
   selected?: Transacao | null;
+  itemsFiltred?: Transacao[]
 
   loadingGet: boolean;
   errorGet: string | null;
@@ -45,6 +46,7 @@ interface TransactionState {
 
 const initialState: TransactionState = {
   items: [],
+  itemsFiltred: [],
 
   loadingUpdate: false,
   errorUpdate: null,

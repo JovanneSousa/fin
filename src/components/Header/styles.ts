@@ -8,7 +8,7 @@ export const HeaderSection = styled.header`
   top: 0;
   left: 0;
   box-shadow: ${colors.shadow};
-  z-index: 99;
+  z-index: 1;
 
   p {
     span {

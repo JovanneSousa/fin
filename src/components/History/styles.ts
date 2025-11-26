@@ -12,9 +12,40 @@ export const HistorySection = styled.section`
   flex-direction: column;
   gap: 20px;
 
-  .title-hist {
-    font-weight: bold;
-    font-size: 24px;
+  button {
+    margin: 0;
+    max-width: 80px;
+  }
+
+  .container-hist-title {
+    display: flex;
+    justify-content: space-between;
+
+    .title-hist {
+      font-weight: bold;
+      font-size: 24px;
+
+      @media (max-width: ${breakpoints.tablet}) {
+        font-size: 20px;
+      }
+    }
+
+    select {
+      background-color: ${colors.lighterGray};
+      border: 1px solid ${colors.lightGray};
+      padding: 8px 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 0;
+
+      &:focus {
+        outline: 2px solid ${colors.verde};
+      }
+
+      @media (max-width: ${breakpoints.tablet}) {
+        width: 100%;
+      }
+    }
   }
 
   .container-transacao {

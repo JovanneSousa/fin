@@ -32,7 +32,7 @@ const Header = () => {
     if (decoded?.exp && decoded.exp * 1000 <= Date.now()) {
       deslogar();
     }
-  }, [decoded]);
+  }, [decoded, deslogar]);
 
   return (
     <HeaderSection>

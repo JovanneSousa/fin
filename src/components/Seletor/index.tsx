@@ -4,7 +4,7 @@ import Button from "../Button";
 import { SeletorSection } from "./styles";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ButtonPill from "../ButtonPill";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
 import {
@@ -83,12 +83,12 @@ const Seletor = () => {
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
   };
 
-  const criarFiltroMesAtual = () => {
+  const criarFiltroMesAtual = useCallback(() => {
     const hoje = new Date();
     const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
     const fim = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
     return criarFiltro(inicio, fim);
-  };
+  }, []);
 
   const filtrarMesAtual = () => {
     const hoje = new Date();
@@ -122,7 +122,7 @@ const Seletor = () => {
 
   useEffect(() => {
     dispatch(fetchTransactionsPeriod(criarFiltroMesAtual()));
-  }, []);
+  }, [criarFiltroMesAtual, dispatch]);
 
   const meses = gerarUltimos12Meses();
 

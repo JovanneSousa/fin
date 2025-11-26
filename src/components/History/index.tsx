@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { colors } from "../../globalStyles";
 import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
 import {
   deleteTransactions,
-  fetchTransactions,
   getTransacao,
 } from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,9 +28,6 @@ const History = () => {
     successDelete,
   } = useSelector((state: RootReducer) => state.transactions);
 
-  useEffect(() => {
-    dispatch(fetchTransactions());
-  }, [dispatch]);
   return (
     <HistorySection>
       <p className="title-hist">Histórico de Transações</p>
@@ -45,7 +41,10 @@ const History = () => {
       ) : successDelete ? (
         <Feedback success={successDelete} />
       ) : items.length === 0 ? (
-        <Feedback success="Busca realizada com sucesso, mas nenhum item foi encontrado" noButton={true}/>
+        <Feedback
+          success="Busca realizada com sucesso, mas nenhum item foi encontrado"
+          noButton={true}
+        />
       ) : (
         items
           .slice()

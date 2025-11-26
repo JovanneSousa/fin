@@ -4,7 +4,7 @@ import Button from "../Button";
 import { SeletorSection } from "./styles";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ButtonPill from "../ButtonPill";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
 import {
@@ -19,6 +19,7 @@ const Seletor = () => {
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mesSelecionado, setMesSelecionado] = useState(new Date());
+  const [pillAtiva, setPillAtiva] = useState<null | string>("mes-atual");
 
   const handleMonthChange = (direction: "anterior" | "proximo") => {
     const novoMes = new Date(mesSelecionado);
@@ -86,6 +87,10 @@ const Seletor = () => {
     dispatch(fetchTransactionsPeriod(data));
   };
 
+  useEffect(() => {
+    filtrarMesAtual();
+  }, []);
+
   return (
     <SeletorSection>
       <div className="container-title">
@@ -124,21 +129,36 @@ const Seletor = () => {
       </div>
       <div className="container-pill">
         <ButtonPill
-          className="is-active"
+          className={pillAtiva === "mes-atual" ? "is-active" : ""}
           children="Mês Atual"
-          onClick={filtrarMesAtual}
+          onClick={() => {
+            filtrarMesAtual();
+            setPillAtiva("mes-atual");
+          }}
         />
         <ButtonPill
           children="3 Meses"
-          onClick={() => filtrarIntervaloMeses(3)}
+          onClick={() => {
+            filtrarIntervaloMeses(3);
+            setPillAtiva("3m");
+          }}
+          className={pillAtiva === "3m" ? "is-active" : ""}
         />
         <ButtonPill
           children="6 Meses"
-          onClick={() => filtrarIntervaloMeses(6)}
+          onClick={() => {
+            filtrarIntervaloMeses(6);
+            setPillAtiva("6m");
+          }}
+          className={pillAtiva === "6m" ? "is-active" : ""}
         />
         <ButtonPill
           children="1 Ano"
-          onClick={() => filtrarIntervaloMeses(12)}
+          onClick={() => {
+            filtrarIntervaloMeses(12);
+            setPillAtiva("12m");
+          }}
+          className={pillAtiva === "12m" ? "is-active" : ""}
         />
       </div>
       {!isFilterPeriodoActive ? (

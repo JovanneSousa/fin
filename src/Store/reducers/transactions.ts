@@ -5,9 +5,8 @@ import type { Category } from "./categories";
 
 export interface TransactionFilter {
   startDate: string;
-  endDate: string;   
+  endDate: string;
 }
-
 
 export interface Transacao {
   id?: string;
@@ -106,49 +105,53 @@ export const updateTransaction = createAsyncThunk<
   }
 });
 
-export const fetchTransactions = createAsyncThunk<
-  Transacao[],
-  void,
-  { rejectValue: string }
->("transactions/fetch", async (_, { getState, rejectWithValue }) => {
-  try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+// export const fetchTransactions = createAsyncThunk<
+//   Transacao[],
+//   void,
+//   { rejectValue: string }
+// >("transactions/fetch", async (_, { getState, rejectWithValue }) => {
+//   try {
+//     const state = getState() as RootReducer;
+//     const token = state.auth.token || localStorage.getItem("token");
 
-    const response = await api.get("api/transacoes", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (err: any) {
-    return rejectWithValue(
-      err.response?.data || "Erro ao carregar transações, recarregue a página!"
-    );
-  }
-});
+//     const response = await api.get("api/transacoes", {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     return response.data;
+//   } catch (err: any) {
+//     return rejectWithValue(
+//       err.response?.data || "Erro ao carregar transações, recarregue a página!"
+//     );
+//   }
+// });
 
 export const fetchTransactionsPeriod = createAsyncThunk<
   Transacao[],
   TransactionFilter,
   { rejectValue: string }
->("transactionsPeriod/fetch", async ({ startDate, endDate }, { getState, rejectWithValue }) => {
-  try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+>(
+  "transactionsPeriod/fetch",
+  async ({ startDate, endDate }, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootReducer;
+      const token = state.auth.token || localStorage.getItem("token");
 
-    const response = await api.get(
-      `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+      const response = await api.get(
+        `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-    return response.data;
-  } catch (err: any) {
-    return rejectWithValue(
-      err.response?.data || "Erro ao carregar transações, recarregue a página!"
-    );
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data ||
+          "Erro ao carregar transações, recarregue a página!"
+      );
+    }
   }
-});
+);
 
 export const getTransacao = createAsyncThunk<
   Transacao,
@@ -234,15 +237,29 @@ const transactionSlice = createSlice({
         state.errorUpdate = action.payload || "Erro ao atualizar transação";
       })
 
-      .addCase(fetchTransactions.pending, (state) => {
+      // .addCase(fetchTransactions.pending, (state) => {
+      //   state.loadingGet = true;
+      //   state.errorGet = null;
+      // })
+      // .addCase(fetchTransactions.fulfilled, (state, action) => {
+      //   state.loadingGet = false;
+      //   state.items = action.payload;
+      // })
+      // .addCase(fetchTransactions.rejected, (state, action) => {
+      //   state.loadingGet = false;
+      //   state.errorGet =
+      //     action.payload || "Erro ao carregar transações, recarregue a página!";
+      // })
+
+      .addCase(fetchTransactionsPeriod.pending, (state) => {
         state.loadingGet = true;
         state.errorGet = null;
       })
-      .addCase(fetchTransactions.fulfilled, (state, action) => {
+      .addCase(fetchTransactionsPeriod.fulfilled, (state, action) => {
         state.loadingGet = false;
         state.items = action.payload;
       })
-      .addCase(fetchTransactions.rejected, (state, action) => {
+      .addCase(fetchTransactionsPeriod.rejected, (state, action) => {
         state.loadingGet = false;
         state.errorGet =
           action.payload || "Erro ao carregar transações, recarregue a página!";

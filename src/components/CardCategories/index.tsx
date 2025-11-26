@@ -1,21 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { CardStyled } from "./styles";
-import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootReducer } from "../../Store";
-import { fetchTransactions } from "../../Store/reducers/transactions";
+import {  type RootReducer } from "../../Store";
 import { formatCurrency } from "../../Utils";
+import { useSelector } from "react-redux";
 
 interface CardProps {
   type?: number;
 }
 
 const CardCategories: React.FC<CardProps> = ({ type }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootReducer) => state.transactions);
-  useEffect(() => {
-    dispatch(fetchTransactions());
-  }, [dispatch]);
-
   const valorTotal = useMemo(() => {
     if (type !== undefined && type !== null) {
       return items.reduce(

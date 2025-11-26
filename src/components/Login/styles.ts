@@ -8,6 +8,10 @@ export const LoginSection = styled.section`
   display: flex;
   gap: 44px;
   height: 650px;
+  
+  button {
+    margin-top: 0;
+  }
 
   .img {
     perspective: 600px;
@@ -26,12 +30,11 @@ export const LoginSection = styled.section`
 
   .input-wrapper {
     position: relative;
-    display: inline-block;
 
     i {
       position: absolute;
       left: 24px;
-      top: 50%;
+      top: 40%;
       transform: translateY(-50%);
       color: ${colors.gray};
       font-size: 16px;
@@ -108,7 +111,7 @@ export const LoginSection = styled.section`
 
   @media (max-width: ${breakpoints.tablet}) {
     width: 100%;
-    padding: 150px 16px 33px;
+    padding: 110px 16px 33px;
 
     .img {
       display: none;

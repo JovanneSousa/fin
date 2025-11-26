@@ -9,7 +9,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { RootReducer } from "../../Store";
-import { formatCurrency } from "../../Utils";
 
 const DESPESA_COLORS = [
   "#e63946",
@@ -58,7 +57,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
       <PieChart>
         <Pie
           data={data}
-          dataKey="value"
+          dataKey="value" 
           nameKey="name"
           cx="50%"
           cy="50%"
@@ -70,7 +69,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => formatCurrency(value)} />
+        <Tooltip formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`} />
         <Legend />
       </PieChart>
     </ResponsiveContainer>

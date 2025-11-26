@@ -22,6 +22,23 @@ const Seletor = () => {
   const [pillAtiva, setPillAtiva] = useState<null | string>("mes-atual");
   const [titlePeriod, setTitlePeriod] = useState(false);
 
+  const gerarUltimos12Meses = () => {
+    const meses = [];
+    const hoje = new Date();
+
+    for (let i = 0; i < 12; i++) {
+      const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+
+      meses.push({
+        label: data.toLocaleString("pt-BR", { month: "long", year: "numeric" }),
+        year: data.getFullYear(),
+        month: data.getMonth(),
+      });
+    }
+
+    return meses;
+  };
+
   const criarFiltro = (inicio: Date, fim: Date): TransactionFilter => ({
     startDate: inicio.toISOString(),
     endDate: fim.toISOString(),
@@ -49,6 +66,22 @@ const Seletor = () => {
       novoMes.getFullYear() === hoje.getFullYear();
 
     setPillAtiva(isMesAtual ? "mes-atual" : null);
+  };
+
+  const handleSelectMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (!value) return;
+
+    const [year, month] = value.split("-").map(Number);
+
+    const inicio = new Date(year, month, 1);
+    const fim = new Date(year, month + 1, 0);
+
+    setMesSelecionado(inicio);
+    setPillAtiva(null);
+    setTitlePeriod(false);
+
+    dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
   };
 
   const criarFiltroMesAtual = () => {
@@ -92,6 +125,8 @@ const Seletor = () => {
     dispatch(fetchTransactionsPeriod(criarFiltroMesAtual()));
   }, []);
 
+  const meses = gerarUltimos12Meses();
+
   return (
     <SeletorSection>
       <div className="container-title">
@@ -121,12 +156,16 @@ const Seletor = () => {
         </div>
         <div className="input-mes">
           <FontAwesomeIcon icon={faCalendar} className="icon-left" />
-          <select id="mes">
+          <select onChange={handleSelectMonth} id="mes">
             <option value="">Selecionar mês</option>
-            <option value="A">Novembro de 2025</option>
-            <option value="B">Novembro de 2025</option>
-            <option value="C">Novembro de 2025</option>
-            <option value="D">Novembro de 2025</option>
+            {meses.map((m) => (
+              <option
+                key={`${m.year} - ${m.month}`}
+                value={`${m.year}-${m.month}`}
+              >
+                {m.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>

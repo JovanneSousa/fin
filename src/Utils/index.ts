@@ -13,3 +13,7 @@ export const formatCurrency = (valor: number): string => {
     currency: "BRL",
   }).format(valor);
 }
+export const toLocalDateIgnoreTimezone = (dateString: string) => {
+    const [y, m, d] = dateString.split("T")[0].split("-").map(Number);
+  return new Date(y, m - 1, d);
+}

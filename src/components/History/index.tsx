@@ -12,7 +12,7 @@ import Feedback from "../Feedback";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import { formatCurrency } from "../../Utils";
+import { formatCurrency, toLocalDateIgnoreTimezone } from "../../Utils";
 import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
 
@@ -50,7 +50,8 @@ const History = () => {
           .slice()
           .sort(
             (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+              toLocalDateIgnoreTimezone(b.createdAt).getTime() -
+              toLocalDateIgnoreTimezone(a.createdAt).getTime()
           )
           .map((item) => (
             <div className="container-transacao" key={item.id}>
@@ -74,7 +75,7 @@ const History = () => {
                   </p>
                   <p className="data">
                     {" "}
-                    {new Date(item.createdAt).toLocaleDateString("pt-BR")}
+                    {toLocalDateIgnoreTimezone(item.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="button-container">

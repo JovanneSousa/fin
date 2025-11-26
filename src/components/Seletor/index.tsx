@@ -22,6 +22,10 @@ const Seletor = () => {
   const [pillAtiva, setPillAtiva] = useState<null | string>("mes-atual");
   const [titlePeriod, setTitlePeriod] = useState(false);
 
+  const isMesAtual = (date: Date) =>
+    date.getMonth() === new Date().getMonth() &&
+    date.getFullYear() === new Date().getFullYear();
+
   const gerarUltimos12Meses = () => {
     const meses = [];
     const hoje = new Date();
@@ -60,12 +64,7 @@ const Seletor = () => {
 
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
 
-    const hoje = new Date();
-    const isMesAtual =
-      novoMes.getMonth() === hoje.getMonth() &&
-      novoMes.getFullYear() === hoje.getFullYear();
-
-    setPillAtiva(isMesAtual ? "mes-atual" : null);
+    setPillAtiva(isMesAtual(novoMes) ? "mes-atual" : null);
   };
 
   const handleSelectMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -78,9 +77,9 @@ const Seletor = () => {
     const fim = new Date(year, month + 1, 0);
 
     setMesSelecionado(inicio);
-    setPillAtiva(null);
     setTitlePeriod(false);
 
+    setPillAtiva(isMesAtual(inicio) ? "mes-atual" : null);
     dispatch(fetchTransactionsPeriod(criarFiltro(inicio, fim)));
   };
 

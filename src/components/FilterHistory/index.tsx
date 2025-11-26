@@ -29,6 +29,16 @@ const FilterHistory: React.FC<FilterHistoryProps> = ({
     (state: RootReducer) => state.categories
   );
 
+  const { items } = useSelector((state: RootReducer) => state.transactions)
+ 
+  const receitaFiltrada = receita.filter((c) => {
+    items.some((i) => i.type === 0 && i.categoriaId === c.id)
+  })
+
+    const despesaFiltrada = despesa.filter((c) => {
+    items.some((i) => i.type === 1 && i.categoriaId === c.id)
+  })
+
   const handleCategoryToggle = (id: string) => {
     setSelectedCategories((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
@@ -73,7 +83,7 @@ const FilterHistory: React.FC<FilterHistoryProps> = ({
       <p>Categorias</p>
       <div className="container-cat-filter">
         {filterType === "receita" &&
-          receita.map((r) => (
+          receitaFiltrada.map((r) => (
             <ButtonPill
               className={selectedCategories.includes(r.id) ? "is-active" : ""}
               key={r.id}
@@ -84,7 +94,7 @@ const FilterHistory: React.FC<FilterHistoryProps> = ({
           ))}
 
         {filterType === "despesa" &&
-          despesa.map((d) => (
+          despesaFiltrada.map((d) => (
             <ButtonPill
               className={selectedCategories.includes(d.id) ? "is-active" : ""}
               key={d.id}

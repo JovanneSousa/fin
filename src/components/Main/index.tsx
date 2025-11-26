@@ -4,15 +4,15 @@ import ContainerCategories from "../ContainerCategories";
 import Header from "../Header";
 import History from "../History";
 import Seletor from "../Seletor";
-import { type AppDispatch } from "../../Store";
+import type { AppDispatch } from "../../Store";
 import { useEffect } from "react";
 import { getCategories } from "../../Store/reducers/categories";
 
 const Main = () => {
-  // const dispatch = useDispatch<AppDispatch>();
-  // useEffect(() => {
-  //   dispatch(getCategories());
-  // }, [dispatch]);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
   return (
     <div className="main">

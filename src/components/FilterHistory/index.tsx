@@ -29,15 +29,16 @@ const FilterHistory: React.FC<FilterHistoryProps> = ({
     (state: RootReducer) => state.categories
   );
 
-  const { items } = useSelector((state: RootReducer) => state.transactions)
- 
-  const receitaFiltrada = receita.filter((c) => {
-    items.some((i) => i.type === 0 && i.categoriaId === c.id)
-  })
+  const { items } = useSelector((state: RootReducer) => state.transactions);
 
-    const despesaFiltrada = despesa.filter((c) => {
-    items.some((i) => i.type === 1 && i.categoriaId === c.id)
-  })
+  const receitaFiltrada = receita.filter((c) => {
+    return items.some((i) => i.type === 0 && i.categoriaId === c.id);
+  });
+
+
+  const despesaFiltrada = despesa.filter((d) => {
+    return items.some((i) => i.type === 1 && i.categoria?.id === d.id);
+  });
 
   const handleCategoryToggle = (id: string) => {
     setSelectedCategories((prev) =>

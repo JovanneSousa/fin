@@ -67,7 +67,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
           cy="50%"
           innerRadius={70}
           outerRadius={120}
-          label={({ _, value }) => `${formatCurrency(value)}`}
+          label={({  value }) => `${formatCurrency(value)}`}
         >
           {data.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

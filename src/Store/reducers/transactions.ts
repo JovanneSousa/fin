@@ -92,7 +92,7 @@ export const updateTransaction = createAsyncThunk<
     const state = getState() as RootReducer;
     const token = state.auth.token || localStorage.getItem("token");
 
-    const response = await api.post(
+    const response = await api.put(
       `api/transacoes/${transaction.id}`,
       transaction,
       {

@@ -51,9 +51,10 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
   const onSubmit = (data: EditFormTransacao) => {
     const payload = {
       ...data,
+      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       id: selected?.id,
     };
-    dispatch(updateTransaction(payload));
+     dispatch(updateTransaction(payload));
     reset();
     setIsEditing(false);
   };
@@ -104,7 +105,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
             <label htmlFor="edit-value">Valor</label>
             <input
               id="edit-value"
-              type="number"
+              type="text"
               {...register("valor")}
               disabled={!isEditing}
             />

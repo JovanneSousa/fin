@@ -26,12 +26,22 @@ const Seletor = () => {
     date.getMonth() === new Date().getMonth() &&
     date.getFullYear() === new Date().getFullYear();
 
-  const gerarUltimos12Meses = () => {
+  const gerarMesesSelect = () => {
     const meses = [];
     const hoje = new Date();
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 1; i <= 6; i++) {
       const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+
+      meses.push({
+        label: data.toLocaleString("pt-BR", { month: "long", year: "numeric" }),
+        year: data.getFullYear(),
+        month: data.getMonth(),
+      });
+    }
+
+    for (let i = 1; i <= 6; i++) {
+      const data = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
 
       meses.push({
         label: data.toLocaleString("pt-BR", { month: "long", year: "numeric" }),
@@ -124,7 +134,7 @@ const Seletor = () => {
     dispatch(fetchTransactionsPeriod(criarFiltroMesAtual()));
   }, [criarFiltroMesAtual, dispatch]);
 
-  const meses = gerarUltimos12Meses();
+  const meses = gerarMesesSelect();
 
   return (
     <SeletorSection>
@@ -157,14 +167,16 @@ const Seletor = () => {
           <FontAwesomeIcon icon={faCalendar} className="icon-left" />
           <select onChange={handleSelectMonth} id="mes">
             <option value="">Selecionar mês</option>
-            {meses.map((m) => (
-              <option
-                key={`${m.year} - ${m.month}`}
-                value={`${m.year}-${m.month}`}
-              >
-                {m.label}
-              </option>
-            ))}
+            {meses
+              .sort((a, b) => b.year - a.year || b.month - a.month)
+              .map((m) => (
+                <option
+                  key={`${m.year} - ${m.month}`}
+                  value={`${m.year}-${m.month}`}
+                >
+                  {m.label}
+                </option>
+              ))}
           </select>
         </div>
       </div>

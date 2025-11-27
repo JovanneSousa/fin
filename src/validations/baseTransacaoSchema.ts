@@ -21,7 +21,7 @@ export const baseTransacaoSchema = yup.object({
 
   categoriaId: yup.string().required("Categoria é obrigatória"),
 
-  createdAt: yup
+  dataMovimentacao: yup
     .string()
     .required("Data obrigatória")
     .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida")

@@ -61,13 +61,13 @@ const History = () => {
   if (filters.sort === "dataAsc") {
     filtered.sort(
       (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        new Date(a.dataMovimentacao).getTime() - new Date(b.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "dataDesc") {
     filtered.sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.dataMovimentacao).getTime() - new Date(a.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "valorAsc") {
@@ -135,7 +135,7 @@ const History = () => {
                 <p className="data">
                   {" "}
                   {toLocalDateIgnoreTimezone(
-                    item.createdAt
+                    item.dataMovimentacao
                   ).toLocaleDateString()}
                 </p>
               </div>

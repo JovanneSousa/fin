@@ -11,7 +11,7 @@ type DespesaFormData = {
   titulo: string;
   valor: number;
   categoriaId: string;
-  createdAt: string;
+  dataMovimentacao: string;
   isRecurring: boolean;
   parcelas: number;
 };
@@ -34,7 +34,7 @@ const FormDespesa = () => {
   const onSubmit = (data: DespesaFormData) => {
     const payload = {
       ...data,
-      createdAt: new Date(data.createdAt).toISOString(),
+      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 1,
       parcelas: data.isRecurring ? data.parcelas : undefined,
     };
@@ -70,8 +70,8 @@ const FormDespesa = () => {
       </div>
       <div className="input-wrapper">
         <label htmlFor="date">Data</label>
-        <input id="date" type="date" {...register("createdAt")} />
-        <span>{errors.createdAt?.message}</span>
+        <input id="date" type="date" {...register("dataMovimentacao")} />
+        <span>{errors.dataMovimentacao?.message}</span>
       </div>
       <div className="container-check">
         <div className="input-check">

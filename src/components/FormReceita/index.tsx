@@ -11,7 +11,7 @@ type ReceitaFormData = {
   titulo: string;
   valor: number;
   categoriaId: string;
-  createdAt: string;
+  dataMovimentacao: string;
   isRecurring: boolean;
   type?: number;
 };
@@ -32,7 +32,7 @@ const FormReceita = () => {
   const onSubmit = (data: ReceitaFormData) => {
     const payload = {
       ...data,
-      createdAt: new Date(data.createdAt).toISOString(),
+      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 0,
     };
     dispatch(createTransaction(payload));
@@ -64,10 +64,10 @@ const FormReceita = () => {
         <span>{errors.categoriaId?.message}</span>
       </div>
       <div className="input-wrapper">
-        <label htmlFor="createdAt">Data</label>
+        <label htmlFor="dataMovimentacao">Data</label>
 
-        <input id="createdAt" type="date" {...register("createdAt")} />
-        <span>{errors.createdAt?.message}</span>
+        <input id="dataMovimentacao" type="date" {...register("dataMovimentacao")} />
+        <span>{errors.dataMovimentacao?.message}</span>
       </div>
       <div className="input-check">
         <input id="recurrency" type="checkbox" {...register("isRecurring")} />

@@ -13,7 +13,7 @@ export interface Transacao {
   titulo: string;
   valor: number;
   categoriaId: string;
-  createdAt: string;
+  dataMovimentacao: string;
   isRecurring: boolean;
   type?: number;
   categoria?: Category;

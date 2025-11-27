@@ -20,7 +20,7 @@ type EditFormTransacao = {
   titulo: string;
   valor: number;
   categoriaId: string;
-  createdAt: string;
+  dataMovimentacao: string;
   isRecurring: boolean;
   parcelas?: number;
 };
@@ -66,7 +66,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
         titulo: selected.titulo,
         valor: selected.valor,
         categoriaId: selected.categoriaId,
-        createdAt: selected.createdAt.split("T")[0],
+        dataMovimentacao: selected.dataMovimentacao.split("T")[0],
         isRecurring: selected.isRecurring,
         parcelas: selected.parcelas ?? undefined,
       });
@@ -135,14 +135,14 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
             {/* <span>{errors.categoriaId?.message}</span> */}
           </div>
           <div className="input-wrapper">
-            <label htmlFor="edit-createdAt">Data</label>
+            <label htmlFor="edit-dataMovimentacao">Data</label>
             <input
               disabled={!isEditing}
-              id="edit-createdAt"
+              id="edit-dataMovimentacao"
               type="date"
-              {...register("createdAt")}
+              {...register("dataMovimentacao")}
             />
-            {/* <span>{errors.createdAt?.message}</span> */}
+            {/* <span>{errors.dataMovimentacao?.message}</span> */}
           </div>
 
           {selected?.type === 0 ? (

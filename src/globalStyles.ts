@@ -15,6 +15,7 @@ export const colors = {
   vermelho: "#e63946",
   azul: "#3498db",
   laranja: "#f39c12",
+  transparent: "transparent"
 };
 
 export const breakpoints = {

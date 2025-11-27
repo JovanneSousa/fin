@@ -51,7 +51,7 @@ const FilterHistory: React.FC<FilterHistoryProps> = ({
       <div className="container-title-filter">
         <p>Filtros e Ordenação</p>
         <Button
-          bgColor={colors.lightGray}
+          bgColor={colors.transparent}
           padding="small"
           children="X"
           type="button"

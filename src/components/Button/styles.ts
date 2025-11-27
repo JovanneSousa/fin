@@ -9,7 +9,11 @@ export const ButtonStyled = styled.button<ButtonProps>`
   outline: none;
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ bgColor }) =>
-    bgColor === colors.lightGray ? colors.gray : colors.branco};
+    bgColor === colors.lightGray
+      ? colors.gray
+      : bgColor === colors.transparent
+      ? colors.gray
+      : colors.branco};
   padding: ${({ padding }) =>
     padding === "big" ? "16px 32px" : padding === "medium" ? "" : "8px 12px"};
   border-radius: ${({ padding }) =>

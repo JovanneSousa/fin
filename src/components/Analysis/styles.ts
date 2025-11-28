@@ -92,4 +92,47 @@ export const Analysis = styled.div<AnalysisProp>`
     &.is-active {
     }
   }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      max-width: 80px;
+      @media (min-width: ${breakpoints.tablet}) {
+        display: none;
+      }
+    }
+  }
+
+  .content {
+    @media (max-width: ${breakpoints.tablet}) {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+
+      &.is-active {
+        max-height: 500px;
+      }
+    }
+  }
+
+  .padding {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    height: 100%;
+    justify-content: space-around;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      padding: 16px;
+    }
+  }
 `;

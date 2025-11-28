@@ -10,14 +10,14 @@ import Loader from "../Loader";
 const Login = () => {
   const [isLoginPageActive, setIsLoginPageActive] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
-  const { loading } = useSelector((state: RootReducer) => state.auth)
+  const { loading } = useSelector((state: RootReducer) => state.auth);
 
   useEffect(() => {
     dispatch(wake());
   }, [dispatch]);
 
   const title = isLoginPageActive ? "Login" : "Registrar";
-  const Form = loading? Loader : isLoginPageActive ? FormLogin : FormRegister;
+  const Form = loading ? Loader : isLoginPageActive ? FormLogin : FormRegister;
   const buttonText = isLoginPageActive
     ? "Criar uma conta "
     : "Voltar para o login ";

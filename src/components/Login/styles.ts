@@ -117,4 +117,11 @@ export const LoginSection = styled.section`
       display: none;
     }
   }
+
+  .login-visit {
+    position: absolute;
+    max-width: 375px;
+    bottom: 20px;
+    right: 20px;
+  }
 `;

@@ -14,6 +14,7 @@ export interface ButtonProps {
   padding: "big" | "medium" | "small";
   onClick?: () => void;
   icon?: "left" | "right" | "calendar";
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -23,9 +24,11 @@ const Button: React.FC<ButtonProps> = ({
   padding,
   onClick,
   icon,
+  className,
 }) => {
   return (
     <ButtonStyled
+      className={className}
       onClick={onClick}
       type={type}
       bgColor={bgColor}
@@ -36,10 +39,8 @@ const Button: React.FC<ButtonProps> = ({
       ) : icon === "right" ? (
         <FontAwesomeIcon icon={faChevronRight} />
       ) : icon === "calendar" ? (
-        <FontAwesomeIcon icon={faCalendar } />
-      ) : (
-        null
-      )}
+        <FontAwesomeIcon icon={faCalendar} />
+      ) : null}
       {children}
     </ButtonStyled>
   );

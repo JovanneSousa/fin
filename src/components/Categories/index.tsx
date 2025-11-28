@@ -16,7 +16,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
-  const [isFormActive, setIsFormActive] = useState(false);
+  const [isFormActive, setIsFormActive] = useState(true);
   const { successPost, loadingPost, errorPost } = useSelector(
     (state: RootReducer) => state.categories
   );

@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const New = () => {
-  const [isReceita, setIsReceitaActive] = useState(true);
+  const [isReceita, setIsReceitaActive] = useState(false);
   const [isInputActive, setIsInputActive] = useState(false);
   const Form = isReceita ? FormReceita : FormDespesa;
   const { loadingPost, errorPost, successPost } = useSelector(
@@ -37,18 +37,18 @@ const New = () => {
             <p>Tipo</p>
             <div className="button-wrapper">
               <Button
-                bgColor={isReceita ? colors.verde : colors.lightGray}
-                padding="small"
-                children="Receita"
-                type="button"
-                onClick={() => setIsReceitaActive(true)}
-              />
-              <Button
                 bgColor={!isReceita ? colors.vermelho : colors.lightGray}
                 padding="small"
                 children="Despesa"
                 type="button"
                 onClick={() => setIsReceitaActive(false)}
+              />
+              <Button
+                bgColor={isReceita ? colors.verde : colors.lightGray}
+                padding="small"
+                children="Receita"
+                type="button"
+                onClick={() => setIsReceitaActive(true)}
               />
             </div>
           </div>

@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { colors } from "../../globalStyles";
 import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
-import {
-  deleteTransactions,
-  getTransacao,
-} from "../../Store/reducers/transactions";
+import { getTransacao, type Transacao } from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import Loader from "../Loader";
@@ -17,6 +14,7 @@ import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
 import Button from "../Button";
 import FilterHistory from "../FilterHistory";
+import Delete from "../Delete";
 
 interface Filters {
   type: string;
@@ -28,6 +26,10 @@ interface Filters {
 const History = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemSelecionado, setItemSelecionado] = useState<Transacao | null>(
+    null
+  );
   const [filters, setFilters] = useState<Filters>({
     type: "",
     categories: [],
@@ -61,13 +63,15 @@ const History = () => {
   if (filters.sort === "dataAsc") {
     filtered.sort(
       (a, b) =>
-        new Date(a.dataMovimentacao).getTime() - new Date(b.dataMovimentacao).getTime()
+        new Date(a.dataMovimentacao).getTime() -
+        new Date(b.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "dataDesc") {
     filtered.sort(
       (a, b) =>
-        new Date(b.dataMovimentacao).getTime() - new Date(a.dataMovimentacao).getTime()
+        new Date(b.dataMovimentacao).getTime() -
+        new Date(a.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "valorAsc") {
@@ -149,7 +153,10 @@ const History = () => {
                   <FontAwesomeIcon icon={faCircleInfo} size="lg" />
                 </DetailBox>
                 <CloseBox
-                  onClick={() => dispatch(deleteTransactions(item.id!))}
+                  onClick={() => {
+                    setIsDeleteModalOpen(true);
+                    setItemSelecionado(item);
+                  }}
                 >
                   <FontAwesomeIcon icon={faCircleXmark} size="lg" />
                 </CloseBox>
@@ -160,6 +167,18 @@ const History = () => {
       )}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
         <TransacaoDetails onClose={() => setIsOpen(false)} />
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      >
+        <Delete
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setItemSelecionado(null);
+          }}
+          item={itemSelecionado}
+        />
       </Modal>
     </HistorySection>
   );

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { colors } from "../../globalStyles";
 import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
-import { getTransacao, type Transacao } from "../../Store/reducers/transactions";
+import {
+  getTransacao,
+  type Transacao,
+} from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import Loader from "../Loader";
@@ -49,19 +52,13 @@ const History = () => {
     (state: RootReducer) => state.categories
   );
 
-  let filtered = items.slice();
-
-  filtered.forEach((item) => {
-    if (item.categoria == null) {
-      if (item.type == 0) {
-        const categoria = receita.find((c) => c.id == item.categoriaId);
-        if (categoria) item.categoria = categoria;
-      }
-      if (item.type == 1) {
-        const categoria = despesa.find((d) => d.id == item.categoriaId);
-        if (categoria) item.categoria = categoria;
-      }
+  let filtered = items.map((item) => {
+    if (!item.categoria) {
+      const source = item.type === 0 ? receita : despesa;
+      const categoria = source.find((c) => c.id === item.categoriaId);
+      return { ...item, categoria };
     }
+    return item;
   });
 
   if (filters.type === "receita")

@@ -14,7 +14,7 @@ import { colors } from "../../globalStyles";
 type tabKey = "new" | "categories" | "comparacao";
 
 const AnalysisSection = () => {
-  const [isReceita, setIsReceita] = useState(true);
+  const [isReceita, setIsReceita] = useState(false);
   const { loadingGet, errorGet, items } = useSelector(
     (state: RootReducer) => state.transactions
   );
@@ -77,18 +77,18 @@ const AnalysisSection = () => {
                 </p>
                 <div className="button-container">
                   <Button
-                    bgColor={isReceita ? colors.verde : colors.lightGray}
-                    padding="small"
-                    type="button"
-                    children="Receita"
-                    onClick={() => setIsReceita(true)}
-                  />
-                  <Button
                     bgColor={!isReceita ? colors.vermelho : colors.lightGray}
                     padding="small"
                     type="button"
                     children="Despesa"
                     onClick={() => setIsReceita(false)}
+                  />
+                  <Button
+                    bgColor={isReceita ? colors.verde : colors.lightGray}
+                    padding="small"
+                    type="button"
+                    children="Receita"
+                    onClick={() => setIsReceita(true)}
                   />
                 </div>
               </div>

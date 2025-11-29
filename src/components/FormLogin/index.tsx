@@ -27,13 +27,17 @@ const FormLogin = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    try {
       await dispatch(login(data)).unwrap();
       reset();
       navigate("/home");
-    } catch (err) {
-      console.log(err);
-    }
+  };
+
+  const loginTeste = async () => {
+    const user = import.meta.env.VITE_LOGIN_VISIT;
+    const pass = import.meta.env.VITE_PASS_VISIT;
+
+    await dispatch(login({ email: user, password: pass }));
+    navigate("/home");
   };
 
   return (
@@ -61,6 +65,14 @@ const FormLogin = () => {
         />
         {error && <span className="error-message-span">{error}</span>}
       </form>
+      <Button
+        className="login-visit"
+        bgColor={colors.verde}
+        padding="small"
+        children="Logar como visitante"
+        type="button"
+        onClick={loginTeste}
+      />
     </>
   );
 };

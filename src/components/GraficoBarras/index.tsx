@@ -10,6 +10,7 @@ import {
 import { BarContainer } from "./styles";
 import { colors } from "../../globalStyles";
 import type React from "react";
+import Feedback from "../Feedback";
 
 interface GraficoBarrasProps {
   data: Array<{
@@ -20,9 +21,11 @@ interface GraficoBarrasProps {
 }
 
 const GraficoBarras: React.FC<GraficoBarrasProps> = ({ data }) => {
-  return (
+  return data.length == 0 ? (
+    <Feedback error="Nenhum dado encontrado" noButton={true} />
+  ) : (
     <BarContainer>
-      <p  className="title">Visão Geral</p>
+      <p className="title">Visão Geral</p>
       <ResponsiveContainer width="100%" height="80%">
         <BarChart data={data}>
           <XAxis dataKey="name" />

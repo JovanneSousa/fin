@@ -125,7 +125,7 @@ const History = () => {
         <Feedback error={errorDelete} />
       ) : successDelete ? (
         <Feedback success={successDelete} />
-      ) : items.length === 0 ? (
+      ) : filtered.length == 0 ? (
         <Feedback
           success="Busca realizada com sucesso, mas nenhum item foi encontrado"
           noButton={true}

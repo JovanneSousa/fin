@@ -43,8 +43,24 @@ const History = () => {
     errorDelete,
     successDelete,
   } = useSelector((state: RootReducer) => state.transactions);
+  const { despesa, receita } = useSelector(
+    (state: RootReducer) => state.categories
+  );
 
   let filtered = items.slice();
+
+  filtered.forEach((item) => {
+    if (item.categoria == null) {
+      if (item.type == 0) {
+        const categoria = receita.find((c) => c.id == item.categoriaId);
+        if (categoria) item.categoria = categoria;
+      }
+      if (item.type == 1) {
+        const categoria = despesa.find((d) => d.id == item.categoriaId);
+        if (categoria) item.categoria = categoria;
+      }
+    }
+  });
 
   if (filters.type === "receita")
     filtered = filtered.filter((i) => i.type === 0);
@@ -61,13 +77,15 @@ const History = () => {
   if (filters.sort === "dataAsc") {
     filtered.sort(
       (a, b) =>
-        new Date(a.dataMovimentacao).getTime() - new Date(b.dataMovimentacao).getTime()
+        new Date(a.dataMovimentacao).getTime() -
+        new Date(b.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "dataDesc") {
     filtered.sort(
       (a, b) =>
-        new Date(b.dataMovimentacao).getTime() - new Date(a.dataMovimentacao).getTime()
+        new Date(b.dataMovimentacao).getTime() -
+        new Date(a.dataMovimentacao).getTime()
     );
   }
   if (filters.sort === "valorAsc") {

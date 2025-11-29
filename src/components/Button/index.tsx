@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
-  faCalendar,
+  faChevronDown,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface ButtonProps {
@@ -13,7 +14,7 @@ export interface ButtonProps {
   bgColor: string;
   padding: "big" | "medium" | "small";
   onClick?: () => void;
-  icon?: "left" | "right" | "calendar";
+  icon?: "left" | "right" | "down" | "up";
   className?: string;
 }
 
@@ -38,10 +39,20 @@ const Button: React.FC<ButtonProps> = ({
         <FontAwesomeIcon icon={faChevronLeft} />
       ) : icon === "right" ? (
         <FontAwesomeIcon icon={faChevronRight} />
-      ) : icon === "calendar" ? (
-        <FontAwesomeIcon icon={faCalendar} />
       ) : null}
       {children}
+
+      {icon === "down" ? (
+        <>
+          {" "}
+          <FontAwesomeIcon icon={faChevronDown} />
+        </>
+      ) : icon === "up" ? (
+        <>
+          {" "}
+          <FontAwesomeIcon icon={faChevronUp} />
+        </>
+      ) : null}
     </ButtonStyled>
   );
 };

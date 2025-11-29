@@ -111,18 +111,6 @@ export const Analysis = styled.div<AnalysisProp>`
     }
   }
 
-  .content {
-    @media (max-width: ${breakpoints.tablet}) {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-
-      &.is-active {
-        max-height: 500px;
-      }
-    }
-  }
-
   .padding {
     box-sizing: border-box;
     display: flex;

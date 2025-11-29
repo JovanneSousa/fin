@@ -113,7 +113,15 @@ export const SeletorSection = styled.section`
 
   @media (max-width: ${breakpoints.tablet}) {
     gap: 8px;
+  }
 
-    /* padding: 16px; */
+  .content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+
+    &.is-active {
+      max-height: 500px;
+    }
   }
 `;

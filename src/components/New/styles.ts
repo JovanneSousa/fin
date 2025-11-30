@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {  colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 export const NewSection = styled.section`
   background-color: ${colors.branco};

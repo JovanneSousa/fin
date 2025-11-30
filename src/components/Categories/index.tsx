@@ -16,7 +16,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
-  const [isFormActive, setIsFormActive] = useState(true);
+  const [isFormActive, setIsFormActive] = useState(false);
   const { successPost, loadingPost, errorPost } = useSelector(
     (state: RootReducer) => state.categories
   );
@@ -49,7 +49,10 @@ const Categories = () => {
             padding="small"
             type="button"
             children={<FontAwesomeIcon icon={faChevronDown} />}
-            onClick={() => setIsFormActive(!isFormActive)}
+            onClick={() => {
+              setIsFormActive(!isFormActive);
+              console.log(isFormActive);
+            }}
           />
         </div>
         <div className={`content ${isFormActive ? "is-active" : ""}`}>

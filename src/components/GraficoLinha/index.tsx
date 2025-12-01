@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import type { RootReducer } from "../../Store";
 import { colors } from "../../globalStyles";
+import Feedback from "../Feedback";
 
 const GraficoLinha = () => {
   const { items } = useSelector((state: RootReducer) => state.transactions);
@@ -27,9 +28,12 @@ const GraficoLinha = () => {
 
     itensOrdenados.forEach((item) => {
       const d = new Date(item.dataMovimentacao);
-      const chave = `${d.toLocaleString("pt-BR", { month: "short" })}/${String(
-        d.getFullYear()
-      ).slice(-2)}`;
+      const mes = d.toLocaleString("pt-BR", {
+        month: "short",
+        timeZone: "UTC",
+      });
+      const ano = String(d.getUTCFullYear()).slice(-2);
+      const chave = `${mes}/${ano}`;
 
       const atual = mapa.get(chave) ?? { receita: 0, despesa: 0 };
 
@@ -48,10 +52,9 @@ const GraficoLinha = () => {
       despesa,
     }));
   }, [items]);
-
-  console.log(data);
-
-  return (
+  return data.length <= 1 ? (
+    <Feedback error="Selecione um periodo de meses no seletor acima" noButton={true}/>
+  ) : (
     <LineChart
       style={{
         width: "100%",
@@ -74,6 +77,7 @@ const GraficoLinha = () => {
         tickFormatter={(value) =>
           value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
         }
+        className="responsive-graph"
       />
       <Tooltip
         formatter={(value) =>

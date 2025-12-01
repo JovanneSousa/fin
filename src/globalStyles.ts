@@ -64,7 +64,8 @@ body {
     margin-bottom: 24px;
 
     @media (max-width: ${breakpoints.tablet}) {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
 }
 
@@ -154,6 +155,12 @@ form {
       input {
         background-color: ${colors.lighterGray};
       }
+    }
+  }
+
+  tspan {
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 10px;
     }
   }
 `;

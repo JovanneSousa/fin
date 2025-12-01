@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 export const CardStyled = styled.div`
   border-radius: 16px;
@@ -29,5 +29,13 @@ export const CardStyled = styled.div`
   p {
     font-size: 14px;
     color: ${colors.gray};
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding: 16px;
+
+    .valor {
+      font-size: 16px;
+    }
   }
 `;

@@ -65,7 +65,6 @@ const AnalysisSection = () => {
           >
             Comparação
           </li>
-          <li>Projeção</li>
         </ul>
       </nav>
       <div className="container-analysis">

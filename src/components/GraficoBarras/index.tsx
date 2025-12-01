@@ -21,8 +21,8 @@ interface GraficoBarrasProps {
 }
 
 const GraficoBarras: React.FC<GraficoBarrasProps> = ({ data }) => {
-  return data.length == 0 ? (
-    <Feedback error="Nenhum dado encontrado" noButton={true} />
+  return data.length <= 1 ? (
+    <Feedback info="Nenhum dado encontrado" noButton={true} />
   ) : (
     <BarContainer>
       <p className="title">Visão Geral</p>

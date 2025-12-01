@@ -5,6 +5,8 @@ import type { AppDispatch } from "../../Store";
 import { logout } from "../../Store/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Button from "../Button";
+import { colors } from "../../globalStyles";
 
 interface MyJwtPayload {
   unique_name: string;
@@ -43,9 +45,8 @@ const Header = () => {
             Olá, <span>{decoded ? decoded.unique_name : "Visitante"}</span>
           </p>
         </div>
-        <a onClick={deslogar} href="#">
-          Sair
-        </a>
+
+        <Button bgColor={colors.azul} padding="small" type="button" children='Logout' onClick={deslogar}/>
       </div>
     </HeaderSection>
   );

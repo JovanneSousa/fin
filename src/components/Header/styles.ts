@@ -27,18 +27,8 @@ export const HeaderSection = styled.header`
     padding: 0;
   }
 
-  a {
-    padding: 8px 16px;
-    color: ${colors.gray};
-    border: 3px solid ${colors.lightGray};
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: ${colors.verde};
-      color: ${colors.lightGray};
-      box-shadow: 0 0 12px ${colors.verde};
-    }
+  button {
+    margin: 0;
+    max-width: 88px;
   }
 `;

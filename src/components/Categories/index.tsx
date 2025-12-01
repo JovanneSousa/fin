@@ -49,10 +49,7 @@ const Categories = () => {
             padding="small"
             type="button"
             children={<FontAwesomeIcon icon={faChevronDown} />}
-            onClick={() => {
-              setIsFormActive(!isFormActive);
-              console.log(isFormActive);
-            }}
+            onClick={() => setIsFormActive(!isFormActive)}
           />
         </div>
         <div className={`content ${isFormActive ? "is-active" : ""}`}>

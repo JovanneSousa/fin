@@ -10,6 +10,7 @@ import Feedback from "../Feedback";
 import GraficoRosca from "../GraficoRosca";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
+import GraficoLinha from "../GraficoLinha";
 
 type tabKey = "new" | "categories" | "comparacao";
 
@@ -98,6 +99,13 @@ const AnalysisSection = () => {
             <Loader />
           ) : errorGet ? (
             <Feedback error={errorGet} />
+          ) : activeTab == "comparacao" ? (
+            <>
+              <div className="title-container">
+                <p>Comparativo Mensal</p>
+              </div>
+              <GraficoLinha />
+            </>
           ) : (
             <GraficoBarras data={data} />
           )}

@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import type { RootReducer } from "../../Store";
 import { formatCurrency } from "../../Utils";
+import Feedback from "../Feedback";
 
 const DESPESA_COLORS = [
   "#e63946",
@@ -56,7 +57,9 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
 
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 
-  return (
+  return data.length == 0 ? (
+    <Feedback error="Nenhum dado encontrado" noButton={true} />
+  ) : (
     <ResponsiveContainer width="100%" height={400}>
       <PieChart>
         <Pie
@@ -67,7 +70,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
           cy="50%"
           innerRadius={70}
           outerRadius={120}
-          label={({ name ,value }) => `${name}: ${formatCurrency(value)}`}
+          label={({ name, value }) => `${name}: ${formatCurrency(value)}`}
         >
           {data.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

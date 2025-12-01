@@ -41,8 +41,8 @@ const FormRegister = () => {
       <div className="input-wrapper">
         <input type="text" placeholder="Nome" {...registerInput("nome")} />
         <i className="fa fa-user"></i>
-      <span className="error-span">{errors.nome?.message}</span>
       </div>
+      <span className="error-span">{errors.nome?.message}</span>
       <div className="input-wrapper">
         <input type="email" placeholder="Email" {...registerInput("email")} />
         <i className="fa fa-envelope" aria-hidden="true"></i>
@@ -64,8 +64,8 @@ const FormRegister = () => {
           {...registerInput("confirmPassword")}
         />
         <i className="fa fa-lock" aria-hidden="true"></i>
-      <span className="error-span">{errors.confirmPassword?.message}</span>
       </div>
+      <span className="error-span">{errors.confirmPassword?.message}</span>
 
       <Button padding="big" bgColor={colors.verde} type="submit">
         {loading ? "Cadastrando..." : "Cadastrar"}

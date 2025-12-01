@@ -204,11 +204,12 @@ const Seletor = () => {
       </div>
       {!isFilterPeriodoActive ? (
         <Button
-          onClick={() => setIsFilterPeriodoActive(true)}
           bgColor={colors.lightGray}
           padding="small"
           type="button"
-          children="Filtrar por período"
+          onClick={() => setIsFilterPeriodoActive(true)}
+          icon={"down"}
+          children="Filtrar por periodo"
         />
       ) : (
         <Button
@@ -216,42 +217,42 @@ const Seletor = () => {
           bgColor={colors.lightGray}
           padding="small"
           type="button"
+          icon="up"
           children="Fechar Filtro"
         />
       )}
 
-      {isFilterPeriodoActive ? (
-        <>
-          <form onSubmit={aplicarFiltroPeriodo}>
-            <div className="input-container">
-              <div className="input-wrapper">
-                <label htmlFor="date">Data Inicial</label>
-                <input
-                  id="date"
-                  type="date"
-                  value={dataInicio}
-                  onChange={(e) => setDataInicio(e.target.value)}
-                />
-              </div>
-              <div className="input-wrapper">
-                <label htmlFor="date">Data Final</label>
-                <input
-                  id="date"
-                  type="date"
-                  value={dataFim}
-                  onChange={(e) => setDataFim(e.target.value)}
-                />
-              </div>
-            </div>
-            <Button
-              bgColor={colors.verde}
-              padding="small"
-              type="submit"
-              children="Aplicar Período"
+      <form
+        className={`content ${isFilterPeriodoActive ? "is-active" : ""}`}
+        onSubmit={aplicarFiltroPeriodo}
+      >
+        <div className="input-container">
+          <div className="input-wrapper">
+            <label htmlFor="date">Data Inicial</label>
+            <input
+              id="date"
+              type="date"
+              value={dataInicio}
+              onChange={(e) => setDataInicio(e.target.value)}
             />
-          </form>
-        </>
-      ) : null}
+          </div>
+          <div className="input-wrapper">
+            <label htmlFor="date">Data Final</label>
+            <input
+              id="date"
+              type="date"
+              value={dataFim}
+              onChange={(e) => setDataFim(e.target.value)}
+            />
+          </div>
+        </div>
+        <Button
+          bgColor={colors.verde}
+          padding="small"
+          type="submit"
+          children="Aplicar Período"
+        />
+      </form>
     </SeletorSection>
   );
 };

@@ -91,9 +91,9 @@ export const Feedback: React.FC<FeedbackProps> = ({
         <span className="error">{error}</span>
       )}
 
-      {(success || error) && (
+      {(success || error) && (!noButton) ?
         <ProgressBar progress={progress} type={success ? "success" : "error"} />
-      )}
+        : null}
     </ContainerFeedback>
   );
 };

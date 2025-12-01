@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { colors } from "../../globalStyles";
 import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
-import { getTransacao, type Transacao } from "../../Store/reducers/transactions";
+import {
+  getTransacao,
+  type Transacao,
+} from "../../Store/reducers/transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import Loader from "../Loader";
@@ -45,8 +48,18 @@ const History = () => {
     errorDelete,
     successDelete,
   } = useSelector((state: RootReducer) => state.transactions);
+  const { despesa, receita } = useSelector(
+    (state: RootReducer) => state.categories
+  );
 
-  let filtered = items.slice();
+  let filtered = items.map((item) => {
+    if (!item.categoria) {
+      const source = item.type === 0 ? receita : despesa;
+      const categoria = source.find((c) => c.id === item.categoriaId);
+      return { ...item, categoria };
+    }
+    return item;
+  });
 
   if (filters.type === "receita")
     filtered = filtered.filter((i) => i.type === 0);
@@ -112,7 +125,7 @@ const History = () => {
         <Feedback error={errorDelete} />
       ) : successDelete ? (
         <Feedback success={successDelete} />
-      ) : items.length === 0 ? (
+      ) : filtered.length == 0 ? (
         <Feedback
           success="Busca realizada com sucesso, mas nenhum item foi encontrado"
           noButton={true}

@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 import type { ButtonProps } from ".";
 
-export const ButtonStyled = styled.button<ButtonProps>`
+export const ButtonStyled = styled.button.withConfig({
+  shouldForwardProp: (prop) => !["bgColor", "padding"].includes(prop),
+})<ButtonProps>`
   padding: 8px 16px;
   width: 100%;
   border: none;

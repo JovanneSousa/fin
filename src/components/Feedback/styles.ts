@@ -25,6 +25,9 @@ export const ContainerFeedback = styled.div`
   .error {
     color: ${colors.vermelho};
   }
+  .info {
+    color: ${colors.azul};
+  }
 `;
 
 export const ProgressBar = styled.div<{

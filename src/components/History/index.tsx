@@ -30,6 +30,7 @@ const History = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [itemSelecionado, setItemSelecionado] = useState<Transacao | null>(
     null
   );
@@ -95,16 +96,27 @@ const History = () => {
   }
 
   return (
-    <HistorySection>
+    <HistorySection className={isHistoryOpen ? "is-active" : ""}>
       <div className="container-hist-title">
         <p className="title-hist">Histórico de Transações</p>
-        <Button
-          bgColor={colors.verde}
-          children="Filtros"
-          padding="small"
-          type="button"
-          onClick={() => setIsFilterOpen(true)}
-        />
+        {isHistoryOpen ? (
+          <Button
+            bgColor={colors.verde}
+            children="Filtros"
+            padding="small"
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+          />
+        ) : (
+          <Button
+            children={""}
+            bgColor={colors.transparent}
+            padding="small"
+            type="button"
+            icon="down"
+            onClick={() => setIsHistoryOpen(true)}
+          />
+        )}
       </div>
 
       <Modal
@@ -117,66 +129,81 @@ const History = () => {
         />
       </Modal>
 
-      {loadingGet || loadingDelete ? (
+      {isHistoryOpen && (loadingGet || loadingDelete) ? (
         <Loader />
-      ) : errorGet ? (
+      ) : isHistoryOpen && errorGet ? (
         <Feedback noButton={true} error={errorGet} />
-      ) : errorDelete ? (
+      ) : isHistoryOpen && errorDelete ? (
         <Feedback error={errorDelete} />
-      ) : successDelete ? (
+      ) : isHistoryOpen && successDelete ? (
         <Feedback success={successDelete} />
-      ) : filtered.length == 0 ? (
+      ) : isHistoryOpen && filtered.length == 0 ? (
         <Feedback
-          success="Busca realizada com sucesso, mas nenhum item foi encontrado"
+          info="Busca realizada com sucesso, mas nenhum item foi encontrado"
           noButton={true}
         />
-      ) : (
-        filtered.slice().map((item) => (
-          <div className="container-transacao" key={item.id}>
-            <div className="icon-hist">
-              <IconBox color={item.type === 0 ? colors.verde : colors.vermelho}>
-                {item.type === 0 ? "+" : "-"}
-              </IconBox>
-              <div className="container-titulo-nome">
-                <p className="desc">{item.titulo}</p>
-                <p className="cat">{item.categoria?.name}</p>
+      ) : isHistoryOpen ? (
+        <div className="content">
+          {filtered.slice().map((item) => (
+            <div className="container-transacao" key={item.id}>
+              <div className="icon-hist">
+                <IconBox
+                  color={item.type === 0 ? colors.verde : colors.vermelho}
+                >
+                  {item.type === 0 ? "+" : "-"}
+                </IconBox>
+                <div className="container-titulo-nome">
+                  <p className="desc">{item.titulo}</p>
+                  <p className="cat">{item.categoria?.name}</p>
+                </div>
+              </div>
+              <div className="value-hist">
+                <div className="container-value">
+                  <p className={`value ${item.type === 1 ? "despesa" : ""}`}>
+                    {item.type === 0
+                      ? `+ ${formatCurrency(item.valor)}`
+                      : `- ${formatCurrency(item.valor)}`}
+                  </p>
+                  <p className="data">
+                    {" "}
+                    {toLocalDateIgnoreTimezone(
+                      item.dataMovimentacao
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="button-container">
+                  <DetailBox
+                    onClick={() => {
+                      dispatch(getTransacao(item.id!));
+                      setIsOpen(true);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                  </DetailBox>
+                  <CloseBox
+                    onClick={() => {
+                      setIsDeleteModalOpen(true);
+                      setItemSelecionado(item);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                  </CloseBox>
+                </div>
               </div>
             </div>
-            <div className="value-hist">
-              <div className="container-value">
-                <p className={`value ${item.type === 1 ? "despesa" : ""}`}>
-                  {item.type === 0
-                    ? `+ ${formatCurrency(item.valor)}`
-                    : `- ${formatCurrency(item.valor)}`}
-                </p>
-                <p className="data">
-                  {" "}
-                  {toLocalDateIgnoreTimezone(
-                    item.dataMovimentacao
-                  ).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="button-container">
-                <DetailBox
-                  onClick={() => {
-                    dispatch(getTransacao(item.id!));
-                    setIsOpen(true);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                </DetailBox>
-                <CloseBox
-                  onClick={() => {
-                    setIsDeleteModalOpen(true);
-                    setItemSelecionado(item);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                </CloseBox>
-              </div>
-            </div>
-          </div>
-        ))
+          ))}
+        </div>
+      ) : null}
+      {isHistoryOpen && (
+        <Button
+          bgColor={colors.transparent}
+          icon="up"
+          children=""
+          padding="small"
+          type="button"
+          onClick={() => setIsHistoryOpen(false)}
+          className="end"
+        />
       )}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
         <TransacaoDetails onClose={() => setIsOpen(false)} />

@@ -24,7 +24,7 @@ export const HeaderSection = styled.header`
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 8px;
+    padding: 0;
   }
 
   a {

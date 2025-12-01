@@ -53,7 +53,7 @@ const GraficoLinha = () => {
     }));
   }, [items]);
   return data.length <= 1 ? (
-    <Feedback error="Selecione um periodo de meses no seletor acima" noButton={true}/>
+    <Feedback info="Selecione um periodo de meses no seletor acima" noButton={true}/>
   ) : (
     <LineChart
       style={{

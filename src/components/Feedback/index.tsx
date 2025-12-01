@@ -1,7 +1,10 @@
-import { FontAwesomeIcon as FontAwesomeIconSucess } from "@fortawesome/react-fontawesome";
+import {
+  FontAwesomeIcon,
+  FontAwesomeIcon as FontAwesomeIconSucess,
+} from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon as FontAwesomeIconError } from "@fortawesome/react-fontawesome";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { ContainerFeedback, ProgressBar } from "./styles";
 import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
@@ -20,10 +23,12 @@ import Button from "../Button";
 type FeedbackProps = {
   success?: string;
   error?: string;
+  info?: string;
   noButton?: boolean;
 };
 
 export const Feedback: React.FC<FeedbackProps> = ({
+  info,
   error,
   success,
   noButton = false,
@@ -78,6 +83,12 @@ export const Feedback: React.FC<FeedbackProps> = ({
           size="6x"
           icon={faCircleCheck}
         />
+      ) : info ? (
+        <FontAwesomeIcon
+          icon={faCircleInfo}
+          size="6x"
+          style={{ color: colors.azul }}
+        />
       ) : (
         <FontAwesomeIconError
           icon={faCircleXmark}
@@ -87,13 +98,15 @@ export const Feedback: React.FC<FeedbackProps> = ({
       )}
       {success ? (
         <span className="success">{success}</span>
+      ) : info ? (
+        <span className="info">{info}</span>
       ) : (
         <span className="error">{error}</span>
       )}
 
-      {(success || error) && (!noButton) ?
+      {(success || error) && !noButton ? (
         <ProgressBar progress={progress} type={success ? "success" : "error"} />
-        : null}
+      ) : null}
     </ContainerFeedback>
   );
 };

@@ -58,7 +58,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 
   return data.length == 0 ? (
-    <Feedback error="Nenhum dado encontrado" noButton={true} />
+    <Feedback info="Nenhum dado encontrado" noButton={true} />
   ) : (
     <ResponsiveContainer width="100%" height={400}>
       <PieChart>

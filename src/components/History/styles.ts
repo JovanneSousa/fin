@@ -11,6 +11,23 @@ export const HistorySection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: 80px;
+  transition: max-height 0.5s ease;
+  overflow: hidden;
+
+  .content {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top: 1px solid ${colors.lightGray};
+    border-bottom: 1px solid ${colors.lightGray};
+    scrollbar-width: thin;
+  }
+
+  &.is-active {
+    max-height: 720px;
+  }
 
   button {
     margin: 0;
@@ -150,6 +167,10 @@ export const HistorySection = styled.section`
 
   p.despesa {
     color: ${colors.vermelho};
+  }
+
+  .end {
+    align-self: flex-end;
   }
 `;
 

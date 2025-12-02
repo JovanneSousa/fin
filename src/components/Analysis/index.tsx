@@ -36,6 +36,8 @@ const AnalysisSection = () => {
     },
   ];
 
+  const hasItems = valorTotalReceita != 0 || valorTotalDespesa != 0;
+
   const [activeTab, setActiveTab] = useState<tabKey>("new");
   const Components = {
     new: <New />,
@@ -105,8 +107,10 @@ const AnalysisSection = () => {
               </div>
               <GraficoLinha />
             </>
-          ) : (
+          ) : hasItems ? (
             <GraficoBarras data={data} />
+          ) : (
+            <Feedback info="Nenhum dado encontrado" noButton={true} />
           )}
         </div>
         {Components[activeTab]}

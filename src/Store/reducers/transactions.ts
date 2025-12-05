@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../Services/api";
-import type { RootReducer } from "..";
 import type { Category } from "./categories";
 
 export interface TransactionFilter {
@@ -69,10 +68,9 @@ export const createTransaction = createAsyncThunk<
   Transacao,
   Transacao,
   { rejectValue: string }
->("transactions/create", async (transaction, { getState, rejectWithValue }) => {
+>("transactions/create", async (transaction, { rejectWithValue }) => {
   try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const response = await api.post("api/transacoes/novo", transaction, {
       headers: { Authorization: `Bearer ${token}` },
@@ -87,10 +85,9 @@ export const updateTransaction = createAsyncThunk<
   Transacao,
   Transacao,
   { rejectValue: string }
->("transactions/update", async (transaction, { getState, rejectWithValue }) => {
+>("transactions/update", async (transaction, { rejectWithValue }) => {
   try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const response = await api.put(
       `api/transacoes/${transaction.id}`,
@@ -105,36 +102,15 @@ export const updateTransaction = createAsyncThunk<
   }
 });
 
-// export const fetchTransactions = createAsyncThunk<
-//   Transacao[],
-//   void,
-//   { rejectValue: string }
-// >("transactions/fetch", async (_, { getState, rejectWithValue }) => {
-//   try {
-//     const state = getState() as RootReducer;
-//     const token = state.auth.token || localStorage.getItem("token");
-
-//     const response = await api.get("api/transacoes", {
-//       headers: { Authorization: `Bearer ${token}` },
-//     });
-//     return response.data;
-//   } catch (err: any) {
-//     return rejectWithValue(
-//       err.response?.data || "Erro ao carregar transações, recarregue a página!"
-//     );
-//   }
-// });
-
 export const fetchTransactionsPeriod = createAsyncThunk<
   Transacao[],
   TransactionFilter,
   { rejectValue: string }
 >(
   "transactionsPeriod/fetch",
-  async ({ startDate, endDate }, { getState, rejectWithValue }) => {
+  async ({ startDate, endDate }, { rejectWithValue }) => {
     try {
-      const state = getState() as RootReducer;
-      const token = state.auth.token || localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       const response = await api.get(
         `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
@@ -157,10 +133,9 @@ export const getTransacao = createAsyncThunk<
   Transacao,
   string,
   { rejectValue: string }
->("transaction/fetch", async (id, { getState, rejectWithValue }) => {
+>("transaction/fetch", async (id, { rejectWithValue }) => {
   try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const response = await api.get(`api/transacoes/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -175,10 +150,9 @@ export const deleteTransactions = createAsyncThunk<
   string,
   string,
   { rejectValue: string }
->("transactions/delete", async (id, { getState, rejectWithValue }) => {
+>("transactions/delete", async (id, { rejectWithValue }) => {
   try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     await api.delete(`api/transacoes/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -236,20 +210,6 @@ const transactionSlice = createSlice({
         state.loadingUpdate = false;
         state.errorUpdate = action.payload || "Erro ao atualizar transação";
       })
-
-      // .addCase(fetchTransactions.pending, (state) => {
-      //   state.loadingGet = true;
-      //   state.errorGet = null;
-      // })
-      // .addCase(fetchTransactions.fulfilled, (state, action) => {
-      //   state.loadingGet = false;
-      //   state.items = action.payload;
-      // })
-      // .addCase(fetchTransactions.rejected, (state, action) => {
-      //   state.loadingGet = false;
-      //   state.errorGet =
-      //     action.payload || "Erro ao carregar transações, recarregue a página!";
-      // })
 
       .addCase(fetchTransactionsPeriod.pending, (state) => {
         state.loadingGet = true;

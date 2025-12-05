@@ -4,7 +4,6 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import api from "../../Services/api";
-import type { RootReducer } from "..";
 
 export interface Category {
   id: string;
@@ -48,9 +47,8 @@ const initialState: CategoriesState = {
 
 export const getCategories = createAsyncThunk<Category[]>(
   "categories/fetch",
-  async (_, { getState }) => {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+  async () => {
+    const token = localStorage.getItem("token");
 
     const response = await api.get<Category[]>("api/categories", {
       headers: {
@@ -66,10 +64,9 @@ export const postCategories = createAsyncThunk<
   Category,
   { name: string; type: number },
   { rejectValue: string }
->("categories/post", async ({ name, type }, { getState, rejectWithValue }) => {
+>("categories/post", async ({ name, type }, { rejectWithValue }) => {
   try {
-    const state = getState() as RootReducer;
-    const token = state.auth.token || localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const response = await api.post<Category>(
       "api/categories",
@@ -93,10 +90,9 @@ export const deleteCategories = createAsyncThunk<
 >(
   "categories/delete",
 
-  async (id, { getState, rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const state = getState() as RootReducer;
-      const token = state.auth.token || localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       await api.delete(`api/categories/${id}`, {
         headers: { Authorization: `Bearer ${token}` },

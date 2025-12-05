@@ -27,8 +27,7 @@ const FormRegister = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const result = await dispatch(register(data)).unwrap();
-      localStorage.setItem("token", result.token);
+      await dispatch(register(data)).unwrap();
       reset();
       navigate("/home");
     } catch (err) {

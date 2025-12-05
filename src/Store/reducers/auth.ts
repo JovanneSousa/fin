@@ -3,19 +3,37 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import api from "../../Services/api";
 import type { AxiosError } from "axios";
+import apiAuth from "../../Services/apiAuth";
 
 interface LoginResponse {
-  token: string;
+  sucess: boolean;
+  data: {
+    token: {
+      accessToken: string;
+      expiresIn: number;
+      userToken: {
+        id: string;
+        name: string;
+        claims: [
+          {
+            value: string;
+            type: string;
+          }
+        ];
+      };
+    };
+  };
 }
 
-interface RegisterResponse {
-  token: string;
-}
+const salvaDados = (data: LoginResponse) => {
+  localStorage.setItem("token", data.data.token.accessToken);
+  localStorage.setItem("user", data.data.token.userToken.name);
+  localStorage.setItem("userId", data.data.token.userToken.id);
+  localStorage.setItem("expiresIn", (Date.now() + data.data.token.expiresIn * 1000).toString());
+};
 
 interface AuthState {
-  token: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -26,7 +44,6 @@ interface ErrorPayload {
 }
 
 const initialState: AuthState = {
-  token: localStorage.getItem("token"),
   loading: false,
   error: null,
 };
@@ -37,7 +54,7 @@ export const login = createAsyncThunk<
   { rejectValue: ErrorPayload }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
-    const response = await api.post<LoginResponse>(
+    const response = await apiAuth.post<LoginResponse>(
       `api/auth/login`,
       credentials
     );
@@ -55,12 +72,12 @@ export const login = createAsyncThunk<
 });
 
 export const register = createAsyncThunk<
-  RegisterResponse,
+  LoginResponse,
   { nome: string; email: string; password: string; confirmPassword: string },
   { rejectValue: ErrorPayload }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
-    const response = await api.post<RegisterResponse>(
+    const response = await apiAuth.post<LoginResponse>(
       `api/auth/registrar`,
       userData
     );
@@ -81,7 +98,7 @@ export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
   "wake-up",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get<string>(`api/auth/wake-up`);
+      const response = await apiAuth.get<string>(`api/auth/wake-up`);
       return response.data;
     } catch (err: any) {
       return rejectWithValue(err.message ?? "Erro ao acordar API");
@@ -93,9 +110,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout(state) {
-      state.token = null;
-      localStorage.removeItem("token");
+    logout() {
+      localStorage.clear()
     },
     clearError(state) {
       state.error = null;
@@ -131,18 +147,16 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          state.token = action.payload.token;
-          localStorage.setItem("token", action.payload.token);
+          salvaDados(action.payload)
         }
       )
       .addCase(login.rejected, setRejected)
       .addCase(register.pending, setPending)
       .addCase(
         register.fulfilled,
-        (state, action: PayloadAction<RegisterResponse>) => {
+        (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          state.token = action.payload.token;
-          localStorage.setItem("token", action.payload.token);
+          salvaDados(action.payload)
         }
       )
       .addCase(register.rejected, setRejected);

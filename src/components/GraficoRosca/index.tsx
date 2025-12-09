@@ -39,12 +39,25 @@ interface GraficoRoscaProps {
 }
 
 const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
+  const { despesa, receita } = useSelector(
+    (state: RootReducer) => state.categories
+  );
   const { items } = useSelector((state: RootReducer) => state.transactions);
+
   const data = useMemo(() => {
     const transacoesFiltradas = items.filter((t) => t.type === tipo);
 
+    const filtered = transacoesFiltradas.map((item) => {
+      if (!item.categoria) {
+        const source = item.type === 0 ? receita : despesa;
+        const categoria = source.find((c) => c.id === item.categoriaId);
+        return { ...item, categoria };
+      }
+      return item;
+    });
+
     const mapa = new Map<string, number>();
-    transacoesFiltradas.forEach((t) => {
+    filtered.forEach((t) => {
       const nomeCategoria = t.categoria?.name || "Sem categoria";
       mapa.set(nomeCategoria, (mapa.get(nomeCategoria) || 0) + t.valor);
     });
@@ -53,7 +66,7 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
       name,
       value,
     }));
-  }, [items, tipo]);
+  }, [items, tipo, receita, despesa]);
 
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 

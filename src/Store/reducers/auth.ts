@@ -26,11 +26,11 @@ interface LoginResponse {
   };
 }
 
-const salvaDados = (data: LoginResponse) => {
-  localStorage.setItem("token", data.data.token.accessToken);
-  localStorage.setItem("user", data.data.token.userToken.name);
-  localStorage.setItem("userId", data.data.token.userToken.id);
-  localStorage.setItem("expiresIn", (Date.now() + data.data.token.expiresIn * 1000).toString());
+const salvaDados = (response: LoginResponse) => {
+  localStorage.setItem("token", response.data.token.accessToken);
+  localStorage.setItem("user", response.data.token.userToken.name);
+  localStorage.setItem("userId", response.data.token.userToken.id);
+  localStorage.setItem("expiresIn", (Date.now() + response.data.token.expiresIn * 1000).toString());
 };
 
 interface AuthState {

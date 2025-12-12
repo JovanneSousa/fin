@@ -7,7 +7,12 @@ export interface TransactionFilter {
   endDate: string;
 }
 
-export interface Transacao {
+type ResponsePayload = {
+  success: boolean;
+  data: Transacao[];
+};
+
+export type Transacao = {
   id?: string;
   titulo: string;
   valor: number;
@@ -17,7 +22,7 @@ export interface Transacao {
   type?: number;
   categoria?: Category;
   parcelas?: number;
-}
+};
 
 interface TransactionState {
   items: Transacao[];
@@ -103,7 +108,7 @@ export const updateTransaction = createAsyncThunk<
 });
 
 export const fetchTransactionsPeriod = createAsyncThunk<
-  Transacao[],
+  ResponsePayload,
   TransactionFilter,
   { rejectValue: string }
 >(
@@ -217,7 +222,7 @@ const transactionSlice = createSlice({
       })
       .addCase(fetchTransactionsPeriod.fulfilled, (state, action) => {
         state.loadingGet = false;
-        state.items = action.payload;
+        state.items = action.payload.data;
       })
       .addCase(fetchTransactionsPeriod.rejected, (state, action) => {
         state.loadingGet = false;

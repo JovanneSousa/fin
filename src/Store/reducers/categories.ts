@@ -11,6 +11,11 @@ export interface Category {
   type: number;
 }
 
+export type ResponsePayload = {
+  success: boolean;
+  data: Category[]
+}
+
 interface CategoriesState {
   receita: Category[];
   despesa: Category[];
@@ -45,12 +50,12 @@ const initialState: CategoriesState = {
   successDelete: null as string | null,
 };
 
-export const getCategories = createAsyncThunk<Category[]>(
+export const getCategories = createAsyncThunk<ResponsePayload>(
   "categories/fetch",
   async () => {
     const token = localStorage.getItem("token");
 
-    const response = await api.get<Category[]>("api/categories", {
+    const response = await api.get<ResponsePayload>("api/categories", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -128,10 +133,10 @@ const categoriesSlice = createSlice({
         state.loadingGet = true;
         state.errorGet = null;
       })
-      .addCase(getCategories.fulfilled, (state, action) => {
+      .addCase(getCategories.fulfilled, (state, action: PayloadAction<ResponsePayload>) => {
         state.loadingGet = false;
-        state.receita = action.payload.filter((c) => c.type === 1);
-        state.despesa = action.payload.filter((c) => c.type === 0);
+        state.receita = action.payload.data.filter((c) => c.type === 1);
+        state.despesa = action.payload.data.filter((c) => c.type === 0);
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.loadingGet = false;

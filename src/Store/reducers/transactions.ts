@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../Services/api";
-import type { Category } from "./categories";
+import type { Category, ErrorResponse } from "./categories";
+import axios from "axios";
 
 export interface TransactionFilter {
   startDate: string;
   endDate: string;
 }
 
-type ResponsePayload = {
+export type ResponsePayload<T> = {
   success: boolean;
-  data: Transacao[];
+  data: T;
 };
 
 export type Transacao = {
@@ -70,7 +71,7 @@ const initialState: TransactionState = {
 };
 
 export const createTransaction = createAsyncThunk<
-  Transacao,
+  ResponsePayload<Transacao>,
   Transacao,
   { rejectValue: string }
 >("transactions/create", async (transaction, { rejectWithValue }) => {
@@ -80,14 +81,19 @@ export const createTransaction = createAsyncThunk<
     const response = await api.post("api/transacoes/novo", transaction, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     return response.data;
-  } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Erro ao criar transação");
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Erro inesperado ao criar transação");
   }
 });
 
 export const updateTransaction = createAsyncThunk<
-  Transacao,
+  ResponsePayload<Transacao>,
   Transacao,
   { rejectValue: string }
 >("transactions/update", async (transaction, { rejectWithValue }) => {
@@ -102,13 +108,17 @@ export const updateTransaction = createAsyncThunk<
       }
     );
     return response.data;
-  } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Erro ao atualizar transação");
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Erro ao atualizar transação");
   }
 });
 
 export const fetchTransactionsPeriod = createAsyncThunk<
-  ResponsePayload,
+  ResponsePayload<Transacao[]>,
   TransactionFilter,
   { rejectValue: string }
 >(
@@ -125,17 +135,20 @@ export const fetchTransactionsPeriod = createAsyncThunk<
       );
 
       return response.data;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      if (axios.isAxiosError<ErrorResponse>(err)) {
+        const data = err.response?.data.errors[0];
+        if (data) return rejectWithValue(data);
+      }
       return rejectWithValue(
-        err.response?.data ||
-          "Erro ao carregar transações, recarregue a página!"
+        "Erro ao carregar transações, recarregue a página!"
       );
     }
   }
 );
 
 export const getTransacao = createAsyncThunk<
-  Transacao,
+  ResponsePayload<Transacao>,
   string,
   { rejectValue: string }
 >("transaction/fetch", async (id, { rejectWithValue }) => {
@@ -146,8 +159,12 @@ export const getTransacao = createAsyncThunk<
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
-  } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Erro ao buscar transação");
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Erro ao buscar transação");
   }
 });
 
@@ -162,9 +179,14 @@ export const deleteTransactions = createAsyncThunk<
     await api.delete(`api/transacoes/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     return id;
-  } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Erro ao deletar transações");
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Erro ao deletar transações");
   }
 });
 
@@ -192,7 +214,7 @@ const transactionSlice = createSlice({
       })
       .addCase(createTransaction.fulfilled, (state, action) => {
         state.loadingPost = false;
-        state.items.push(action.payload);
+        state.items.push(action.payload.data);
         state.successPost = "Transação criada com sucesso";
       })
       .addCase(createTransaction.rejected, (state, action) => {
@@ -207,7 +229,7 @@ const transactionSlice = createSlice({
       .addCase(updateTransaction.fulfilled, (state, action) => {
         state.loadingUpdate = false;
         state.items = state.items.map((t) =>
-          t.id === action.payload.id ? action.payload : t
+          t.id === action.payload.data.id ? action.payload.data : t
         );
         state.successUpdate = "Transação atualizada com sucesso";
       })
@@ -236,7 +258,7 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransacao.fulfilled, (state, action) => {
         state.loadingGetItem = false;
-        state.selected = action.payload;
+        state.selected = action.payload.data;
       })
       .addCase(getTransacao.rejected, (state, action) => {
         state.loadingGetItem = false;

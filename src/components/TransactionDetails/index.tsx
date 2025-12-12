@@ -54,7 +54,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
       dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       id: selected?.id,
     };
-     dispatch(updateTransaction(payload));
+    dispatch(updateTransaction(payload));
     reset();
     setIsEditing(false);
   };
@@ -67,7 +67,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
         titulo: selected.titulo,
         valor: selected.valor,
         categoriaId: selected.categoriaId,
-        dataMovimentacao: selected.dataMovimentacao.split("T")[0],
+        dataMovimentacao: selected.dataMovimentacao.split("T")[0] ?? "",
         isRecurring: selected.isRecurring,
         parcelas: selected.parcelas ?? undefined,
       });

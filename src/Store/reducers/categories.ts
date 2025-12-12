@@ -13,8 +13,8 @@ export interface Category {
 
 export type ResponsePayload = {
   success: boolean;
-  data: Category[]
-}
+  data: Category[];
+};
 
 interface CategoriesState {
   receita: Category[];
@@ -66,14 +66,14 @@ export const getCategories = createAsyncThunk<ResponsePayload>(
 );
 
 export const postCategories = createAsyncThunk<
-  Category,
+  ResponsePayload,
   { name: string; type: number },
   { rejectValue: string }
 >("categories/post", async ({ name, type }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await api.post<Category>(
+    const response = await api.post<ResponsePayload>(
       "api/categories",
       { name, type },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -133,11 +133,14 @@ const categoriesSlice = createSlice({
         state.loadingGet = true;
         state.errorGet = null;
       })
-      .addCase(getCategories.fulfilled, (state, action: PayloadAction<ResponsePayload>) => {
-        state.loadingGet = false;
-        state.receita = action.payload.data.filter((c) => c.type === 1);
-        state.despesa = action.payload.data.filter((c) => c.type === 0);
-      })
+      .addCase(
+        getCategories.fulfilled,
+        (state, action: PayloadAction<ResponsePayload>) => {
+          state.loadingGet = false;
+          state.receita = action.payload.data.filter((c) => c.type === 1);
+          state.despesa = action.payload.data.filter((c) => c.type === 0);
+        }
+      )
       .addCase(getCategories.rejected, (state, action) => {
         state.loadingGet = false;
         state.errorGet = action.error.message || "Erro ao carregar categorias";
@@ -149,13 +152,14 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(
       postCategories.fulfilled,
-      (state, action: PayloadAction<Category>) => {
+      (state, action: PayloadAction<ResponsePayload>) => {
         state.loadingPost = false;
-        if (action.payload.type === 1) {
-          state.receita.push(action.payload);
-        } else {
-          state.despesa.push(action.payload);
-        }
+        
+        const categoria = action.payload.data[0];
+        if (!categoria) return;
+
+        const isReceita = categoria.type === 1;
+        (isReceita ? state.receita : state.despesa).push(categoria);
         state.successPost = "Categoria adicionada com sucesso!";
       }
     );

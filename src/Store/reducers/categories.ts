@@ -4,6 +4,12 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import api from "../../Services/api";
+import axios from "axios";
+
+export interface ErrorRespone {
+  success: boolean;
+  errors: string[];
+}
 
 export interface Category {
   id: string;
@@ -50,11 +56,13 @@ const initialState: CategoriesState = {
   successDelete: null as string | null,
 };
 
-export const getCategories = createAsyncThunk<ResponsePayload>(
-  "categories/fetch",
-  async () => {
-    const token = localStorage.getItem("token");
-
+export const getCategories = createAsyncThunk<
+  ResponsePayload,
+  void,
+  { rejectValue: string }
+>("categories/fetch", async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  try {
     const response = await api.get<ResponsePayload>("api/categories", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,8 +70,14 @@ export const getCategories = createAsyncThunk<ResponsePayload>(
     });
 
     return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorRespone>(err)) {
+      const erro = err.response?.data.errors;
+      if (erro) return rejectWithValue(erro[0]);
+    }
+    return rejectWithValue("Houve um erro ao buscar as categorias!");
   }
-);
+});
 
 export const postCategories = createAsyncThunk<
   ResponsePayload,
@@ -80,9 +94,10 @@ export const postCategories = createAsyncThunk<
     );
 
     return response.data;
-  } catch (err: any) {
-    if (err.response && err.response.data?.message) {
-      return rejectWithValue(err.response.data.message);
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorRespone>(err)) {
+      const data = err.response?.data.errors;
+      if (data) return rejectWithValue(data[0]);
     }
     return rejectWithValue("Erro inesperado ao adicionar categoria");
   }
@@ -92,25 +107,23 @@ export const deleteCategories = createAsyncThunk<
   string,
   string,
   { rejectValue: string }
->(
-  "categories/delete",
+>("categories/delete", async (id, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem("token");
 
-  async (id, { rejectWithValue }) => {
-    try {
-      const token = localStorage.getItem("token");
+    await api.delete(`api/categories/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      await api.delete(`api/categories/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      return id;
-    } catch (err: any) {
-      const message =
-        err.response?.data?.message || "Erro inesperado ao deletar categoria";
-      return rejectWithValue(message);
+    return id;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorRespone>(err)) {
+      const data = err.response?.data.errors;
+      if (data) return rejectWithValue(data[0]);
     }
+    return rejectWithValue("Erro inesperado ao deletar a categoria!");
   }
-);
+});
 
 const categoriesSlice = createSlice({
   name: "categories",
@@ -143,7 +156,7 @@ const categoriesSlice = createSlice({
       )
       .addCase(getCategories.rejected, (state, action) => {
         state.loadingGet = false;
-        state.errorGet = action.error.message || "Erro ao carregar categorias";
+        state.errorGet = action.payload || "Erro ao carregar categorias";
       });
 
     builder.addCase(postCategories.pending, (state) => {
@@ -154,7 +167,7 @@ const categoriesSlice = createSlice({
       postCategories.fulfilled,
       (state, action: PayloadAction<ResponsePayload>) => {
         state.loadingPost = false;
-        
+
         const categoria = action.payload.data[0];
         if (!categoria) return;
 
@@ -165,11 +178,7 @@ const categoriesSlice = createSlice({
     );
     builder.addCase(postCategories.rejected, (state, action) => {
       state.loadingPost = false;
-      if (action.payload) {
-        state.errorPost = action.payload as string;
-      } else {
-        state.errorPost = action.error.message || "Erro ao adicionar categoria";
-      }
+      state.errorPost = action.payload || "Erro ao adicionar categoria";
     });
 
     builder.addCase(deleteCategories.pending, (state) => {
@@ -178,7 +187,7 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(deleteCategories.rejected, (state, action) => {
       state.loadingDelete = false;
-      state.errorDelete = action.payload as string;
+      state.errorDelete = action.payload || "Erro ao deletar essa categoria";
     });
     builder.addCase(
       deleteCategories.fulfilled,

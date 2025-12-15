@@ -9,6 +9,19 @@ export const HeaderSection = styled.header`
   left: 0;
   box-shadow: ${colors.shadow};
   z-index: 1;
+  transition: transform 0.3s ease;
+
+  h1 {
+    font-size: 24px;
+  }
+
+  &.hide {
+    transform: translateY(-100%);
+  }
+
+  &.show {
+    transform: translateY(0);
+  }
 
   p {
     span {

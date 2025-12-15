@@ -46,7 +46,7 @@ const AnalysisSection = () => {
   };
 
   return (
-    <Analysis isComparison={activeTab === "comparacao"}>
+    <Analysis isComparison={activeTab == "comparacao"}>
       <nav>
         <ul>
           <li
@@ -70,7 +70,7 @@ const AnalysisSection = () => {
         </ul>
       </nav>
       <div className="container-analysis">
-        <div className="conteudo">
+        <div className={`conteudo ${activeTab == "comparacao" ? "mh-50" : ""}`}>
           {activeTab === "categories" ? (
             <>
               <div className="title-container">

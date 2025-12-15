@@ -61,6 +61,10 @@ export const Analysis = styled.div<AnalysisProp>`
     justify-content: center;
     height: 100%;
     width: 100%;
+
+    &.mh-50 {
+      max-height: 500px;
+    }
   }
 
   .title-container {

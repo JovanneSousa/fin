@@ -30,7 +30,10 @@ const salvaDados = (response: LoginResponse) => {
   localStorage.setItem("token", response.data.token.accessToken);
   localStorage.setItem("user", response.data.token.userToken.name);
   localStorage.setItem("userId", response.data.token.userToken.id);
-  localStorage.setItem("expiresIn", (Date.now() + response.data.token.expiresIn * 1000).toString());
+  localStorage.setItem(
+    "expiresIn",
+    (Date.now() + response.data.token.expiresIn * 1000).toString()
+  );
 };
 
 interface AuthState {
@@ -73,7 +76,14 @@ export const login = createAsyncThunk<
 
 export const register = createAsyncThunk<
   LoginResponse,
-  { nome: string; email: string; password: string; confirmPassword: string },
+  {
+    nome: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    system: string;
+    profile: string;
+  },
   { rejectValue: ErrorPayload }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
@@ -111,7 +121,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout() {
-      localStorage.clear()
+      localStorage.clear();
     },
     clearError(state) {
       state.error = null;
@@ -147,7 +157,7 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          salvaDados(action.payload)
+          salvaDados(action.payload);
         }
       )
       .addCase(login.rejected, setRejected)
@@ -156,7 +166,7 @@ const authSlice = createSlice({
         register.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          salvaDados(action.payload)
+          salvaDados(action.payload);
         }
       )
       .addCase(register.rejected, setRejected);

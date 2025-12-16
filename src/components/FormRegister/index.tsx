@@ -26,8 +26,13 @@ const FormRegister = () => {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
+    const payload = {
+      ...data,
+      system: "financeiro",
+      profile: "usuario",
+    };
     try {
-      await dispatch(register(data)).unwrap();
+      await dispatch(register(payload)).unwrap();
       reset();
       navigate("/home");
     } catch (err) {

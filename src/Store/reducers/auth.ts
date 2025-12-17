@@ -5,6 +5,8 @@ import {
 } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
 import apiAuth from "../../Services/apiAuth";
+import type { ErrorResponse } from "./categories";
+import axios from "axios";
 
 interface LoginResponse {
   sucess: boolean;
@@ -41,11 +43,6 @@ interface AuthState {
   error: string | null;
 }
 
-interface ErrorPayload {
-  status: number;
-  details: string;
-}
-
 const initialState: AuthState = {
   loading: false,
   error: null,
@@ -54,7 +51,7 @@ const initialState: AuthState = {
 export const login = createAsyncThunk<
   LoginResponse,
   { email: string; password: string },
-  { rejectValue: ErrorPayload }
+  { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
     const response = await apiAuth.post<LoginResponse>(
@@ -62,15 +59,12 @@ export const login = createAsyncThunk<
       credentials
     );
     return response.data;
-  } catch (err) {
-    const error = err as AxiosError<{ status: number; detail: string }>;
-    if (error.response && error.response.data) {
-      return rejectWithValue({
-        status: error.response.data.status,
-        details: error.response.data.detail,
-      });
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
     }
-    return rejectWithValue({ status: 500, details: "Falha na conexão" });
+    return rejectWithValue("Falha na conexão");
   }
 });
 
@@ -84,7 +78,7 @@ export const register = createAsyncThunk<
     system: string;
     profile: string;
   },
-  { rejectValue: ErrorPayload }
+  { rejectValue: string }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
     const response = await apiAuth.post<LoginResponse>(
@@ -92,15 +86,12 @@ export const register = createAsyncThunk<
       userData
     );
     return response.data;
-  } catch (err) {
-    const error = err as AxiosError<{ status: number; detail: string }>;
-    if (error.response && error.response.data) {
-      return rejectWithValue({
-        status: error.response.data.status,
-        details: error.response.data.detail,
-      });
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
     }
-    return rejectWithValue({ status: 500, details: "Erro desconhecido" });
+    return rejectWithValue("Erro desconhecido");
   }
 });
 
@@ -110,8 +101,12 @@ export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
     try {
       const response = await apiAuth.get<string>(`api/auth/wake-up`);
       return response.data;
-    } catch (err: any) {
-      return rejectWithValue(err.message ?? "Erro ao acordar API");
+    } catch (err: unknown) {
+      if (axios.isAxiosError<ErrorResponse>(err)) {
+        const data = err.response?.data.errors[0];
+        if (data) return rejectWithValue(data);
+      }
+      return rejectWithValue("Erro ao acordar API");
     }
   }
 );
@@ -144,11 +139,7 @@ const authSlice = createSlice({
         | ReturnType<typeof register.rejected>
     ) => {
       state.loading = false;
-      state.error =
-        (action.payload && action.payload.details) ||
-        (action.payload && `Erro ${action.payload.status}`) ||
-        action.error.message ||
-        "Erro ao processar requisição.";
+      state.error = action.payload as string;
     };
 
     builder

@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
+import { systemName } from "../../Services/systemName";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
@@ -27,9 +28,13 @@ const FormLogin = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-      await dispatch(login(data)).unwrap();
-      reset();
-      navigate("/home");
+    const payload = {
+      ...data,
+      system: systemName,
+    };
+    await dispatch(login(payload)).unwrap();
+    reset();
+    navigate("/home");
   };
 
   const loginTeste = async () => {

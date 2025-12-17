@@ -8,6 +8,7 @@ import { registerSchema } from "../../validations/registerSchema";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
+import { systemName } from "../../Services/systemName";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
@@ -28,7 +29,7 @@ const FormRegister = () => {
   const onSubmit = async (data: RegisterFormData) => {
     const payload = {
       ...data,
-      system: "financeiro",
+      system: systemName,
       profile: "usuario",
     };
     try {

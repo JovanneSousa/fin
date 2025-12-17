@@ -41,7 +41,13 @@ const FormLogin = () => {
     const user = import.meta.env.VITE_LOGIN_VISIT;
     const pass = import.meta.env.VITE_PASS_VISIT;
 
-    await dispatch(login({ email: user, password: pass }));
+    const payload = {
+      email: user,
+      password: pass,
+      system: systemName
+    }
+
+    await dispatch(login(payload));
     navigate("/home");
   };
 

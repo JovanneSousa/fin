@@ -3,7 +3,6 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { AxiosError } from "axios";
 import apiAuth from "../../Services/apiAuth";
 import type { ErrorResponse } from "./categories";
 import axios from "axios";

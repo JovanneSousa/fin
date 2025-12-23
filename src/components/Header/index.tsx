@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../Store";
 import { logout } from "../../Store/reducers/auth";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 
@@ -11,34 +11,30 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [show, setShow] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const expiresIn = Number(localStorage.getItem("expiresIn"));
+  const lastScrollY = useRef(0);
 
-  const deslogar = () => {
+  const deslogar = useCallback(() => {
     dispatch(logout());
     navigate("/");
-  };
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY) {
-        // Scroll para baixo
-        setShow(false);
-      } else {
-        // Scroll para cima
-        setShow(true);
-      }
-
-      setLastScrollY(currentScrollY);
+      setShow(currentScrollY < lastScrollY.current);
+      lastScrollY.current = currentScrollY;
     };
-
-    if (Number(localStorage.getItem("expiresIn")) * 1000 <= Date.now()) {
-      deslogar();
-    }
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [deslogar, lastScrollY]);
+  }, []);
+
+  useEffect(() => {
+    if (!expiresIn || Date.now() >= expiresIn) {
+      deslogar();
+    }
+  }, [expiresIn, deslogar]);
 
   return (
     <HeaderSection className={show ? "show" : "hide"}>

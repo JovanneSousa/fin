@@ -12,8 +12,22 @@ export const formatCurrency = (valor: number): string => {
     style: "currency",
     currency: "BRL",
   }).format(valor);
-}
+};
 export const toLocalDateIgnoreTimezone = (dateString: string) => {
-    const [y, m, d] = dateString.split("T")[0].split("-").map(Number);
+  const [y, m, d] = dateString.split("T")[0].split("-").map(Number);
   return new Date(y, m - 1, d);
-}
+};
+
+export type TypeCard = {
+  receita: number;
+  despesa: number;
+  saldoAtual: number;
+  balanco: number;
+};
+
+export const tiposCard: TypeCard = {
+  balanco: 3,
+  despesa: 1,
+  receita: 0,
+  saldoAtual: 2,
+};

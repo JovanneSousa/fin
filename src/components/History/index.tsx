@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { colors } from "../../globalStyles";
-import { CloseBox, DetailBox, HistorySection, IconBox } from "./styles";
+import { colors, IconBox } from "../../globalStyles";
+import { CloseBox, DetailBox, HistorySection } from "./styles";
 import {
   getTransacao,
   type Transacao,

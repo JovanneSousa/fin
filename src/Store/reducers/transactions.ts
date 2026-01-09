@@ -32,6 +32,9 @@ interface TransactionState {
   loadingGet: boolean;
   errorGet: string | null;
 
+  getSaldoTotal: number | null;
+  loadingGetSaldoTotal: boolean;
+
   loadingGetItem: boolean;
   errorGetItem: string | null;
 
@@ -54,6 +57,9 @@ const initialState: TransactionState = {
   loadingUpdate: false,
   errorUpdate: null,
   successUpdate: null,
+
+  getSaldoTotal: null,
+  loadingGetSaldoTotal: false,
 
   loadingGet: false,
   errorGet: null,
@@ -114,6 +120,28 @@ export const updateTransaction = createAsyncThunk<
       if (data) return rejectWithValue(data);
     }
     return rejectWithValue("Erro ao atualizar transação");
+  }
+});
+
+export const fetchSaldoTotal = createAsyncThunk<
+  ResponsePayload<number>,
+  void,
+  { rejectValue: string }
+>("saldoTotal/fetch", async (_, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await api.get(`api/transacoes/saldo`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data;
+  } catch (e: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(e)) {
+      const data = e.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Houve um erro desconhecido!");
   }
 });
 
@@ -236,6 +264,11 @@ const transactionSlice = createSlice({
       .addCase(updateTransaction.rejected, (state, action) => {
         state.loadingUpdate = false;
         state.errorUpdate = action.payload || "Erro ao atualizar transação";
+      })
+
+      .addCase(fetchSaldoTotal.fulfilled, (state, action) => {
+        state.loadingGetSaldoTotal = false;
+        state.getSaldoTotal = action.payload.data
       })
 
       .addCase(fetchTransactionsPeriod.pending, (state) => {

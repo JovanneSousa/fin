@@ -48,9 +48,6 @@ export const GlobalStyle = createGlobalStyle`
     
 }
 
-.main {
-    width: 100%;
-}
 
 #root {
     min-height: 100vh;

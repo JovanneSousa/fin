@@ -7,6 +7,8 @@ import Seletor from "../Seletor";
 import type { AppDispatch } from "../../Store";
 import { useEffect } from "react";
 import { getCategories } from "../../Store/reducers/categories";
+import Sidebar from "../SideBar";
+import { MainSection } from "./styles";
 
 const Main = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,15 +17,18 @@ const Main = () => {
   }, [dispatch]);
 
   return (
-    <div className="main">
-      <Header />
-      <div className="col container">
-        <Seletor />
-        <ContainerCategories />
-        <AnalysisSection />
-        <History />
+    <MainSection>
+      <Sidebar />
+      <div className="main">
+        <Header />
+        <div className="col container">
+          <Seletor />
+          <ContainerCategories />
+          <AnalysisSection />
+          <History />
+        </div>
       </div>
-    </div>
+    </MainSection>
   );
 };
 export default Main;

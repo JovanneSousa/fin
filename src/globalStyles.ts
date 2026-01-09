@@ -1,4 +1,5 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+import { hexToRgb } from "./Utils";
 
 export const colors = {
   rosa: "#c850c0",
@@ -15,8 +16,21 @@ export const colors = {
   vermelho: "#e63946",
   azul: "#3498db",
   laranja: "#f39c12",
-  transparent: "transparent"
+  transparent: "transparent",
 };
+
+export const IconBox = styled.div<{ color: string }>`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  background-color: ${({ color }) => `rgba(${hexToRgb(color)}, 0.2)`};
+  color: ${({ color }) => color || colors.verde};
+`;
 
 export const breakpoints = {
   desktop: "1024px",

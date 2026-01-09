@@ -3,8 +3,11 @@ import { breakpoints, colors } from "../../globalStyles";
 
 export const CardStyled = styled.div`
   border-radius: 16px;
-  padding: 24px;
+  padding: 16px 24px;
   box-shadow: ${colors.shadow};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &.receita {
     background-color: color-mix(in srgb, ${colors.verde} 20%, white);
@@ -20,8 +23,8 @@ export const CardStyled = styled.div`
   }
 
   .valor {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 500;
     color: ${colors.preto};
     margin: 8px 0;
   }
@@ -32,7 +35,7 @@ export const CardStyled = styled.div`
   }
 
   @media (max-width: ${breakpoints.tablet}) {
-    padding: 16px;
+    padding: 8px 16px;
 
     .valor {
       font-size: 16px;

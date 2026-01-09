@@ -24,25 +24,19 @@ const CardCategories: React.FC<CardProps> = ({ type }) => {
   }, [type, dispatch]);
 
   const valorTotal = useMemo(() => {
-    if (type != tiposCard.balanco && type != tiposCard.saldoAtual) {
-      return items.reduce(
-        (acc, item) => (item.type === type ? acc + item.valor : acc),
-        0
-      );
-    }
+  let receita = 0;
+  let despesa = 0;
 
-    if (type == tiposCard.saldoAtual && getSaldoTotal) return getSaldoTotal;
+  for (const item of items) {
+    if (item.type === 0) receita += item.valor;
+    if (item.type === 1) despesa += item.valor;
+  }
 
-    const valorReceita = items.reduce(
-      (acc, item) => (item.type === 0 ? acc + item.valor : acc),
-      0
-    );
-    const valorDespesa = items.reduce(
-      (acc, item) => (item.type === 1 ? acc + item.valor : acc),
-      0
-    );
-    return valorReceita - valorDespesa;
-  }, [items, type]);
+  if (type === tiposCard.saldoAtual) return getSaldoTotal ?? 0;
+  if (type === tiposCard.balanco) return receita - despesa;
+
+  return type === 0 ? receita : despesa;
+}, [items, type, getSaldoTotal]);
 
   const config = cardConfig[type];
 

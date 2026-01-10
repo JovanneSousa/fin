@@ -5,7 +5,9 @@ type AnalysisProp = {
   isComparison?: boolean;
 };
 
-export const Analysis = styled.div<AnalysisProp>`
+export const Analysis = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["isComparison"].includes(prop),
+})<AnalysisProp>`
   width: 100%;
   display: flex;
   flex-direction: column;

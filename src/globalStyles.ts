@@ -35,7 +35,7 @@ export const IconBox = styled.div<{ color: string }>`
 export const breakpoints = {
   desktop: "1024px",
   tablet: "768px",
-  containerMaxWidth: "1200px",
+  containerMaxWidth: "1472px",
 };
 export const GlobalStyle = createGlobalStyle`
 * {
@@ -83,6 +83,7 @@ body {
 .container {
     max-width: ${breakpoints.containerMaxWidth};
     margin: 0 auto;
+    padding: 16px;
     display: flex;
     justify-content: center;
     align-items:center;

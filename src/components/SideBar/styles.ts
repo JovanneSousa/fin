@@ -3,10 +3,22 @@ import { colors } from "../../globalStyles";
 
 export const SideBarSection = styled.aside`
   background-color: ${colors.branco};
-  padding: 8px 0;
-  width: 300px;
-  overflow-y: none;
+  padding: 8px 0; 
   position: relative;
+  z-index: 2;
+
+  .toggle {
+    position: absolute;
+    right: -16px;
+    top: 68px;
+    background-color: ${colors.branco};
+    padding: 4px;
+    border: 1px solid ${colors.lightGray};
+    border-radius: 16px;
+    align-items: center;
+    align-self: flex-end;
+    cursor: pointer;
+  }
 
   ul {
     li {
@@ -35,17 +47,6 @@ export const ButtonContainer = styled.div`
   padding: 12px 24px;
   display: flex;
   flex-direction: column;
-
-  div {
-    position: absolute;
-    right: -16px;
-    background-color: ${colors.branco};
-    padding: 4px;
-    border: 1px solid ${colors.lightGray};
-    border-radius: 16px;
-    align-items: center;
-    align-self: flex-end;
-  }
 `;
 
 export const Logo = styled.div`

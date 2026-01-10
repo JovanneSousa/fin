@@ -1,6 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faFlag } from "@fortawesome/free-regular-svg-icons";
-import { faListUl, faTags, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faListUl,
+  faTags,
+  faAngleLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { ButtonContainer, Logo, SideBarSection } from "./styles";
@@ -15,8 +19,10 @@ const Sidebar = () => {
           <p>Controle financeiro</p>
         </div>
       </Logo>
+      <div className="toggle">
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </div>
       <ButtonContainer>
-        <div><FontAwesomeIcon icon={faAngleLeft} /></div>
         <Button padding="small" type="button" bgColor={colors.verde}>
           + Novo
         </Button>

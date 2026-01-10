@@ -7,7 +7,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 
-const Header = () => {
+interface HeaderProps {
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+}
+
+const Header = ({ scrollRef }: HeaderProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [show, setShow] = useState(true);
@@ -20,15 +24,20 @@ const Header = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    lastScrollY.current = el.scrollTop;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = el.scrollTop;
 
       setShow(currentScrollY < lastScrollY.current);
       lastScrollY.current = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [scrollRef]);
 
   useEffect(() => {
     if (!expiresIn || Date.now() >= expiresIn) {

@@ -1,51 +1,88 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faFlag } from "@fortawesome/free-regular-svg-icons";
 import {
   faListUl,
   faTags,
   faAngleLeft,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { ButtonContainer, Logo, SideBarSection } from "./styles";
+import * as S from "./styles";
+import type { Tabs } from "../../Layouts/DefaultLayout";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Sidebar = () => {
+interface SideBarProps {
+  activeTab: Tabs;
+  setActiveTab: React.Dispatch<React.SetStateAction<Tabs>>;
+}
+
+const Sidebar = ({ activeTab, setActiveTab }: SideBarProps) => {
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
-    <SideBarSection>
-      <Logo>
+    <S.SideBarSection isOpen={isOpen}>
+      <S.Logo>
         <img src="/FinanceBackup.svg" alt="icone do site" />
-        <div>
+        <div className="text-container">
           <h1>FinControl</h1>
           <p>Controle financeiro</p>
         </div>
-      </Logo>
-      <div className="toggle">
+      </S.Logo>
+      <div
+        className={`toggle ${isOpen ? "open" : "closed"}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <FontAwesomeIcon icon={faAngleLeft} />
       </div>
-      <ButtonContainer>
+      <S.ButtonContainer>
         <Button padding="small" type="button" bgColor={colors.verde}>
-          + Novo
+          {isOpen ? "+ Novo" : <FontAwesomeIcon icon={faPlus} />}
         </Button>
-      </ButtonContainer>
+      </S.ButtonContainer>
       <ul>
-        <li className="is-active">
-          <FontAwesomeIcon size="lg" icon={faHouse} />
-          Dashboard
+        <li className={activeTab == "dashboard" ? "is-active" : ""}>
+          <S.StyledLink
+            isOpen={isOpen}
+            onClick={() => setActiveTab("dashboard")}
+            to={"/home"}
+          >
+            <S.StyledIcon size="lg" icon={faHouse} />
+            {isOpen && <p className="text-container">Dashboard</p>}
+          </S.StyledLink>
         </li>
-        <li>
-          <FontAwesomeIcon size="lg" icon={faListUl} />
-          Transações
+        <li className={activeTab == "transacoes" ? "is-active" : ""}>
+          <S.StyledLink
+            isOpen={isOpen}
+            onClick={() => setActiveTab("transacoes")}
+            to={"/transacoes"}
+          >
+            <S.StyledIcon size="lg" icon={faListUl} />
+            {isOpen && <p className="text-container">Transações</p>}
+          </S.StyledLink>
         </li>
-        <li>
-          <FontAwesomeIcon size="lg" icon={faTags} />
-          Categorias
+        <li className={activeTab == "categorias" ? "is-active" : ""}>
+          <S.StyledLink
+            isOpen={isOpen}
+            onClick={() => setActiveTab("categorias")}
+            to={"/home"}
+          >
+            <S.StyledIcon size="lg" icon={faTags} />
+            {isOpen && <p className="text-container">Categorias</p>}
+          </S.StyledLink>
         </li>
-        <li>
-          <FontAwesomeIcon size="lg" icon={faFlag} />
-          Planejamento
+        <li className={activeTab == "planejamento" ? "is-active" : ""}>
+          <S.StyledLink
+            isOpen={isOpen}
+            onClick={() => setActiveTab("planejamento")}
+            to={"/home"}
+          >
+            <S.StyledIcon size="lg" icon={faFlag} />
+            {isOpen && <p className="text-container">Planejamento</p>}
+          </S.StyledLink>
         </li>
       </ul>
-    </SideBarSection>
+    </S.SideBarSection>
   );
 };
 

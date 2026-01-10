@@ -11,8 +11,9 @@ export const HeaderSection = styled.header`
   z-index: 1;
   transition: transform 0.3s ease;
 
-  h1 {
-    font-size: 24px;
+  p.title {
+    font-size: 22px;
+    font-weight: bold;
   }
 
   &.hide {
@@ -24,8 +25,9 @@ export const HeaderSection = styled.header`
   }
 
   p {
+    font-size: 14px;
     span {
-      font-size: 20px;
+      font-size: 18px;
       background: ${colors.gradient};
       font-weight: bold;
       -webkit-background-clip: text;

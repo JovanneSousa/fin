@@ -6,12 +6,21 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
+import type { Tabs } from "../../Layouts/DefaultLayout";
 
 interface HeaderProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
+  activeTabs: Tabs;
 }
 
-const Header = ({ scrollRef }: HeaderProps) => {
+const texto = {
+  dashboard: "Dashboard",
+  planejamento: "Planejamento",
+  categorias: "Categorias",
+  transacoes: "Transações",
+};
+
+const Header = ({ scrollRef, activeTabs }: HeaderProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [show, setShow] = useState(true);
@@ -49,7 +58,7 @@ const Header = ({ scrollRef }: HeaderProps) => {
     <HeaderSection className={show ? "show" : "hide"}>
       <div className="container">
         <div>
-          <h1>FinControl</h1>
+          <p className="title">{texto[activeTabs]}</p>
           <p>
             Olá, <span>{localStorage.getItem("user")}</span>
           </p>

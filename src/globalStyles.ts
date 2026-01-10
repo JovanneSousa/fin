@@ -49,6 +49,12 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 
+.main {
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
 #root {
     min-height: 100vh;
     display: flex;

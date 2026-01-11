@@ -1,0 +1,161 @@
+import styled from "styled-components";
+import { hexToRgb } from "../../Utils";
+import { colors } from "../../globalStyles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export const StyledTable = styled.table`
+  background-color: ${colors.branco};
+  font-size: 14px;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  color: ${colors.gray};
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  tbody tr td {
+    border-bottom: 2px solid ${colors.lightGray};
+  }
+
+  thead th {
+    background-color: ${colors.lighterGray};
+    height: 56px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    text-align: center;
+  }
+
+  .despesa {
+    color: ${colors.vermelho};
+  }
+
+  .receita {
+    color: ${colors.verde};
+  }
+
+  .container-cor {
+    margin: 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: ${colors.vermelho};
+  }
+`;
+
+export const CloseBox = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: ${colors.vermelho};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(${hexToRgb(colors.vermelho)}, 0.2);
+  }
+`;
+
+export const DetailBox = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: ${colors.azul};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(${hexToRgb(colors.azul)}, 0.2);
+  }
+`;
+
+const PerifericosTabela = styled.div`
+  background-color: ${colors.branco};
+  width: 100%;
+  padding: 16px;
+`;
+
+export const RodapeTabela = styled(PerifericosTabela)`
+  border-radius: 0 0 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 14px;
+  gap: 16px;
+
+  .input-wrapper {
+    flex-direction: row;
+    margin: 0;
+    align-items: center;
+    gap: 16px;
+
+    label {
+      white-space: nowrap;
+    }
+  }
+`;
+
+interface Props {
+  isSearching: boolean;
+  page: "categorias" | "transacoes";
+}
+
+export const TopoTabela = styled(PerifericosTabela).withConfig({
+  shouldForwardProp: (prop) => !["isSearching"].includes(prop),
+})<Props>`
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: ${({ page }) => (page == "transacoes" ? "column" : "row")};
+  padding: ${({ page }) => (page == "categorias" ? "24px" : "16px 16px 0 16px")};
+
+  .filter-section {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  form.tipo {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .input-wrapper {
+    position: relative;
+    margin: 0;
+
+    input {
+      padding-right: 32px;
+      transition: width ease 0.3s;
+      width: ${({ isSearching }) => (isSearching ? "420px" : "32px")};
+    }
+  }
+`;
+
+export const StyledIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 30%;
+
+  &:hover {
+    color: ${colors.verde};
+  }
+`;

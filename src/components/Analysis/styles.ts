@@ -86,19 +86,6 @@ export const Analysis = styled.div.withConfig({
     }
   }
 
-  .button-container {
-    display: flex;
-    gap: 8px;
-
-    button {
-      max-width: 100px;
-      margin: 0;
-    }
-
-    &.is-active {
-    }
-  }
-
   .flex {
     display: flex;
     justify-content: space-between;

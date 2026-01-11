@@ -14,8 +14,9 @@ export const formatCurrency = (valor: number): string => {
   }).format(valor);
 };
 export const toLocalDateIgnoreTimezone = (dateString: string) => {
-  const [y, m, d] = dateString.split("T")[0].split("-").map(Number);
-  return new Date(y, m - 1, d);
+  const [y, m, d] = dateString.split("T")[0].split("-");
+
+  return `${d.padStart(2, "0")}/${m.padStart(2, "0")}/${y}`;
 };
 
 export type TypeCard = {

@@ -34,7 +34,7 @@ const FormLogin = () => {
     };
     await dispatch(login(payload)).unwrap();
     reset();
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   const loginTeste = async () => {
@@ -48,7 +48,7 @@ const FormLogin = () => {
     }
 
     await dispatch(login(payload));
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   return (

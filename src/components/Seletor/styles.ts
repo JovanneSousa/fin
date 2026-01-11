@@ -1,22 +1,59 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
-export const SeletorSection = styled.section`
+interface SeletorSectionProps {
+  positionTitle: "center" | "space-between";
+  page: "default" | "transacoes";
+  isSelecting?: boolean;
+}
+
+export const SeletorSection = styled.section.withConfig({
+  shouldForwardProp: (prop) =>
+    !["positionTitle", "page", "isSelecting"].includes(prop),
+})<SeletorSectionProps>`
   background-color: ${colors.branco};
-  padding: 24px;
+  padding: ${({page}) => page == 'default' ? '24px': '16px 26px'};
   width: 100%;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: ${({ page }) => (page == "default" ? "16px" : "0")};
+  ${({ page, isSelecting }) =>
+    page === "transacoes" &&
+    css`
+      overflow: hidden;
+      max-height: ${isSelecting ? "140px" : "84px"};
+      transition: max-height 0.7s ease;
+    `}
+
+  .month-container {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    opacity: ${({ isSelecting }) => (isSelecting ? "1" : "0")};
+    transform: ${({ isSelecting }) =>
+      isSelecting ? "translateY(0)" : "translateY(-8px)"};
+
+    pointer-events: ${({ isSelecting }) => (isSelecting ? "auto" : "none")};
+
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
 
   .title-mes {
     display: flex;
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    justify-content: ${({ positionTitle }) => positionTitle};
+    color: ${colors.verde};
+
+    p {
+      cursor: pointer;
+      padding: 0 8px;
+    }
 
     @media (max-width: ${breakpoints.tablet}) {
       padding-bottom: 8px;
@@ -26,10 +63,6 @@ export const SeletorSection = styled.section`
   .container-title {
     display: flex;
     justify-content: space-between;
-
-    button {
-      margin: 0;
-    }
 
     @media (max-width: ${breakpoints.tablet}) {
       display: block;

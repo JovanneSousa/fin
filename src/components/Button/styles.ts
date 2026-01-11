@@ -31,4 +31,18 @@ export const ButtonStyled = styled.button.withConfig({
       color: ${colors.branco};
     }
   }
+
+  &.prev,
+  &.next {
+    margin: 0;
+    max-width: 44px;
+    max-height: 44px;
+    background-color: inherit;
+    color: ${colors.verde};
+    border-radius: 45%;
+
+    &:hover {
+      background-color: ${colors.lighterGray};
+    }
+  }
 `;

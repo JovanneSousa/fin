@@ -14,10 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface SideBarProps {
   activeTab: Tabs;
-  setActiveTab: React.Dispatch<React.SetStateAction<Tabs>>;
 }
 
-const Sidebar = ({ activeTab, setActiveTab }: SideBarProps) => {
+const Sidebar = ({ activeTab }: SideBarProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -42,41 +41,25 @@ const Sidebar = ({ activeTab, setActiveTab }: SideBarProps) => {
       </S.ButtonContainer>
       <ul>
         <li className={activeTab == "dashboard" ? "is-active" : ""}>
-          <S.StyledLink
-            isOpen={isOpen}
-            onClick={() => setActiveTab("dashboard")}
-            to={"/home"}
-          >
+          <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
             <S.StyledIcon size="lg" icon={faHouse} />
             {isOpen && <p className="text-container">Dashboard</p>}
           </S.StyledLink>
         </li>
         <li className={activeTab == "transacoes" ? "is-active" : ""}>
-          <S.StyledLink
-            isOpen={isOpen}
-            onClick={() => setActiveTab("transacoes")}
-            to={"/transacoes"}
-          >
+          <S.StyledLink isOpen={isOpen} to={"/transacoes"}>
             <S.StyledIcon size="lg" icon={faListUl} />
             {isOpen && <p className="text-container">Transações</p>}
           </S.StyledLink>
         </li>
         <li className={activeTab == "categorias" ? "is-active" : ""}>
-          <S.StyledLink
-            isOpen={isOpen}
-            onClick={() => setActiveTab("categorias")}
-            to={"/home"}
-          >
+          <S.StyledLink isOpen={isOpen} to={"/categorias"}>
             <S.StyledIcon size="lg" icon={faTags} />
             {isOpen && <p className="text-container">Categorias</p>}
           </S.StyledLink>
         </li>
         <li className={activeTab == "planejamento" ? "is-active" : ""}>
-          <S.StyledLink
-            isOpen={isOpen}
-            onClick={() => setActiveTab("planejamento")}
-            to={"/home"}
-          >
+          <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
             <S.StyledIcon size="lg" icon={faFlag} />
             {isOpen && <p className="text-container">Planejamento</p>}
           </S.StyledLink>

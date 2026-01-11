@@ -35,7 +35,7 @@ const FormRegister = () => {
     try {
       await dispatch(register(payload)).unwrap();
       reset();
-      navigate("/home");
+      navigate("/dashboard");
     } catch (err) {
       console.log(err);
     }

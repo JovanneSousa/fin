@@ -6,17 +6,28 @@ import {
   faChevronRight,
   faChevronDown,
   faChevronUp,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface ButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   type: "button" | "submit" | "reset";
   bgColor: string;
   padding: "big" | "medium" | "small";
   onClick?: () => void;
-  icon?: "left" | "right" | "down" | "up";
+  icon?: "left" | "right" | "down" | "up" | "doubleLeft" | "doubleRight";
   className?: string;
 }
+
+const icone = {
+  left: <FontAwesomeIcon icon={faChevronLeft} />,
+  right: <FontAwesomeIcon icon={faChevronRight} />,
+  doubleLeft: <FontAwesomeIcon icon={faAngleDoubleLeft} />,
+  doubleRight: <FontAwesomeIcon icon={faAngleDoubleRight} />,
+  down: <FontAwesomeIcon icon={faChevronDown} />,
+  up: <FontAwesomeIcon icon={faChevronUp} />,
+};
 
 const Button: React.FC<ButtonProps> = ({
   children,
@@ -35,24 +46,8 @@ const Button: React.FC<ButtonProps> = ({
       bgColor={bgColor}
       padding={padding}
     >
-      {icon === "left" ? (
-        <FontAwesomeIcon icon={faChevronLeft} />
-      ) : icon === "right" ? (
-        <FontAwesomeIcon icon={faChevronRight} />
-      ) : null}
+      {icon && icone[icon]}
       {children}
-
-      {icon === "down" ? (
-        <>
-          {" "}
-          <FontAwesomeIcon icon={faChevronDown} />
-        </>
-      ) : icon === "up" ? (
-        <>
-          {" "}
-          <FontAwesomeIcon icon={faChevronUp} />
-        </>
-      ) : null}
     </ButtonStyled>
   );
 };

@@ -165,10 +165,7 @@ const History = () => {
                       : `- ${formatCurrency(item.valor)}`}
                   </p>
                   <p className="data">
-                    {" "}
-                    {toLocalDateIgnoreTimezone(
-                      item.dataMovimentacao
-                    ).toLocaleDateString()}
+                    {toLocalDateIgnoreTimezone(item.dataMovimentacao)}
                   </p>
                 </div>
                 <div className="button-container">
@@ -198,7 +195,6 @@ const History = () => {
         <Button
           bgColor={colors.transparent}
           icon="up"
-          children=""
           padding="small"
           type="button"
           onClick={() => setIsHistoryOpen(false)}

@@ -44,11 +44,11 @@ export const SideBarSection = styled.aside.withConfig({
     transition: opacity 0.3s ease, transform 0.3s ease;
 
     &.open {
-      transform: rotate(180deg);
+      transform: rotate(0deg);
     }
 
     &.closed {
-      transform: rotate(0deg);
+      transform: rotate(180deg);
     }
   }
 

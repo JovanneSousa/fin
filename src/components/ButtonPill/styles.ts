@@ -26,4 +26,13 @@ export const PillStyled = styled.button`
     background-color: ${colors.verde};
     color: ${colors.lighterGray};
   }
+
+  &.months {
+    border: 2px solid ${colors.verde};
+    color: ${colors.verde};
+    &:hover {
+      background-color: ${colors.verde};
+      color: ${colors.branco};
+    }
+  }
 `;

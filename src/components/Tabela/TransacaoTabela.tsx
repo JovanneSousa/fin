@@ -37,6 +37,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     abreBusca,
     fechaBusca,
     setValorBusca,
+    setTipo,
   } = useTransactionTable();
 
   return (
@@ -44,10 +45,15 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
       <TopoTabela isSearching={isSearching} onClick={fechaBusca} page={type}>
         <form className="tipo">
           <div className="input-wrapper">
-            <select id="tipo">
-              <option value="">Todos</option>
-              <option value="">Despesas</option>
-              <option value="">Receitas</option>
+            <select
+              onChange={(e) =>
+                setTipo(e.target.value as "todos" | "despesa" | "receita")
+              }
+              id="tipo"
+            >
+              <option value="todos">Todos</option>
+              <option value="despesa">Despesas</option>
+              <option value="receita">Receitas</option>
             </select>
           </div>
           <div className="button-container">

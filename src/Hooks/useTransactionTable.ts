@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getTransacao, type Transacao } from "../Store/reducers/transactions";
-import type { AppDispatch, RootReducer } from "../Store";
+import type { AppDispatch } from "../Store";
+import useTransactions from "./useTransactions";
 
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items } = useSelector((state: RootReducer) => state.transactions);
+  const { items, setTipo } = useTransactions();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -18,7 +19,6 @@ export const useTransactionTable = () => {
   const abreBusca = () => {
     setIsSearching(true);
     console.log(isSearching);
-    console.log("abriu");
   };
 
   const fechaBusca = () => {
@@ -53,6 +53,7 @@ export const useTransactionTable = () => {
     setItemSelecionado,
     abrirDetalhes,
     fecharDetalhes,
+    setTipo,
   };
 };
 

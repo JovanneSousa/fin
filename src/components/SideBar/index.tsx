@@ -4,6 +4,8 @@ import {
   faTags,
   faAngleLeft,
   faPlus,
+  faArrowTrendUp,
+  faArrowTrendDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
@@ -11,6 +13,9 @@ import * as S from "./styles";
 import type { Tabs } from "../../Layouts/DefaultLayout";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "../ModalContainer";
+import FormNew from "../FormNew";
+import useFormNew, { type ModalTypes } from "../../Hooks/useFormNew";
 
 interface SideBarProps {
   activeTab: Tabs;
@@ -18,9 +23,21 @@ interface SideBarProps {
 
 const Sidebar = ({ activeTab }: SideBarProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isNewOpen, setIsNewOpen] = useState(false);
+
+  const fechaNewSection = () => {
+    setIsNewOpen(false);
+  };
+
+  const { abreModal, fechaModal, isOpenModal } = useFormNew();
+
+  const handleOpenModal = (type: ModalTypes) => {
+    abreModal(type);
+    setIsNewOpen(false);
+  };
 
   return (
-    <S.SideBarSection isOpen={isOpen}>
+    <S.SideBarSection onClick={fechaNewSection} isOpen={isOpen}>
       <S.Logo>
         <img src="/FinanceBackup.svg" alt="icone do site" />
         <div className="text-container">
@@ -34,37 +51,75 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
       >
         <FontAwesomeIcon icon={faAngleLeft} />
       </div>
-      <S.ButtonContainer>
-        <Button padding="small" type="button" bgColor={colors.verde}>
+      <S.ButtonContainer onClick={(e) => e.stopPropagation()}>
+        <Button
+          onClick={() => setIsNewOpen(true)}
+          padding="small"
+          type="button"
+          bgColor={colors.verde}
+        >
           {isOpen ? "+ Novo" : <FontAwesomeIcon icon={faPlus} />}
         </Button>
+        <div className={`menu-novo shadow ${isNewOpen ? "new-active" : ""}`}>
+          <ul>
+            <li onClick={() => handleOpenModal("despesa")}>
+              <S.StyledIcon
+                color={colors.vermelho}
+                padding={"zero"}
+                icon={faArrowTrendDown}
+              />
+              Despesa
+            </li>
+            <li onClick={() => handleOpenModal("receita")}>
+              <S.StyledIcon
+                color={colors.verde}
+                padding={"zero"}
+                icon={faArrowTrendUp}
+              />
+              Receita
+            </li>
+            <li onClick={() => handleOpenModal("categoria")}>
+              <S.StyledIcon
+                color={colors.azul}
+                padding={"zero"}
+                icon={faTags}
+              />
+              Categoria
+            </li>
+          </ul>
+        </div>
       </S.ButtonContainer>
-      <ul>
-        <li className={activeTab == "dashboard" ? "is-active" : ""}>
-          <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
-            <S.StyledIcon size="lg" icon={faHouse} />
-            {isOpen && <p className="text-container">Dashboard</p>}
-          </S.StyledLink>
-        </li>
-        <li className={activeTab == "transacoes" ? "is-active" : ""}>
-          <S.StyledLink isOpen={isOpen} to={"/transacoes"}>
-            <S.StyledIcon size="lg" icon={faListUl} />
-            {isOpen && <p className="text-container">Transações</p>}
-          </S.StyledLink>
-        </li>
-        <li className={activeTab == "categorias" ? "is-active" : ""}>
-          <S.StyledLink isOpen={isOpen} to={"/categorias"}>
-            <S.StyledIcon size="lg" icon={faTags} />
-            {isOpen && <p className="text-container">Categorias</p>}
-          </S.StyledLink>
-        </li>
-        <li className={activeTab == "planejamento" ? "is-active" : ""}>
-          <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
-            <S.StyledIcon size="lg" icon={faFlag} />
-            {isOpen && <p className="text-container">Planejamento</p>}
-          </S.StyledLink>
-        </li>
-      </ul>
+      <nav>
+        <ul>
+          <li className={activeTab == "dashboard" ? "is-active" : ""}>
+            <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
+              <S.StyledIcon padding="default" size="lg" icon={faHouse} />
+              {isOpen && <p className="text-container">Dashboard</p>}
+            </S.StyledLink>
+          </li>
+          <li className={activeTab == "transacoes" ? "is-active" : ""}>
+            <S.StyledLink isOpen={isOpen} to={"/transacoes"}>
+              <S.StyledIcon padding="default" size="lg" icon={faListUl} />
+              {isOpen && <p className="text-container">Transações</p>}
+            </S.StyledLink>
+          </li>
+          <li className={activeTab == "categorias" ? "is-active" : ""}>
+            <S.StyledLink isOpen={isOpen} to={"/categorias"}>
+              <S.StyledIcon padding="default" size="lg" icon={faTags} />
+              {isOpen && <p className="text-container">Categorias</p>}
+            </S.StyledLink>
+          </li>
+          <li className={activeTab == "planejamento" ? "is-active" : ""}>
+            <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
+              <S.StyledIcon padding="default" size="lg" icon={faFlag} />
+              {isOpen && <p className="text-container">Planejamento</p>}
+            </S.StyledLink>
+          </li>
+        </ul>
+      </nav>
+      <Modal onClose={fechaModal} isOpen={isOpenModal !== null}>
+        {isOpenModal && <FormNew onClose={fechaModal} typeForm={isOpenModal} />}
+      </Modal>
     </S.SideBarSection>
   );
 };

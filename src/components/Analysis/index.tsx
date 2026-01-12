@@ -1,5 +1,4 @@
 import { useState } from "react";
-import New from "../New";
 import { Analysis } from "./styles";
 import Categories from "../Categories";
 import GraficoBarras from "../GraficoBarras";
@@ -11,6 +10,7 @@ import GraficoRosca from "../GraficoRosca";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import GraficoLinha from "../GraficoLinha";
+import FormNew from "../FormNew";
 
 type tabKey = "new" | "categories" | "comparacao";
 
@@ -40,7 +40,7 @@ const AnalysisSection = () => {
 
   const [activeTab, setActiveTab] = useState<tabKey>("new");
   const Components = {
-    new: <New />,
+    new: <FormNew onClose={() => console.log()} typeForm="receita" />,
     categories: <Categories />,
     comparacao: null,
   };

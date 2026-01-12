@@ -52,10 +52,6 @@ export const SideBarSection = styled.aside.withConfig({
     }
   }
 
-  button {
-    margin: 0;
-  }
-
   ul {
     overflow: hidden;
     li {
@@ -84,14 +80,68 @@ export const Label = styled.p.withConfig({
   white-space: nowrap;
 `;
 
-export const StyledIcon = styled(FontAwesomeIcon)`
-  padding: 12px 24px;
+interface StyledIconProps {
+  padding: "zero" | "default";
+  color?: string
+}
+
+export const StyledIcon = styled(FontAwesomeIcon).withConfig({
+  shouldForwardProp: (prop) => !["padding", "color"].includes(prop),
+})<StyledIconProps>`
+  padding: ${({ padding }) => (padding == 'zero' ? "0 24px" : "12px 24px")};
+  color: ${({color}) => color ? color : 'inherit'};
 `;
 
 export const ButtonContainer = styled.div`
   padding: 12px;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  button {
+    margin: 0;
+    position: relative;
+  }
+
+  .menu-novo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: ${colors.branco};
+    width: 266px;
+    z-index: 1;
+    border-radius: 16px;
+    padding: 8px 0;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    visibility: hidden;
+
+    ul {
+      width: 100%;
+      li {
+        padding: 8px;
+        border: 0;
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          background-color: ${colors.lightGray};
+        }
+      }
+    }
+
+    &.new-active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
 `;
 
 export const Logo = styled.div`

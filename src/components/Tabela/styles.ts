@@ -89,6 +89,14 @@ const PerifericosTabela = styled.div`
   background-color: ${colors.branco};
   width: 100%;
   padding: 16px;
+
+  button {
+    margin: 0;
+  }
+
+  .input-wrapper {
+    margin: 0;
+  }
 `;
 
 export const RodapeTabela = styled(PerifericosTabela)`
@@ -101,7 +109,6 @@ export const RodapeTabela = styled(PerifericosTabela)`
 
   .input-wrapper {
     flex-direction: row;
-    margin: 0;
     align-items: center;
     gap: 16px;
 
@@ -124,7 +131,8 @@ export const TopoTabela = styled(PerifericosTabela).withConfig({
   align-items: center;
   justify-content: space-between;
   flex-direction: ${({ page }) => (page == "transacoes" ? "column" : "row")};
-  padding: ${({ page }) => (page == "categorias" ? "24px" : "16px 16px 0 16px")};
+  padding: ${({ page }) =>
+    page == "categorias" ? "24px" : "16px 16px 0 16px"};
 
   .filter-section {
     display: flex;
@@ -139,7 +147,6 @@ export const TopoTabela = styled(PerifericosTabela).withConfig({
 
   .input-wrapper {
     position: relative;
-    margin: 0;
 
     input {
       padding-right: 32px;

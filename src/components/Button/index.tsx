@@ -8,7 +8,19 @@ import {
   faChevronUp,
   faAngleDoubleLeft,
   faAngleDoubleRight,
+  faClose,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+
+type IconTypes =
+  | "left"
+  | "right"
+  | "down"
+  | "up"
+  | "doubleLeft"
+  | "doubleRight"
+  | "close"
+  | "plus";
 
 export interface ButtonProps {
   children?: React.ReactNode;
@@ -16,7 +28,7 @@ export interface ButtonProps {
   bgColor: string;
   padding: "big" | "medium" | "small";
   onClick?: () => void;
-  icon?: "left" | "right" | "down" | "up" | "doubleLeft" | "doubleRight";
+  icon?: IconTypes;
   className?: string;
 }
 
@@ -27,6 +39,8 @@ const icone = {
   doubleRight: <FontAwesomeIcon icon={faAngleDoubleRight} />,
   down: <FontAwesomeIcon icon={faChevronDown} />,
   up: <FontAwesomeIcon icon={faChevronUp} />,
+  close: <FontAwesomeIcon icon={faClose} />,
+  plus: <FontAwesomeIcon icon={faPlus} />,
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -47,6 +61,7 @@ const Button: React.FC<ButtonProps> = ({
       padding={padding}
     >
       {icon && icone[icon]}
+      {" "}
       {children}
     </ButtonStyled>
   );

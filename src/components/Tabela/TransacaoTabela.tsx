@@ -19,6 +19,8 @@ import TransacaoDetails from "../TransactionDetails";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
+import Button from "../Button";
+import { colors } from "../../globalStyles";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -48,18 +50,28 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
               <option value="">Receitas</option>
             </select>
           </div>
-          <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
-            <input
-              className="search"
-              id="busca"
-              type="text"
-              placeholder="Pesquise por descrição, categoria ou valor"
-              value={valorBusca}
-              onChange={(e) => setValorBusca(e.target.value)}
-            />
-            <label htmlFor="busca">
-              <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />
-            </label>
+          <div className="button-container">
+            <Button
+              padding="small"
+              type="button"
+              bgColor={colors.lightGray}
+              icon="plus"
+            >
+              Nova Despesa
+            </Button>
+            <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
+              <input
+                className="search"
+                id="busca"
+                type="text"
+                placeholder="Pesquise por descrição, categoria ou valor"
+                value={valorBusca}
+                onChange={(e) => setValorBusca(e.target.value)}
+              />
+              <label htmlFor="busca">
+                <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />
+              </label>
+            </div>
           </div>
         </form>
         <Seletor page={type} />

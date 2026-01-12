@@ -113,6 +113,11 @@ body {
     }
 }
 
+.shadow {
+      box-shadow:    0 0 15px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.08);
+}
+
 form {
     .input-wrapper {
       display: flex;

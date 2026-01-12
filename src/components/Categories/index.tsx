@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import FormCategoria from "../FormCategoria";
 import Modal from "../ModalContainer";
 import { ContainerCat } from "./styles";
 import CategorieList from "../CategoriesList";
@@ -12,6 +11,7 @@ import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import FormCategoria from "../FormNew/FormCategoria";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>();

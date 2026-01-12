@@ -27,13 +27,15 @@ export const ButtonStyled = styled.button.withConfig({
 
   &:hover {
     @media (min-width: ${breakpoints.tablet}) {
-      background-color: ${colors.darkGray};
+      background-color: ${({ bgColor }) =>
+        bgColor == colors.branco ? colors.lightGray : colors.darkGray};
       color: ${colors.branco};
     }
   }
 
   &.prev,
-  &.next {
+  &.next,
+  &.icon {
     margin: 0;
     max-width: 44px;
     max-height: 44px;

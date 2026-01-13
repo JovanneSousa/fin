@@ -1,27 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatCurrency, toLocalDateIgnoreTimezone } from "../../Utils";
-import Seletor from "../Seletor";
-import {
-  CloseBox,
-  DetailBox,
-  StyledIcon,
-  StyledTable,
-  TopoTabela,
-} from "./styles";
-import {
-  faCircleInfo,
-  faCircleXmark,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { CloseBox, DetailBox, StyledTable } from "./styles";
+import { faCircleInfo, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import type { TabelaProps } from ".";
 import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
-import Button from "../Button";
-import { colors } from "../../globalStyles";
-import { useFormNew } from "../../contexts/FormNew/useFormNew";
+import { TopoTabela } from "./TopoTapela";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -30,7 +17,8 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     itemSelecionado,
     items,
     valorBusca,
-    isSearching,tipo,
+    isSearching,
+    tipo,
     setIsDeleteModalOpen,
     abrirDetalhes,
     fecharDetalhes,
@@ -41,68 +29,14 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     setTipo,
   } = useTransactionTable();
 
-  const { abreModal } = useFormNew();
-
-  const button = {
-    receita: (
-      <Button
-        onClick={() => abreModal("receita")}
-        padding="small"
-        type="button"
-        bgColor={colors.lightGray}
-        icon="plus"
-      >
-        Nova Despesa
-      </Button>
-    ),
-    despesa: (
-      <Button
-        onClick={() => abreModal("despesa")}
-        padding="small"
-        type="button"
-        bgColor={colors.lightGray}
-        icon="plus"
-      >
-        Nova Despesa
-      </Button>
-    ),
-  };
-
   return (
     <>
-      <TopoTabela isSearching={isSearching} onClick={fechaBusca} page={type}>
-        <form className="tipo">
-          <div className="input-wrapper">
-            <select
-              onChange={(e) =>
-                setTipo(e.target.value as "todos" | "despesa" | "receita")
-              }
-              id="tipo"
-            >
-              <option value="todos">Todos</option>
-              <option value="despesa">Despesas</option>
-              <option value="receita">Receitas</option>
-            </select>
-          </div>
-          <div className="button-container">
-            {tipo != 'todos' && button[tipo]}
-            <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
-              <input
-                className="search"
-                id="busca"
-                type="text"
-                placeholder="Pesquise por descrição, categoria ou valor"
-                value={valorBusca}
-                onChange={(e) => setValorBusca(e.target.value)}
-              />
-              <label htmlFor="busca">
-                <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />
-              </label>
-            </div>
-          </div>
-        </form>
-        <Seletor page={type} />
-      </TopoTabela>
+      <TopoTabela
+        fechaBusca={fechaBusca}
+        type={type}
+        isSearching={isSearching}
+        tipoFiltro={tipo}
+      />
       <StyledTable>
         <thead>
           <tr>

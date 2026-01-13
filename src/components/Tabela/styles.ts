@@ -123,7 +123,7 @@ interface Props {
   page: "categorias" | "transacoes";
 }
 
-export const TopoTabela = styled(PerifericosTabela).withConfig({
+export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
   shouldForwardProp: (prop) => !["isSearching"].includes(prop),
 })<Props>`
   border-radius: 16px 16px 0 0;

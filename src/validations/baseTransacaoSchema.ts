@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+export const hoje = new Date().toISOString().split("T")[0];
+
 export const baseTransacaoSchema = yup.object({
   titulo: yup
     .string()
@@ -24,8 +26,6 @@ export const baseTransacaoSchema = yup.object({
   dataMovimentacao: yup
     .string()
     .required("Data obrigatória")
-    .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida")
-    .default(new Date().toISOString().split("T")[0]),
-
+    .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
   isRecurring: yup.boolean().default(false),
 });

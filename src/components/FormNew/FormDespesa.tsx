@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { despesaSchema } from "../../validations/despesaSchema";
 import { createTransaction } from "../../Store/reducers/transactions";
+import { hoje } from "../../validations/baseTransacaoSchema";
 
 type DespesaFormData = {
   titulo: string;
@@ -29,6 +30,9 @@ const FormDespesa = () => {
     watch,
   } = useForm<DespesaFormData>({
     resolver: yupResolver(despesaSchema),
+    defaultValues: {
+      dataMovimentacao: hoje,
+    },
   });
 
   const onSubmit = (data: DespesaFormData) => {
@@ -59,7 +63,7 @@ const FormDespesa = () => {
       <div className="input-wrapper">
         <label htmlFor="">Categoria</label>
         <select {...register("categoriaId")}>
-          <option value=''>Selecione uma categoria</option>
+          <option value="">Selecione uma categoria</option>
           {despesa.map((des) => (
             <option key={des.id} value={des.id}>
               {des.name}

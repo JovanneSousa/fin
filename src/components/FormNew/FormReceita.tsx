@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createTransaction } from "../../Store/reducers/transactions";
 import { receitaSchema } from "../../validations/receitaSchema";
+import { useEffect } from "react";
+import { hoje } from "../../validations/baseTransacaoSchema";
 
 type ReceitaFormData = {
   titulo: string;
@@ -27,6 +29,9 @@ const FormReceita = () => {
     reset,
   } = useForm<ReceitaFormData>({
     resolver: yupResolver(receitaSchema),
+    defaultValues: {
+      dataMovimentacao: hoje
+    },
   });
 
   const onSubmit = (data: ReceitaFormData) => {
@@ -38,6 +43,10 @@ const FormReceita = () => {
     dispatch(createTransaction(payload));
     reset();
   };
+
+  useEffect(() => {
+    console.log({ ...register("dataMovimentacao") });
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +75,11 @@ const FormReceita = () => {
       <div className="input-wrapper">
         <label htmlFor="dataMovimentacao">Data</label>
 
-        <input id="dataMovimentacao" type="date" {...register("dataMovimentacao")} />
+        <input
+          id="dataMovimentacao"
+          type="date"
+          {...register("dataMovimentacao")}
+        />
         <span>{errors.dataMovimentacao?.message}</span>
       </div>
       <div className="input-check">

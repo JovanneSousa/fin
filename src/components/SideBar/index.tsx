@@ -13,9 +13,8 @@ import * as S from "./styles";
 import type { Tabs } from "../../Layouts/DefaultLayout";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from "../ModalContainer";
-import FormNew from "../FormNew";
-import useFormNew, { type ModalTypes } from "../../Hooks/useFormNew";
+import { useFormNew } from "../../contexts/FormNew/useFormNew";
+import type { ModalTypes } from "../../contexts/FormNew/FormNewContext";
 
 interface SideBarProps {
   activeTab: Tabs;
@@ -29,7 +28,7 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
     setIsNewOpen(false);
   };
 
-  const { abreModal, fechaModal, isOpenModal } = useFormNew();
+  const { abreModal } = useFormNew();
 
   const handleOpenModal = (type: ModalTypes) => {
     abreModal(type);
@@ -117,9 +116,6 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
           </li>
         </ul>
       </nav>
-      <Modal onClose={fechaModal} isOpen={isOpenModal !== null}>
-        {isOpenModal && <FormNew onClose={fechaModal} typeForm={isOpenModal} />}
-      </Modal>
     </S.SideBarSection>
   );
 };

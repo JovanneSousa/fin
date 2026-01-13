@@ -36,9 +36,9 @@ const useTransactions = () => {
   return {
     items,
     saldoTotal,
+    loading,
     tipo,
     setTipo,
-    loading,
     fetchPeriodo,
   };
 };

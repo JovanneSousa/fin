@@ -7,7 +7,7 @@ import type { AppDispatch } from "../../Store";
 import { getCategories } from "../../Store/reducers/categories";
 import Modal from "../../components/ModalContainer";
 import FormNew from "../../components/FormNew";
-import useFormNew from "../../Hooks/useFormNew";
+import { useFormNew } from "../../contexts/FormNew/useFormNew";
 
 export type Tabs = "dashboard" | "transacoes" | "categorias" | "planejamento";
 

@@ -6,7 +6,7 @@ import useTransactions from "./useTransactions";
 
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, setTipo } = useTransactions();
+  const { items, setTipo, tipo } = useTransactions();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,7 +25,6 @@ export const useTransactionTable = () => {
     if (isSearching) {
       setIsSearching(false);
       setValorBusca("");
-      console.log("fechou");
     }
     return;
   };
@@ -46,6 +45,7 @@ export const useTransactionTable = () => {
     itemSelecionado,
     valorBusca,
     isSearching,
+    tipo,
     setValorBusca,
     fechaBusca,
     abreBusca,

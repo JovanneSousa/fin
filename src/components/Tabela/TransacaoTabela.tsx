@@ -21,6 +21,7 @@ import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
+import { useFormNew } from "../../contexts/FormNew/useFormNew";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -29,7 +30,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     itemSelecionado,
     items,
     valorBusca,
-    isSearching,
+    isSearching,tipo,
     setIsDeleteModalOpen,
     abrirDetalhes,
     fecharDetalhes,
@@ -39,6 +40,33 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     setValorBusca,
     setTipo,
   } = useTransactionTable();
+
+  const { abreModal } = useFormNew();
+
+  const button = {
+    receita: (
+      <Button
+        onClick={() => abreModal("receita")}
+        padding="small"
+        type="button"
+        bgColor={colors.lightGray}
+        icon="plus"
+      >
+        Nova Despesa
+      </Button>
+    ),
+    despesa: (
+      <Button
+        onClick={() => abreModal("despesa")}
+        padding="small"
+        type="button"
+        bgColor={colors.lightGray}
+        icon="plus"
+      >
+        Nova Despesa
+      </Button>
+    ),
+  };
 
   return (
     <>
@@ -57,14 +85,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             </select>
           </div>
           <div className="button-container">
-            <Button
-              padding="small"
-              type="button"
-              bgColor={colors.lightGray}
-              icon="plus"
-            >
-              Nova Despesa
-            </Button>
+            {tipo != 'todos' && button[tipo]}
             <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
               <input
                 className="search"

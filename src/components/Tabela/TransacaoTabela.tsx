@@ -16,7 +16,6 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     isOpen,
     itemSelecionado,
     items,
-    valorBusca,
     isSearching,
     tipo,
     setIsDeleteModalOpen,
@@ -25,17 +24,18 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     setItemSelecionado,
     abreBusca,
     fechaBusca,
-    setValorBusca,
     setTipo,
   } = useTransactionTable();
 
   return (
     <>
       <TopoTabela
+        abreBusca={abreBusca}
         fechaBusca={fechaBusca}
         type={type}
         isSearching={isSearching}
         tipoFiltro={tipo}
+        setFilter={setTipo}
       />
       <StyledTable>
         <thead>

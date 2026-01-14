@@ -3,7 +3,7 @@ import { breakpoints, colors } from "../../globalStyles";
 
 export const CardStyled = styled.div`
   border-radius: 16px;
-  padding: 16px 24px;
+  padding: 12px 16px;
   box-shadow: ${colors.shadow};
   display: flex;
   justify-content: space-between;

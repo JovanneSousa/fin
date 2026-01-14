@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
-type AnalysisProp = {
+type DashboardsProp = {
   isComparison?: boolean;
 };
 
-export const Analysis = styled.div.withConfig({
+export const DashboardsSection = styled.div.withConfig({
   shouldForwardProp: (prop) => !["isComparison"].includes(prop),
-})<AnalysisProp>`
+})<DashboardsProp>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@ export const Analysis = styled.div.withConfig({
   .container-analysis {
     display: grid;
     grid-template-columns: ${({ isComparison }) =>
-      isComparison ? "1fr" : "0.7fr 0.3fr"};
+      isComparison ? "1fr" : "1fr 1fr"};
     gap: 20px;
 
     @media (max-width: ${breakpoints.tablet}) {

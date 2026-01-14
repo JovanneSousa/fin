@@ -80,7 +80,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 
     @media (max-width: ${breakpoints.tablet}) {
         grid-template-columns: 1fr 1fr;

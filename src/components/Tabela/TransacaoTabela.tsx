@@ -1,14 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatCurrency, toLocalDateIgnoreTimezone } from "../../Utils";
-import { CloseBox, DetailBox, StyledTable } from "./styles";
-import { faCircleInfo, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  CloseBox,
+  DetailBox,
+  StyledIcon,
+  StyledTable,
+  StyledTopoTabela,
+} from "./styles";
+import {
+  faCircleInfo,
+  faCircleXmark,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import type { TabelaProps } from ".";
 import Modal from "../ModalContainer";
 import TransacaoDetails from "../TransactionDetails";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
-import { TopoTabela } from "./TopoTapela";
+import { useState } from "react";
+import Seletor from "../Seletor";
+import Button from "../Button";
+import { colors } from "../../globalStyles";
+import { useFormNew } from "../../contexts/FormNew/useFormNew";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -26,17 +40,74 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     fechaBusca,
     setTipo,
   } = useTransactionTable();
+  const [valorBusca, setValorBusca] = useState("");
+
+  const { abreModal } = useFormNew();
+
+  const button = {
+    receita: (
+      <Button
+        bgColor={colors.lightGray}
+        padding="small"
+        type="button"
+        icon="plus"
+        onClick={() => abreModal("receita")}
+      >
+        Nova Receita
+      </Button>
+    ),
+    despesa: (
+      <Button
+        bgColor={colors.lightGray}
+        padding="small"
+        type="button"
+        icon="plus"
+        onClick={() => abreModal("despesa")}
+      >
+        Nova Despesa
+      </Button>
+    ),
+  };
 
   return (
     <>
-      <TopoTabela
-        abreBusca={abreBusca}
-        fechaBusca={fechaBusca}
-        type={type}
+      <StyledTopoTabela
         isSearching={isSearching}
-        tipoFiltro={tipo}
-        setFilter={setTipo}
-      />
+        onClick={fechaBusca}
+        page={type}
+      >
+        <form className="tipo">
+          <div className="input-wrapper">
+            <select
+              onChange={(e) =>
+                setTipo(e.target.value as "todos" | "despesa" | "receita")
+              }
+              id="tipo"
+            >
+              <option value="todos">Todos</option>
+              <option value="despesa">Despesas</option>
+              <option value="receita">Receitas</option>
+            </select>
+          </div>
+          <div className="button-container">
+            {tipo !== "todos" && button[tipo]}
+            <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
+              <input
+                className="search"
+                id="busca"
+                type="text"
+                placeholder="Pesquise por descrição, categoria ou valor"
+                value={valorBusca}
+                onChange={(e) => setValorBusca(e.target.value)}
+              />
+              <label htmlFor="busca">
+                <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />
+              </label>
+            </div>
+          </div>
+        </form>
+        <Seletor page={type} />
+      </StyledTopoTabela>
       <StyledTable>
         <thead>
           <tr>

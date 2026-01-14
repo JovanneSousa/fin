@@ -11,7 +11,7 @@ const useTransactions = () => {
 
   const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
 
-  const items = useSelector(
+  const itemsFiltrados = useSelector(
     (state: RootReducer) => state.transactions.items
   ).filter((t) => {
     if (tipo === "todos") return true;
@@ -34,7 +34,7 @@ const useTransactions = () => {
   };
 
   return {
-    items,
+    itemsFiltrados,
     saldoTotal,
     loading,
     tipo,

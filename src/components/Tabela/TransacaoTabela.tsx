@@ -29,7 +29,6 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     isDeleteModalOpen,
     isOpen,
     itemSelecionado,
-    items,
     isSearching,
     tipo,
     setIsDeleteModalOpen,
@@ -38,9 +37,12 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     setItemSelecionado,
     abreBusca,
     fechaBusca,
-    setTipo,
+    changeType,
+    paginacao,
   } = useTransactionTable();
   const [valorBusca, setValorBusca] = useState("");
+
+  const { itemsPaginados } = paginacao;
 
   const { abreModal } = useFormNew();
 
@@ -80,7 +82,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
           <div className="input-wrapper">
             <select
               onChange={(e) =>
-                setTipo(e.target.value as "todos" | "despesa" | "receita")
+                changeType(e.target.value as "todos" | "despesa" | "receita")
               }
               id="tipo"
             >
@@ -119,7 +121,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
+          {itemsPaginados.map((item) => (
             <tr key={item.id}>
               <td>{toLocalDateIgnoreTimezone(item.dataMovimentacao)}</td>
               <td>{item.titulo}</td>
@@ -165,7 +167,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
           item={itemSelecionado}
         />
       </Modal>
-      <RodapeTabelas />
+      <RodapeTabelas paginacao={paginacao} />
     </>
   );
 };

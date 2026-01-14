@@ -47,4 +47,11 @@ export const ButtonStyled = styled.button.withConfig({
       background-color: ${colors.lighterGray};
     }
   }
+
+  &:disabled {
+    opacity: 0.5;
+    &:hover {
+      background-color: inherit;
+    }
+  }
 `;

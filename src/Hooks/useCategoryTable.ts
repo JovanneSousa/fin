@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
-import type { RootReducer } from "../Store";
 import { useState } from "react";
+import useCategory from "./useCategory";
+import { usePaginacao } from "./usePaginacao";
 
 export const useCategoryTable = () => {
-  const { despesa, receita } = useSelector(
-    (state: RootReducer) => state.categories
-  );
+  const { despesa, receita } = useCategory();
+
   const [isSearching, setIsSearching] = useState(false);
   const [valorBusca, setValorBusca] = useState("");
 
@@ -20,15 +19,17 @@ export const useCategoryTable = () => {
     }
     return;
   };
+  const despesaPaginada = usePaginacao(despesa);
+  const receitaPaginada = usePaginacao(receita);
 
   return {
-    despesa,
-    receita,
+    despesaPaginada,
+    receitaPaginada,
     valorBusca,
     isSearching,
     abreBusca,
     fechaBusca,
-    setValorBusca
+    setValorBusca,
   };
 };
 

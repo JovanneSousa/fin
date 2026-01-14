@@ -1,50 +1,95 @@
 import { RodapeTabela } from "./styles";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
+import type { QtdRegistros } from "../../Hooks/usePaginacao";
 
-const RodapeTabelas = () => {
+interface RodapeProps {
+  paginacao: {
+    ultimaPagina: () => void;
+    primeiraPagina: () => void;
+    proximaPagina: () => void;
+    paginaAnterior: () => void;
+    changeQtdRegistros: (qtd: QtdRegistros) => void;
+    estaNaPrimeiraPagina: boolean;
+    estaNaUltimaPagina: boolean;
+    linhas: {
+      linhasTotais: number;
+      linhasAtuais: {
+        inicio: number;
+        fim: number;
+      };
+    };
+  };
+}
+
+const RodapeTabelas = ({ paginacao }: RodapeProps) => {
+  const {
+    changeQtdRegistros,
+    paginaAnterior,
+    primeiraPagina,
+    proximaPagina,
+    ultimaPagina,
+    estaNaPrimeiraPagina,
+    estaNaUltimaPagina,
+    linhas,
+  } = paginacao;
+
   return (
     <RodapeTabela>
       <form>
         <div className="input-wrapper">
           <label htmlFor="row">Linhas por página</label>
-          <select id="row">
-            <option value="">5</option>
-            <option value="">10</option>
-            <option value="">25</option>
-            <option value="">50</option>
+          <select
+            onChange={(e) =>
+              changeQtdRegistros(Number(e.target.value) as QtdRegistros)
+            }
+            id="row"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
           </select>
         </div>
       </form>
-      <p>1-5 de 6</p>
+      <p>{`${linhas.linhasAtuais.inicio} - ${linhas.linhasAtuais.fim} de ${linhas.linhasTotais}`}</p>
       <div>
         <Button
+          disabled={estaNaPrimeiraPagina}
           className="prev"
           type="button"
           padding="small"
           bgColor={colors.branco}
           icon={"doubleLeft"}
+          onClick={primeiraPagina}
         />
         <Button
+          disabled={estaNaPrimeiraPagina}
           className="next"
           type="button"
           padding="small"
           bgColor={colors.branco}
           icon={"left"}
+          onClick={paginaAnterior}
         />
         <Button
+          disabled={estaNaUltimaPagina}
           className="prev"
           type="button"
           padding="small"
           bgColor={colors.branco}
           icon={"right"}
+          onClick={proximaPagina}
         />
         <Button
+          disabled={estaNaUltimaPagina}
           className="prev"
           type="button"
           padding="small"
           bgColor={colors.branco}
           icon={"doubleRight"}
+          onClick={ultimaPagina}
         />
       </div>
     </RodapeTabela>

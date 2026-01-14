@@ -14,17 +14,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import type { TabelaProps } from ".";
-import RodapeTabelas from "./RodapeTabelas";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
+import RodapeTabelas from "./RodapeTabelas";
 
 export const CategoriaTabela = ({ type }: TabelaProps) => {
-  const { despesa, receita, abreBusca, fechaBusca, isSearching } =
-    useCategoryTable();
+  const {
+    despesaPaginada,
+    receitaPaginada,
+    abreBusca,
+    fechaBusca,
+    isSearching,
+  } = useCategoryTable();
 
   const [filter, setFilter] = useState<"receita" | "despesa">("despesa");
   const [valorBusca, setValorBusca] = useState("");
+
+  const { itemsPaginados: despesa } = despesaPaginada;
+  const { itemsPaginados: receita } = receitaPaginada;
 
   const { abreModal } = useFormNew();
 
@@ -155,7 +163,9 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
           item={itemSelecionado}
         />
       </Modal> */}
-      <RodapeTabelas />
+      <RodapeTabelas
+        paginacao={filter == "despesa" ? despesaPaginada : receitaPaginada}
+      />
     </>
   );
 };

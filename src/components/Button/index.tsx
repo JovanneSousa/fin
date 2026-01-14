@@ -30,6 +30,7 @@ export interface ButtonProps {
   onClick?: () => void;
   icon?: IconTypes;
   className?: string;
+  disabled?: boolean;
 }
 
 const icone = {
@@ -51,6 +52,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   icon,
   className,
+  disabled,
 }) => {
   return (
     <ButtonStyled
@@ -59,10 +61,9 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       bgColor={bgColor}
       padding={padding}
+      disabled={disabled}
     >
-      {icon && icone[icon]}
-      {" "}
-      {children}
+      {icon && icone[icon]} {children}
     </ButtonStyled>
   );
 };

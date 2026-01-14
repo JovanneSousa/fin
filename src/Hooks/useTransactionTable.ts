@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { getTransacao, type Transacao } from "../Store/reducers/transactions";
 import type { AppDispatch } from "../Store";
 import useTransactions from "./useTransactions";
+import { usePaginacao } from "./usePaginacao";
 
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, setTipo, tipo } = useTransactions();
+  const { itemsFiltrados, setTipo, tipo } = useTransactions();
+  const paginacao = usePaginacao(itemsFiltrados);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,14 +40,19 @@ export const useTransactionTable = () => {
     setIsOpen(false);
   };
 
+  const changeType = (tipo: "todos" | "receita" | "despesa") => {
+    setTipo(tipo);
+    paginacao.primeiraPagina();
+  };
+
   return {
-    items,
     isOpen,
     isDeleteModalOpen,
     itemSelecionado,
     valorBusca,
     isSearching,
     tipo,
+    paginacao,
     setValorBusca,
     fechaBusca,
     abreBusca,
@@ -53,7 +60,7 @@ export const useTransactionTable = () => {
     setItemSelecionado,
     abrirDetalhes,
     fecharDetalhes,
-    setTipo,
+    changeType,
   };
 };
 

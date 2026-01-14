@@ -153,6 +153,29 @@ export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
       transition: width ease 0.3s;
       width: ${({ isSearching }) => (isSearching ? "420px" : "32px")};
     }
+
+    select {
+      option {
+        color: ${colors.preto};
+      }
+      &.receita {
+        background-color: ${colors.verde};
+        color: ${colors.branco};
+
+        option {
+          background-color: ${colors.verdeClaro};
+        }
+      }
+
+      &.despesa {
+        background-color: ${colors.vermelho};
+        color: ${colors.branco};
+
+        option {
+          background-color: ${colors.vermelhoClaro};
+        }
+      }
+    }
   }
 `;
 

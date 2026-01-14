@@ -17,6 +17,8 @@ export const colors = {
   azul: "#3498db",
   laranja: "#f39c12",
   transparent: "transparent",
+  verdeClaro: "#e6f4ea",
+  vermelhoClaro: "#fde8ea",
 };
 
 export const IconBox = styled.div<{ color: string }>`

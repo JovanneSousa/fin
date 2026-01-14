@@ -49,7 +49,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
   const button = {
     receita: (
       <Button
-        bgColor={colors.lightGray}
+        bgColor={colors.verde}
         padding="small"
         type="button"
         icon="plus"
@@ -60,7 +60,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     ),
     despesa: (
       <Button
-        bgColor={colors.lightGray}
+        bgColor={colors.vermelho}
         padding="small"
         type="button"
         icon="plus"
@@ -81,6 +81,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         <form className="tipo">
           <div className="input-wrapper">
             <select
+              className={tipo}
               onChange={(e) =>
                 changeType(e.target.value as "todos" | "despesa" | "receita")
               }

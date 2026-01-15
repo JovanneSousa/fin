@@ -11,7 +11,8 @@ import {
 } from "recharts";
 import type { RootReducer } from "../../Store";
 import { colors } from "../../globalStyles";
-import Feedback from "../Feedback";
+import Seletor from "../Seletor";
+import { GraficoLinhaContainer, StyledLineChart } from "./styles";
 
 const GraficoLinha = () => {
   const { items } = useSelector((state: RootReducer) => state.transactions);
@@ -52,47 +53,66 @@ const GraficoLinha = () => {
       despesa,
     }));
   }, [items]);
-  return data.length <= 1 ? (
-    <Feedback info="Selecione um periodo de meses no seletor acima" noButton={true}/>
-  ) : (
-    <LineChart
-      style={{
-        width: "100%",
-        height: "85%",
-        aspectRatio: 1.618,
-      }}
-      responsive
-      data={data}
-      margin={{
-        top: 5,
-        right: 0,
-        left: 0,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="mes" />
-      <YAxis
-        width="auto"
-        tickFormatter={(value) =>
-          value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-        }
-        className="responsive-graph"
-      />
-      <Tooltip
-        formatter={(value) =>
-          value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-        }
-      />
-      <Legend />
-      <Line
-        type="monotone"
-        dataKey="receita"
-        stroke={colors.verde}
-        activeDot={{ r: 8 }}
-      />
-      <Line type="monotone" dataKey="despesa" stroke={colors.vermelho} />
-    </LineChart>
+  // data.length <= 1 ? (
+  //   <Feedback
+  //     info="Selecione um periodo de meses no seletor acima"
+  //     noButton={true}
+  //   />
+  // ) :
+  return (
+    <GraficoLinhaContainer>
+      <div className="title">
+        <p>Comparativo Mensal</p>
+        <Seletor page="comparativo" />
+      </div>
+
+      <div className="infos-container">
+        <StyledLineChart
+          style={{
+            width: "100%",
+            height: "450px",
+            aspectRatio: 1.618,
+          }}
+          responsive
+          data={data}
+          margin={{
+            top: 5,
+            right: 0,
+            left: 0,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="mes" />
+          <YAxis
+            width="auto"
+            tickFormatter={(value) =>
+              value.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })
+            }
+            className="responsive-graph"
+          />
+          <Tooltip
+            formatter={(value) =>
+              value.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })
+            }
+          />
+          <Legend />
+          <Line
+            type="linear"
+            dataKey="receita"
+            stroke={colors.verde}
+            activeDot={{ r: 8 }}
+          />
+          <Line type="linear" dataKey="despesa" stroke={colors.vermelho} />
+        </StyledLineChart>
+      </div>
+    </GraficoLinhaContainer>
   );
 };
 

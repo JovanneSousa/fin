@@ -10,8 +10,8 @@ const useCategory = () => {
   );
 
   useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
+    if (!receita.length && !despesa.length) dispatch(getCategories());
+  }, [dispatch, receita.length, despesa.length]);
   return { despesa, receita };
 };
 

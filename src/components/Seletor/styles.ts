@@ -3,20 +3,40 @@ import { breakpoints, colors } from "../../globalStyles";
 
 interface SeletorSectionProps {
   positionTitle: "center" | "space-between";
-  page: "default" | "transacoes";
+  page: "default" | "transacoes" | "comparativo";
   isSelecting?: boolean;
 }
+
+const styles = {
+  comparativo: css`
+    flex-direction: row;
+  `,
+  transacoes: css`
+    flex-direction: column;
+
+    .container-pill {
+      padding-bottom: 16px;
+      border-bottom: 1px solid ${colors.lightGray};
+    }
+  `,
+  default: css`
+    flex-direction: column;
+    .container-pill {
+      padding-bottom: 16px;
+      border-bottom: 1px solid ${colors.lightGray};
+    }
+  `,
+};
 
 export const SeletorSection = styled.section.withConfig({
   shouldForwardProp: (prop) =>
     !["positionTitle", "page", "isSelecting"].includes(prop),
 })<SeletorSectionProps>`
   background-color: ${colors.branco};
-  padding: ${({page}) => page == 'default' ? '24px': '16px 26px'};
-  width: 100%;
+  padding: ${({ page }) => (page == "default" ? "24px" : "16px 26px")};
   border-radius: 16px;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ page }) => (page == "comparativo" ? "row" : "column")};
   justify-content: space-between;
   gap: 16px;
   margin-bottom: ${({ page }) => (page == "default" ? "16px" : "0")};
@@ -27,6 +47,8 @@ export const SeletorSection = styled.section.withConfig({
       max-height: ${isSelecting ? "140px" : "84px"};
       transition: max-height 0.7s ease;
     `}
+
+  ${({ page }) => styles[page]}
 
   .month-container {
     display: flex;
@@ -73,8 +95,6 @@ export const SeletorSection = styled.section.withConfig({
     display: flex;
     gap: 8px;
     font-size: 14px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid ${colors.lightGray};
 
     button {
       padding: 6px 8px;

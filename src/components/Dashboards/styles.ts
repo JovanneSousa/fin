@@ -13,7 +13,7 @@ export const DashboardsSection = styled.div.withConfig({
   flex-direction: column;
   gap: 20px;
 
-  nav {
+  /* nav {
     border-radius: 8px;
     padding: 4px;
     background-color: ${colors.lightGray};
@@ -42,12 +42,15 @@ export const DashboardsSection = styled.div.withConfig({
         box-shadow: ${colors.shadow};
       }
     }
-  }
+  } */
   .container-analysis {
     display: grid;
-    grid-template-columns: ${({ isComparison }) =>
-      isComparison ? "1fr" : "1fr 1fr"};
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+
+    grid-template-areas:
+      "a b"
+      "c c";
+    gap: 16px;
 
     @media (max-width: ${breakpoints.tablet}) {
       grid-template-columns: 1fr;
@@ -73,12 +76,6 @@ export const DashboardsSection = styled.div.withConfig({
     display: flex;
     justify-content: space-around;
     align-items: center;
-
-    p {
-      font-size: 24px;
-      font-weight: bold;
-      color: ${colors.darkGray};
-    }
 
     @media (max-width: ${breakpoints.tablet}) {
       flex-direction: column;

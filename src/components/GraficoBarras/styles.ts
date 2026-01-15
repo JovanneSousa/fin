@@ -7,6 +7,7 @@ export const BarContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  grid-area: a;
 
   @media (max-width: ${breakpoints.tablet}) {
     height: 350px;

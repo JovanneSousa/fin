@@ -1,6 +1,7 @@
 import SeletorTransacao from "./SeletorTransacao";
 import DefaultSeletor from "./DefaultSeletor";
 import { useTransactionDateFilter } from "../../Hooks/useTransactionDateFilter";
+import { ComparativoSeletor } from "./ComparativoSeletor";
 
 export type BaseSeletorProps = {
   mesSelecionado: Date;
@@ -25,10 +26,11 @@ interface SeletorProps {
 }
 
 const Seletor = ({ page }: SeletorProps) => {
-  
   const seletor = useTransactionDateFilter();
 
   if (page == "transacoes") return <SeletorTransacao {...seletor} />;
+
+  if (page == "comparativo") return <ComparativoSeletor {...seletor} />;
 
   return <DefaultSeletor {...seletor} />;
 };

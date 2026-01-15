@@ -1,12 +1,9 @@
+import { LineChart } from "recharts";
 import styled from "styled-components";
 import { colors } from "../../globalStyles";
 
-interface ContainerCorProps {
-  bg: string;
-}
-
-export const GraficoRoscaContainer = styled.section`
-  grid-area: b;
+export const GraficoLinhaContainer = styled.section`
+  grid-area: c;
 
   .title {
     padding: 16px;
@@ -15,11 +12,12 @@ export const GraficoRoscaContainer = styled.section`
     color: ${colors.branco};
     font-size: 24px;
     font-weight: bold;
-    align-self: flex-start;
     justify-content: space-between;
+    align-self: flex-start;
+    gap: 16px;
 
-    button {
-      margin: 0;
+    .title-mes {
+      font-size: 16px;
     }
   }
 
@@ -36,6 +34,7 @@ export const GraficoRoscaContainer = styled.section`
     padding: 16px 24px;
     border-radius: 16px;
     background-color: ${colors.branco};
+    flex-direction: column;
   }
 
   .legenda-container {
@@ -44,11 +43,11 @@ export const GraficoRoscaContainer = styled.section`
     justify-content: center;
 
     .legenda-item {
-      padding-bottom: 8px;
+      padding-bottom: 16px;
 
-      p {
-        gap: 8px;
-        display: flex;
+      &:last-child {
+        padding-top: 16px;
+        border-top: 1px solid ${colors.lightGray};
       }
 
       .receita {
@@ -62,12 +61,7 @@ export const GraficoRoscaContainer = styled.section`
   }
 `;
 
-export const ContainerCor = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["bg"].includes(prop),
-})<ContainerCorProps>`
-  margin: 0 auto;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${({ bg }) => bg};
+export const StyledLineChart = styled(LineChart)`
+  padding: 8px 16px;
+  background-color: ${colors.branco};
 `;

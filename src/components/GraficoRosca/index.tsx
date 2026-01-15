@@ -1,11 +1,5 @@
 import { useMemo, useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { formatCurrency } from "../../Utils";
 import Feedback from "../Feedback";
 import useTransactions from "../../Hooks/useTransactions";
@@ -59,10 +53,13 @@ const GraficoRosca = () => {
       mapa.set(nomeCategoria, (mapa.get(nomeCategoria) || 0) + t.valor);
     });
 
-    return Array.from(mapa.entries()).map(([name, value]) => ({
-      name,
-      value,
-    }));
+    return Array.from(mapa.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([name, value]) => ({
+        name,
+        value,
+      }));
   }, [itemsFiltrados, tipo]);
 
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;

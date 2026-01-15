@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import type { RootReducer } from "../../Store";
 import GraficoRosca from "../GraficoRosca";
 import { DashboardsSection } from "./styles";
+import GraficoLinha from "../GraficoLinha";
 
 const Dashboards = () => {
   const { items } = useSelector((state: RootReducer) => state.transactions);
@@ -28,6 +29,7 @@ const Dashboards = () => {
       <div className="container-analysis">
         <GraficoBarras data={data} />
         <GraficoRosca />
+        <GraficoLinha />
       </div>
     </DashboardsSection>
   );

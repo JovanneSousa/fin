@@ -59,6 +59,15 @@ export const GraficoLinhaContainer = styled.section`
       }
     }
   }
+
+  .container-pill button {
+
+    &.is-active {
+      background-color: inherit;
+      color: ${colors.verde};
+      font-weight: bold;
+    }
+  }
 `;
 
 export const StyledLineChart = styled(LineChart)`

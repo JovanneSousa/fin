@@ -10,11 +10,16 @@ interface SeletorSectionProps {
 const styles = {
   comparativo: css`
     flex-direction: row;
+
+    .container-title p {
+      color: ${colors.darkGray};
+    }
   `,
   transacoes: css`
     flex-direction: column;
 
     .container-pill {
+      gap: 8px;
       padding-bottom: 16px;
       border-bottom: 1px solid ${colors.lightGray};
     }
@@ -93,12 +98,9 @@ export const SeletorSection = styled.section.withConfig({
 
   .container-pill {
     display: flex;
-    gap: 8px;
     font-size: 14px;
 
     button {
-      padding: 6px 8px;
-
       @media (max-width: ${breakpoints.tablet}) {
         font-size: 14px;
       }

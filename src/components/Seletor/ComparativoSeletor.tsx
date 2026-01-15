@@ -1,68 +1,39 @@
 import { useState } from "react";
 import type { BaseSeletorProps } from ".";
-import { colors } from "../../globalStyles";
-import Button from "../Button";
 import ButtonPill from "../ButtonPill";
 import { SeletorSection } from "./styles";
 
 export const ComparativoSeletor = ({
-  aplicarMes,
   aplicarPeriodo,
-  mesSelecionado,
-  onNextMonth,
-  onNextYear,
-  onPrevMonth,
-  onPrevYear,
-  onSelectMonth,
   pillAtiva,
   setPillAtiva,
-  titlePeriod,
 }: BaseSeletorProps) => {
-  const filtrarMesAtual = () => {
-    console.log("Chamou a função");
-    aplicarMes(new Date());
-    setPillAtiva("mes-atual");
-  };
   const [inicioPeriodo, setInicioPeriodo] = useState<Date>(new Date());
   const [fimPeriodo, setFimPeriodo] = useState<Date>(new Date());
 
-  const filtrarIntervaloMeses = (qtd: number) => {
-    setFimPeriodo(new Date());
-    setInicioPeriodo(
-      new Date(fimPeriodo.getFullYear(), fimPeriodo.getMonth() - qtd, 1)
+  const filtrarIntervaloMeses = async (qtd: number) => {
+    //pega o ultimo dia do mês
+    const novoFim = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+      999
     );
-    aplicarPeriodo(inicioPeriodo, fimPeriodo);
+    const novoInicio = new Date(
+      novoFim.getFullYear(),
+      novoFim.getMonth() - (qtd - 1),
+      1
+    );
+
+    setFimPeriodo(novoFim);
+    setInicioPeriodo(novoInicio);
+
+    aplicarPeriodo(novoInicio, novoFim);
     setPillAtiva(`${qtd}m`);
   };
-
-  const gerarMesesSelect = () => {
-    const meses = [];
-    const hoje = new Date();
-
-    for (let i = 1; i <= 6; i++) {
-      const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
-
-      meses.push({
-        label: data.toLocaleString("pt-BR", { month: "long", year: "numeric" }),
-        year: data.getFullYear(),
-        month: data.getMonth(),
-      });
-    }
-
-    for (let i = 1; i <= 6; i++) {
-      const data = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
-
-      meses.push({
-        label: data.toLocaleString("pt-BR", { month: "long", year: "numeric" }),
-        year: data.getFullYear(),
-        month: data.getMonth(),
-      });
-    }
-
-    return meses;
-  };
-
-  const meses = gerarMesesSelect();
   return (
     <SeletorSection page="comparativo" positionTitle="space-between">
       <div className="container-title">
@@ -81,16 +52,19 @@ export const ComparativoSeletor = ({
       </div>
       <div className="container-pill">
         <ButtonPill
+          radius={false}
           children="3 Meses"
           onClick={() => filtrarIntervaloMeses(3)}
           className={pillAtiva === "3m" ? "is-active" : ""}
         />
         <ButtonPill
+          radius={false}
           children="6 Meses"
           onClick={() => filtrarIntervaloMeses(6)}
           className={pillAtiva === "6m" ? "is-active" : ""}
         />
         <ButtonPill
+          radius={false}
           children="1 Ano"
           onClick={() => filtrarIntervaloMeses(12)}
           className={pillAtiva === "12m" ? "is-active" : ""}

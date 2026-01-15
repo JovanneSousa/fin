@@ -30,9 +30,7 @@ const Dashboards = () => {
   return (
     <DashboardsSection>
       <div className="container-analysis">
-        <div className="conteudo">
-          <GraficoBarras data={data} />
-        </div>
+        <GraficoBarras data={data} />
         <div className="conteudo">
           <div className="title-container">
             <p>{isReceita ? "Ganhos por categoria" : "Gastos por categoria"}</p>

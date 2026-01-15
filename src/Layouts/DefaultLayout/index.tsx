@@ -1,10 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "../../components/Header";
 import Sidebar from "../../components/SideBar";
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../Store";
-import { getCategories } from "../../Store/reducers/categories";
+import { useRef } from "react";
 import Modal from "../../components/ModalContainer";
 import FormNew from "../../components/FormNew";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
@@ -16,11 +13,6 @@ const DefaultLayout = () => {
   const location = useLocation();
 
   const { fechaModal, isOpenModal } = useFormNew();
-
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
 
   const path = location.pathname;
 

@@ -5,13 +5,15 @@ import {
   fetchSaldoTotal,
   fetchTransactionsPeriod,
 } from "../Store/reducers/transactions";
+import useCategory from "./useCategory";
 
 const useTransactions = () => {
+  const { despesa, receita } = useCategory();
+  const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
+  
   const dispatch = useDispatch<AppDispatch>();
 
-  const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
-
-  const itemsFiltrados = useSelector(
+  const filtro = useSelector(
     (state: RootReducer) => state.transactions.items
   ).filter((t) => {
     if (tipo === "todos") return true;
@@ -32,6 +34,15 @@ const useTransactions = () => {
     dispatch(fetchTransactionsPeriod({ startDate, endDate }));
     dispatch(fetchSaldoTotal());
   };
+
+  const itemsFiltrados = filtro.map((item) => {
+    if (!item.categoria) {
+      const source = item.type === 0 ? receita : despesa;
+      const categoria = source.find((c) => c.id === item.categoriaId);
+      return { ...item, categoria };
+    }
+    return item;
+  });
 
   return {
     itemsFiltrados,

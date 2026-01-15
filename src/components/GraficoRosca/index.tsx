@@ -1,16 +1,17 @@
-import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useMemo, useState } from "react";
 import {
   PieChart,
   Pie,
   Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
-import type { RootReducer } from "../../Store";
 import { formatCurrency } from "../../Utils";
 import Feedback from "../Feedback";
+import useTransactions from "../../Hooks/useTransactions";
+import { ContainerCor, GraficoRoscaContainer } from "./styles";
+import Button from "../Button";
+import { colors } from "../../globalStyles";
 
 const DESPESA_COLORS = [
   "#e63946",
@@ -34,30 +35,26 @@ const RECEITA_COLORS = [
   "#2ecc71",
 ];
 
-interface GraficoRoscaProps {
-  tipo: 0 | 1;
-}
+type TipoGrafico = "receita" | "despesa";
 
-const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
-  const { despesa, receita } = useSelector(
-    (state: RootReducer) => state.categories
-  );
-  const { items } = useSelector((state: RootReducer) => state.transactions);
+const GraficoRosca = () => {
+  const [typeCategoria, setTypeCategoria] = useState<TipoGrafico>("despesa");
+  const { itemsFiltrados } = useTransactions();
+
+  const tipo = typeCategoria === "receita" ? 0 : 1;
+
+  const titulo = {
+    despesa: "Gastos por categoria",
+    receita: "Ganhos por categoria",
+  };
 
   const data = useMemo(() => {
-    const transacoesFiltradas = items.filter((t) => t.type === tipo);
-
-    const filtered = transacoesFiltradas.map((item) => {
-      if (!item.categoria) {
-        const source = item.type === 0 ? receita : despesa;
-        const categoria = source.find((c) => c.id === item.categoriaId);
-        return { ...item, categoria };
-      }
-      return item;
-    });
+    const transacoesFiltradasPorTipo = itemsFiltrados.filter(
+      (t) => t.type === tipo
+    );
 
     const mapa = new Map<string, number>();
-    filtered.forEach((t) => {
+    transacoesFiltradasPorTipo.forEach((t) => {
       const nomeCategoria = t.categoria?.name || "Sem categoria";
       mapa.set(nomeCategoria, (mapa.get(nomeCategoria) || 0) + t.valor);
     });
@@ -66,33 +63,75 @@ const GraficoRosca: React.FC<GraficoRoscaProps> = ({ tipo }) => {
       name,
       value,
     }));
-  }, [items, tipo, receita, despesa]);
+  }, [itemsFiltrados, tipo]);
 
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 
   return data.length == 0 ? (
     <Feedback info="Nenhum dado encontrado" noButton={true} />
   ) : (
-    <ResponsiveContainer width="100%" height={400}>
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          innerRadius={70}
-          outerRadius={120}
-          label={({ name, value }) => `${name}: ${formatCurrency(value)}`}
-        >
-          {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+    <GraficoRoscaContainer>
+      <div className="title">
+        <p>{titulo[typeCategoria]}</p>
+        <div className="button-container">
+          <Button
+            bgColor={
+              typeCategoria == "despesa" ? colors.vermelho : colors.lightGray
+            }
+            padding="small"
+            onClick={() => setTypeCategoria("despesa")}
+          >
+            Despesa
+          </Button>
+          <Button
+            bgColor={
+              typeCategoria == "receita" ? colors.verde : colors.lightGray
+            }
+            padding="small"
+            onClick={() => setTypeCategoria("receita")}
+          >
+            Receita
+          </Button>
+        </div>
+      </div>
+      <div className="infos-container">
+        <ResponsiveContainer width={200} height={200}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={100}
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip
+              formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="legenda-container">
+          {data.map((c, index) => (
+            <div key={c.name} className="legenda-item">
+              <p>
+                <ContainerCor bg={COLORS[index % COLORS.length]} />
+
+                {c.name}
+              </p>
+              <p className={typeCategoria}>{formatCurrency(c.value)}</p>
+            </div>
           ))}
-        </Pie>
-        <Tooltip formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`} />
-        <Legend />
-      </PieChart>
-    </ResponsiveContainer>
+        </div>
+      </div>
+    </GraficoRoscaContainer>
   );
 };
 

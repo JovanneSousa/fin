@@ -24,9 +24,9 @@ type IconTypes =
 
 export interface ButtonProps {
   children?: React.ReactNode;
-  type: "button" | "submit" | "reset";
+  type?: "button" | "submit" | "reset";
   bgColor: string;
-  padding: "big" | "medium" | "small";
+  padding?: "big" | "medium" | "small";
   onClick?: () => void;
   icon?: IconTypes;
   className?: string;
@@ -44,16 +44,16 @@ const icone = {
   plus: <FontAwesomeIcon icon={faPlus} />,
 };
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   children,
   type = "button",
   bgColor,
-  padding,
+  padding = "small",
   onClick,
   icon,
   className,
   disabled,
-}) => {
+}: ButtonProps) => {
   return (
     <ButtonStyled
       className={className}

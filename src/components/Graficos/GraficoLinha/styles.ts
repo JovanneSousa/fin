@@ -54,6 +54,5 @@ export const GraficoLinhaContainer = styled.section`
 `;
 
 export const StyledLineChart = styled(LineChart)`
-  padding: 8px 16px;
   background-color: ${colors.branco};
 `;

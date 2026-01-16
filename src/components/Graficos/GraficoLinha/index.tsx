@@ -77,9 +77,10 @@ const GraficoLinha = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="mes" />
+          <XAxis  tickMargin={12} fontSize={"14px"} dataKey="mes" />
           <YAxis
             width="auto"
+            fontSize={"14px"}
             tickFormatter={(value) =>
               value.toLocaleString("pt-BR", {
                 style: "currency",
@@ -96,14 +97,31 @@ const GraficoLinha = () => {
               })
             }
           />
-          <Legend />
+          <Legend iconType="triangle" />
           <Line
             type="linear"
             dataKey="receita"
+            strokeWidth={2}
             stroke={colors.verde}
-            activeDot={{ r: 8 }}
+            activeDot={{ r: 6 }}
+            dot={false}
+            animationDuration={600}
+            animationEasing="ease-out"
+            connectNulls
+            z={2}
           />
-          <Line type="linear" dataKey="despesa" stroke={colors.vermelho} />
+          <Line
+            type="linear"
+            strokeWidth={2}
+            dataKey="despesa"
+            stroke={colors.vermelho}
+            activeDot={{ r: 6 }}
+            dot={false}
+            animationDuration={600}
+            animationEasing="ease-out"
+            connectNulls
+            z={2}
+          />
         </StyledLineChart>
       </div>
     </GraficoLinhaContainer>

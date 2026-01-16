@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createTransaction } from "../../Store/reducers/transactions";
 import { receitaSchema } from "../../validations/receitaSchema";
-import { useEffect } from "react";
 import { hoje } from "../../validations/baseTransacaoSchema";
 
 type ReceitaFormData = {
@@ -30,7 +29,7 @@ const FormReceita = () => {
   } = useForm<ReceitaFormData>({
     resolver: yupResolver(receitaSchema),
     defaultValues: {
-      dataMovimentacao: hoje
+      dataMovimentacao: hoje,
     },
   });
 
@@ -43,10 +42,6 @@ const FormReceita = () => {
     dispatch(createTransaction(payload));
     reset();
   };
-
-  useEffect(() => {
-    console.log({ ...register("dataMovimentacao") });
-  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

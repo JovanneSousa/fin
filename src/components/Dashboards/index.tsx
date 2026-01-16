@@ -1,33 +1,42 @@
-import GraficoBarras from "../GraficoBarras";
-import { useSelector } from "react-redux";
-import type { RootReducer } from "../../Store";
-import GraficoRosca from "../GraficoRosca";
+import GraficoBarras from "../Graficos/GraficoBarras";
+import GraficoRosca from "../Graficos/GraficoRosca";
 import { DashboardsSection } from "./styles";
-import GraficoLinha from "../GraficoLinha";
+import GraficoLinha from "../Graficos/GraficoLinha";
+import { useEffect } from "react";
+import useTransactions from "../../Hooks/useTransactions";
+import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
 
 const Dashboards = () => {
-  const { items } = useSelector((state: RootReducer) => state.transactions);
+  const {
+    itemsPeriodo: { successPeriodo },
+    itemsPeriodoComparativo: { successComparativo },
+    filtros: { aplicarPeriodoComparativo, aplicarPeriodo },
+    categorias: { buscaCategorias, despesa, receita },
+  } = useTransactions();
 
-  const valorTotalReceita = items.reduce((acc, t) => {
-    return t.type === 0 ? acc + t.valor : acc;
-  }, 0);
+  // busca dados de transações
+  useEffect(() => {
+    if (!successPeriodo) {
+      const inicio = subtraiMeses(ultimoDiaMesAtual(), 1);
+      const fim = ultimoDiaMesAtual();
+      aplicarPeriodo(inicio, fim);
+    }
+  }, [successPeriodo, aplicarPeriodo]);
 
-  const valorTotalDespesa = items.reduce((acc, t) => {
-    return t.type === 1 ? acc + t.valor : acc;
-  }, 0);
+  // busca dados de gráfico de linha
+  useEffect(() => {
+    if (!successComparativo) aplicarPeriodoComparativo(3);
+  }, [successComparativo, aplicarPeriodoComparativo]);
 
-  const data = [
-    {
-      name: "Mês",
-      receita: valorTotalReceita,
-      despesa: valorTotalDespesa,
-    },
-  ];
+  // busca as categorias
+  useEffect(() => {
+    if (receita.length == 0 && despesa.length == 0) buscaCategorias();
+  }, [receita, despesa, buscaCategorias]);
 
   return (
     <DashboardsSection>
       <div className="container-analysis">
-        <GraficoBarras data={data} />
+        <GraficoBarras />
         <GraficoRosca />
         <GraficoLinha />
       </div>

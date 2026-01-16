@@ -1,24 +1,23 @@
 import SeletorTransacao from "./SeletorTransacao";
-import DefaultSeletor from "./DefaultSeletor";
-import { useTransactionDateFilter } from "../../Hooks/useTransactionDateFilter";
 import { ComparativoSeletor } from "./ComparativoSeletor";
+import useTransactions from "../../Hooks/useTransactions";
 
 export type BaseSeletorProps = {
   mesSelecionado: Date;
-  titlePeriod: boolean;
-  pillAtiva: string | null;
 
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
+  handle: {
+    onPrevMonth: () => void;
+    onNextMonth: () => void;
+    onPrevYear: () => void;
+    onNextYear: () => void;
+  };
 
-  onPrevYear: () => void;
-  onNextYear: () => void;
+  filtros: {
+    onSelectMonth: (month: number) => void;
+    aplicarPeriodoComparativo: (qtdMeses: number) => void;
+  };
 
-  onSelectMonth: (monthIndex: number) => void;
-  aplicarPeriodo: (inicio: Date, fim: Date) => void;
-  aplicarMes: (date: Date) => void;
-
-  setPillAtiva: (value: string | null) => void;
+  // aplicarMes: (date: Date) => void;
 };
 
 interface SeletorProps {
@@ -26,13 +25,13 @@ interface SeletorProps {
 }
 
 const Seletor = ({ page }: SeletorProps) => {
-  const seletor = useTransactionDateFilter();
+  const seletor = useTransactions();
 
   if (page == "transacoes") return <SeletorTransacao {...seletor} />;
 
   if (page == "comparativo") return <ComparativoSeletor {...seletor} />;
 
-  return <DefaultSeletor {...seletor} />;
+  // return <DefaultSeletor {...seletor} />;
 };
 
 export default Seletor;

@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import { formatCurrency } from "../../Utils";
-import Feedback from "../Feedback";
-import useTransactions from "../../Hooks/useTransactions";
+import { formatCurrency } from "../../../Utils";
+import Feedback from "../../Feedback";
+import useTransactions from "../../../Hooks/useTransactions";
 import { ContainerCor, GraficoRoscaContainer } from "./styles";
-import Button from "../Button";
-import { colors } from "../../globalStyles";
+import Button from "../../Button";
+import { colors } from "../../../globalStyles";
+import { Title } from "../styles";
 
 const DESPESA_COLORS = [
   "#e63946",
@@ -33,7 +34,9 @@ type TipoGrafico = "receita" | "despesa";
 
 const GraficoRosca = () => {
   const [typeCategoria, setTypeCategoria] = useState<TipoGrafico>("despesa");
-  const { itemsFiltrados } = useTransactions();
+  const {
+    itemsPeriodo: { itemsFiltrados },
+  } = useTransactions();
 
   const tipo = typeCategoria === "receita" ? 0 : 1;
 
@@ -55,7 +58,6 @@ const GraficoRosca = () => {
 
     return Array.from(mapa.entries())
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
       .map(([name, value]) => ({
         name,
         value,
@@ -68,7 +70,7 @@ const GraficoRosca = () => {
     <Feedback info="Nenhum dado encontrado" noButton={true} />
   ) : (
     <GraficoRoscaContainer>
-      <div className="title">
+      <Title graph="rosca">
         <p>{titulo[typeCategoria]}</p>
         <div className="button-container">
           <Button
@@ -90,7 +92,7 @@ const GraficoRosca = () => {
             Receita
           </Button>
         </div>
-      </div>
+      </Title>
       <div className="infos-container">
         <ResponsiveContainer width={200} height={200}>
           <PieChart>
@@ -116,7 +118,7 @@ const GraficoRosca = () => {
           </PieChart>
         </ResponsiveContainer>
         <div className="legenda-container">
-          {data.map((c, index) => (
+          {data.slice(0, 5).map((c, index) => (
             <div key={c.name} className="legenda-item">
               <p>
                 <ContainerCor bg={COLORS[index % COLORS.length]} />

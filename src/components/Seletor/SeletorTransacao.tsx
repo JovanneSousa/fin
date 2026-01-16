@@ -22,14 +22,13 @@ const MESES = [
 
 const SeletorTransacao = ({
   mesSelecionado,
-  titlePeriod,
-  onPrevMonth,
-  onNextMonth,
-  onPrevYear,
-  onNextYear,
-  onSelectMonth,
+  handle,
+  filtros,
 }: BaseSeletorProps) => {
   const [isSelecting, setIsSelecting] = useState(false);
+
+  const { onNextMonth, onNextYear, onPrevMonth, onPrevYear } = handle;
+  const { onSelectMonth } = filtros;
 
   return (
     <SeletorSection
@@ -48,9 +47,7 @@ const SeletorTransacao = ({
         />
 
         <p onClick={() => setIsSelecting(!isSelecting)}>
-          {titlePeriod ? (
-            "Filtro por período"
-          ) : isSelecting ? (
+          {isSelecting ? (
             mesSelecionado.getFullYear()
           ) : (
             <>

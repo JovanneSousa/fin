@@ -13,30 +13,31 @@ interface CardProps {
 
 const CardCategories: React.FC<CardProps> = ({ type }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, getSaldoTotal } = useSelector(
-    (state: RootReducer) => state.transactions
-  );
+  const {
+    periodoSelecionado: { items },
+    getSaldoTotal,
+  } = useSelector((state: RootReducer) => state.transactions);
 
   useEffect(() => {
-    if (type === tiposCard.saldoAtual) {
+    if (type === tiposCard.saldoAtual && !getSaldoTotal) {
       dispatch(fetchSaldoTotal());
     }
-  }, [type, dispatch]);
+  }, [type, getSaldoTotal, dispatch]);
 
   const valorTotal = useMemo(() => {
-  let receita = 0;
-  let despesa = 0;
+    let receita = 0;
+    let despesa = 0;
 
-  for (const item of items) {
-    if (item.type === 0) receita += item.valor;
-    if (item.type === 1) despesa += item.valor;
-  }
+    for (const item of items) {
+      if (item.type === 0) receita += item.valor;
+      if (item.type === 1) despesa += item.valor;
+    }
 
-  if (type === tiposCard.saldoAtual) return getSaldoTotal ?? 0;
-  if (type === tiposCard.balanco) return receita - despesa;
+    if (type === tiposCard.saldoAtual) return getSaldoTotal ?? 0;
+    if (type === tiposCard.balanco) return receita - despesa;
 
-  return type === 0 ? receita : despesa;
-}, [items, type, getSaldoTotal]);
+    return type === 0 ? receita : despesa;
+  }, [items, type, getSaldoTotal]);
 
   const config = cardConfig[type];
 

@@ -1,25 +1,9 @@
 import { LineChart } from "recharts";
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../../../globalStyles";
 
 export const GraficoLinhaContainer = styled.section`
   grid-area: c;
-
-  .title {
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    color: ${colors.branco};
-    font-size: 24px;
-    font-weight: bold;
-    justify-content: space-between;
-    align-self: flex-start;
-    gap: 16px;
-
-    .title-mes {
-      font-size: 16px;
-    }
-  }
 
   .infos-container,
   .legenda-container,
@@ -61,7 +45,6 @@ export const GraficoLinhaContainer = styled.section`
   }
 
   .container-pill button {
-
     &.is-active {
       background-color: inherit;
       color: ${colors.verde};

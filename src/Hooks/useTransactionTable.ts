@@ -7,7 +7,11 @@ import { usePaginacao } from "./usePaginacao";
 
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { itemsFiltrados, setTipo, tipo } = useTransactions();
+  const {
+    itemsPeriodo: { itemsFiltrados },
+    setTipo,
+    tipo,
+  } = useTransactions();
   const paginacao = usePaginacao(itemsFiltrados);
 
   const [isOpen, setIsOpen] = useState(false);

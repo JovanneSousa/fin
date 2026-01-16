@@ -1,21 +1,15 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
-import type { RootReducer } from "../../Store";
-import { colors } from "../../globalStyles";
-import Seletor from "../Seletor";
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { colors } from "../../../globalStyles";
+import Seletor from "../../Seletor";
 import { GraficoLinhaContainer, StyledLineChart } from "./styles";
+import { Title } from "../styles";
+import useTransactions from "../../../Hooks/useTransactions";
 
 const GraficoLinha = () => {
-  const { items } = useSelector((state: RootReducer) => state.transactions);
+  const {
+    itemsPeriodoComparativo: { itemsComparativo: items },
+  } = useTransactions();
 
   const data = useMemo(() => {
     const mapa = new Map<string, { receita: number; despesa: number }>();
@@ -61,16 +55,16 @@ const GraficoLinha = () => {
   // ) :
   return (
     <GraficoLinhaContainer>
-      <div className="title">
+      <Title graph="line" className="title">
         <p>Comparativo Mensal</p>
         <Seletor page="comparativo" />
-      </div>
+      </Title>
 
       <div className="infos-container">
         <StyledLineChart
           style={{
             width: "100%",
-            height: "450px",
+            height: "350px",
             aspectRatio: 1.618,
           }}
           responsive

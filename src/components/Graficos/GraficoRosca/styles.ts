@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../../../globalStyles";
 
 interface ContainerCorProps {
   bg: string;
@@ -7,21 +7,6 @@ interface ContainerCorProps {
 
 export const GraficoRoscaContainer = styled.section`
   grid-area: b;
-
-  .title {
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    color: ${colors.branco};
-    font-size: 24px;
-    font-weight: bold;
-    align-self: flex-start;
-    justify-content: space-between;
-
-    button {
-      margin: 0;
-    }
-  }
 
   .infos-container,
   .legenda-container,
@@ -62,7 +47,7 @@ export const GraficoRoscaContainer = styled.section`
   }
 `;
 
-export const ContainerCor = styled.div.withConfig({
+export const ContainerCor = styled.span.withConfig({
   shouldForwardProp: (prop) => !["bg"].includes(prop),
 })<ContainerCorProps>`
   margin: 0 auto;

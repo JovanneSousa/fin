@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../../globalStyles";
 
 export const BarContainer = styled.div`
   display: flex;
@@ -11,15 +11,6 @@ export const BarContainer = styled.div`
 
   @media (max-width: ${breakpoints.tablet}) {
     height: 350px;
-  }
-  .title {
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    color: ${colors.branco};
-    font-size: 24px;
-    font-weight: bold;
-    align-self: flex-start;
   }
 
   .infos-container,

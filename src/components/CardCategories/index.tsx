@@ -1,28 +1,25 @@
 import React, { useEffect, useMemo } from "react";
 import { CardStyled } from "./styles";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { formatCurrency, tiposCard } from "../../Utils";
-import { useDispatch, useSelector } from "react-redux";
 import { IconBox } from "../../globalStyles";
 import { cardConfig } from "./CardConfig";
-import { fetchSaldoTotal } from "../../Store/reducers/transactions";
+import useTransactions from "../../Hooks/useTransactions";
+import Skeleton from "react-loading-skeleton";
 
 interface CardProps {
   type: number;
 }
 
 const CardCategories: React.FC<CardProps> = ({ type }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const {
-    periodoSelecionado: { items },
-    getSaldoTotal,
-  } = useSelector((state: RootReducer) => state.transactions);
+    itemsPeriodo: { itemsFiltrados: items, statusPeriodo },
+    saldoTotal,
+    buscaSaldoTotal,
+  } = useTransactions();
 
   useEffect(() => {
-    if (type === tiposCard.saldoAtual && !getSaldoTotal) {
-      dispatch(fetchSaldoTotal());
-    }
-  }, [type, getSaldoTotal, dispatch]);
+    if (type === tiposCard.saldoAtual && !saldoTotal) buscaSaldoTotal();
+  }, [type, saldoTotal, buscaSaldoTotal]);
 
   const valorTotal = useMemo(() => {
     let receita = 0;
@@ -33,21 +30,38 @@ const CardCategories: React.FC<CardProps> = ({ type }) => {
       if (item.type === 1) despesa += item.valor;
     }
 
-    if (type === tiposCard.saldoAtual) return getSaldoTotal ?? 0;
+    if (type === tiposCard.saldoAtual) return saldoTotal ?? 0;
     if (type === tiposCard.balanco) return receita - despesa;
 
     return type === 0 ? receita : despesa;
-  }, [items, type, getSaldoTotal]);
+  }, [items, type, saldoTotal]);
 
   const config = cardConfig[type];
 
+  const LoaderCard = (
+    <>
+      <div className="content">
+        <p>
+          <Skeleton />
+        </p>
+        <Skeleton className="valor" />
+      </div>
+      <Skeleton circle={true} />
+    </>
+  );
+
   return (
     <CardStyled className={config.className}>
-      <div>
-        <p>{config.title}</p>
-        <p className="valor">{formatCurrency(valorTotal)}</p>
-      </div>
-      <IconBox color={config.color}>{config.icon}</IconBox>
+      {statusPeriodo == "loading" && LoaderCard}
+      {statusPeriodo == "succeeded" && (
+        <>
+          <div className="content">
+            <p>{config.title}</p>
+            <p className="valor">{formatCurrency(valorTotal)}</p>
+          </div>
+          <IconBox color={config.color}>{config.icon}</IconBox>
+        </>
+      )}
     </CardStyled>
   );
 };

@@ -32,8 +32,14 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
   const [filter, setFilter] = useState<"receita" | "despesa">("despesa");
   const [valorBusca, setValorBusca] = useState("");
 
-  const { itemsPaginados: despesa } = despesaPaginada;
-  const { itemsPaginados: receita } = receitaPaginada;
+  const {
+    itemsPaginados: despesa,
+    linhas: { alturaLinha: alturaTabelaDespesa },
+  } = despesaPaginada;
+  const {
+    itemsPaginados: receita,
+    linhas: { alturaLinha: alturaTabelaReceita },
+  } = receitaPaginada;
 
   const { abreModal } = useFormNew();
 
@@ -89,7 +95,11 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
           </div>
         </form>
       </StyledTopoTabela>
-      <StyledTable>
+      <StyledTable
+        rowHeight={
+          filter == "despesa" ? alturaTabelaDespesa : alturaTabelaReceita
+        }
+      >
         <thead>
           <tr>
             <th>Nome</th>
@@ -104,7 +114,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
               <tr key={d.id}>
                 <td>{d.name}</td>
                 <td>
-                  <Icone tipoIcone={d.icone.url}/>
+                  <Icone tipoIcone={d.icone.url} />
                 </td>
                 <td>
                   <div className="container-cor" />
@@ -130,7 +140,9 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             receita.map((d) => (
               <tr key={d.id}>
                 <td>{d.name}</td>
-                <td><Icone tipoIcone={d.icone.url}/></td>
+                <td>
+                  <Icone tipoIcone={d.icone.url} />
+                </td>
                 <td>"Cor da Tag"</td>
                 <td>
                   <div className="button-container">

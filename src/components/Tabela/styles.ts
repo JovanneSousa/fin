@@ -3,7 +3,13 @@ import { hexToRgb } from "../../Utils";
 import { colors } from "../../globalStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const StyledTable = styled.table`
+interface TableProps {
+  rowHeight: string;
+}
+
+export const StyledTable = styled.table.withConfig({
+  shouldForwardProp: (props) => !["rowHeight"].includes(props),
+})<TableProps>`
   background-color: ${colors.branco};
   font-size: 14px;
   border-collapse: separate;
@@ -25,21 +31,34 @@ export const StyledTable = styled.table`
     border-bottom: 2px solid ${colors.lightGray};
   }
 
+  tbody {
+    display: block;
+    overflow: hidden;
+    height: ${({ rowHeight }) => rowHeight};
+    transition: height 250ms ease;
+  }
+
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
   thead th {
     background-color: ${colors.lighterGray};
-    height: 56px;
   }
 
   th,
   td {
-    padding: 12px;
-  }
-
-  td {
+    height: 56px;
+    padding: 0 18px;
     text-align: left;
   }
 
-  
+  td {
+  }
+
   .despesa {
     color: ${colors.vermelho};
   }

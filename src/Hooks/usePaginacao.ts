@@ -34,7 +34,13 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     setPaginaAtual(1);
   };
 
+  const alturaLinha =
+    itemsPaginados.length == 0
+      ? `${3 * 56}px`
+      : `${itemsPaginados.length * 56}px`;
+
   const linhas = {
+    alturaLinha,
     linhasTotais: itemsFiltrados.length,
     linhasAtuais: {
       inicio: (paginaAtual - 1) * qtdRegistros + 1,
@@ -48,6 +54,7 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     proximaPagina,
     paginaAnterior,
     changeQtdRegistros,
+    qtdRegistros,
     linhas,
     itemsPaginados,
     estaNaPrimeiraPagina,

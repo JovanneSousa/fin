@@ -19,6 +19,8 @@ export const GraficoLinhaContainer = styled.section`
     border-radius: 16px;
     background-color: ${colors.branco};
     flex-direction: column;
+    min-height: 250px;
+    justify-content: center;
   }
 
   .legenda-container {

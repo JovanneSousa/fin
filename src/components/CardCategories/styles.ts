@@ -8,6 +8,11 @@ export const CardStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 6px;
+
+  .content {
+    width: 100%;
+  }
 
   &.receita {
     background-color: color-mix(in srgb, ${colors.verde} 20%, white);

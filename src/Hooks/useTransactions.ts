@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootReducer } from "../Store";
 import { useCallback, useMemo, useState } from "react";
 import {
+  fetchSaldoTotal,
   fetchTransactionsPeriod,
   fetchTransactionsPeriodoComparativo,
 } from "../Store/reducers/transactions";
@@ -13,10 +14,11 @@ const useTransactions = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const {
-    periodoSelecionado: { items, status: statusPeriodo },
+    periodoSelecionado: { items, status: statusPeriodo, error: errorPeriodo },
     periodoComparativo: {
       items: itemsComparativo,
       status: statusComparativo,
+      error: errorComparativo,
     },
   } = useSelector((state: RootReducer) => state.transactions);
 
@@ -77,6 +79,10 @@ const useTransactions = () => {
     [dispatch],
   );
 
+  const buscaSaldoTotal = () => {
+    dispatch(fetchSaldoTotal());
+  };
+
   const onSelectMonth = (month: number) =>
     aplicarMes(new Date(mesSelecionado.getFullYear(), month, 1));
 
@@ -122,11 +128,13 @@ const useTransactions = () => {
   const itemsPeriodo = {
     itemsFiltrados,
     statusPeriodo,
+    errorPeriodo,
   };
 
   const itemsPeriodoComparativo = {
     itemsComparativo,
     statusComparativo,
+    errorComparativo,
   };
 
   // const criarFiltroMesAtual = useCallback(() => {
@@ -146,6 +154,7 @@ const useTransactions = () => {
     mesSelecionado,
     handle,
     filtros,
+    buscaSaldoTotal,
     setTipo,
     fetchPeriodo,
   };

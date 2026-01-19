@@ -8,6 +8,7 @@ export const ContainerLoader = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 40px;
+  margin: 0 auto;
 
   p {
     margin-top: 40px;

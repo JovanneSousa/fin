@@ -40,6 +40,7 @@ export const SeletorSection = styled.section.withConfig({
   shouldForwardProp: (prop) =>
     !["positionTitle", "page", "isSelecting"].includes(prop),
 })<SeletorSectionProps>`
+  width: 100%;
   background-color: ${colors.branco};
   border-radius: 16px;
   display: flex;
@@ -68,7 +69,9 @@ export const SeletorSection = styled.section.withConfig({
 
     pointer-events: ${({ isSelecting }) => (isSelecting ? "auto" : "none")};
 
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
   }
 
   .title-mes {

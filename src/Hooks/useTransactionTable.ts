@@ -8,7 +8,7 @@ import { usePaginacao } from "./usePaginacao";
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    itemsPeriodo: { itemsFiltrados },
+    itemsPeriodo: { itemsFiltrados, statusPeriodo, errorPeriodo },
     setTipo,
     tipo,
   } = useTransactions();
@@ -17,7 +17,7 @@ export const useTransactionTable = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemSelecionado, setItemSelecionado] = useState<Transacao | null>(
-    null
+    null,
   );
   const [isSearching, setIsSearching] = useState(false);
   const [valorBusca, setValorBusca] = useState("");
@@ -57,6 +57,8 @@ export const useTransactionTable = () => {
     isSearching,
     tipo,
     paginacao,
+    statusPeriodo,
+    errorPeriodo,
     setValorBusca,
     fechaBusca,
     abreBusca,

@@ -24,6 +24,9 @@ import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import Icone from "../Icone";
+import "react-loading-skeleton/dist/skeleton.css";
+import { TableSkeletonRow } from "../Loader/TableSkeletonLoader";
+import Feedback from "../Feedback";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -32,6 +35,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     itemSelecionado,
     isSearching,
     tipo,
+    statusPeriodo,
     setIsDeleteModalOpen,
     abrirDetalhes,
     fecharDetalhes,
@@ -40,10 +44,63 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     fechaBusca,
     changeType,
     paginacao,
+    errorPeriodo,
   } = useTransactionTable();
   const [valorBusca, setValorBusca] = useState("");
 
-  const { itemsPaginados } = paginacao;
+  const conteudoTabela = () => {
+    if (statusPeriodo == "failed")
+      return <Feedback error={errorPeriodo} noButton={true} />;
+
+    if (statusPeriodo == "loading")
+      return Array.from({ length: qtdRegistros }).map((_, index) => (
+        <TableSkeletonRow key={index} columns={5} />
+      ));
+
+    if (statusPeriodo == "succeeded" && itemsPaginados.length == 0)
+      return <Feedback info="Nenhum item encontrado" noButton={true} />;
+
+    return itemsPaginados.map((item) => (
+      <tr key={item.id}>
+        <td>{toLocalDateIgnoreTimezone(item.dataMovimentacao)}</td>
+        <td>{item.titulo}</td>
+        <td>
+          {item.categoria != null && item.categoria != undefined ? (
+            <div className="button-container categorias">
+              <Icone tipoIcone={item.categoria.icone.url} />
+              <p>{item.categoria.name}</p>
+            </div>
+          ) : (
+            <p>"Sem categoria"</p>
+          )}
+        </td>
+        <td className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}>
+          {formatCurrency(item.valor)}
+        </td>
+        <td>
+          <div className="button-container">
+            <DetailBox onClick={() => abrirDetalhes(item.id!)}>
+              <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+            </DetailBox>
+            <CloseBox
+              onClick={() => {
+                setIsDeleteModalOpen(true);
+                setItemSelecionado(item);
+              }}
+            >
+              <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+            </CloseBox>
+          </div>
+        </td>
+      </tr>
+    ));
+  };
+
+  const {
+    itemsPaginados,
+    qtdRegistros,
+    linhas: { alturaLinha },
+  } = paginacao;
 
   const { abreModal } = useFormNew();
 
@@ -112,7 +169,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         </form>
         <Seletor page={type} />
       </StyledTopoTabela>
-      <StyledTable>
+      <StyledTable rowHeight={alturaLinha}>
         <thead>
           <tr>
             <th>Data</th>
@@ -122,46 +179,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
-          {itemsPaginados.map((item) => (
-            <tr key={item.id}>
-              <td>{toLocalDateIgnoreTimezone(item.dataMovimentacao)}</td>
-              <td>{item.titulo}</td>
-              <td>
-                {item.categoria != null && item.categoria != undefined ? (
-                  <div className="button-container categorias">
-                    <Icone tipoIcone={item.categoria.icone.url} />
-                    <p>{item.categoria.name}</p>
-                  </div>
-                ) : (
-                  <p>"Sem categoria"</p>
-                )}
-              </td>
-              <td
-                className={`${
-                  item.categoria?.type == 0 ? "despesa" : "receita"
-                }`}
-              >
-                {formatCurrency(item.valor)}
-              </td>
-              <td>
-                <div className="button-container">
-                  <DetailBox onClick={() => abrirDetalhes(item.id!)}>
-                    <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                  </DetailBox>
-                  <CloseBox
-                    onClick={() => {
-                      setIsDeleteModalOpen(true);
-                      setItemSelecionado(item);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                  </CloseBox>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody>{conteudoTabela()}</tbody>
       </StyledTable>
       <Modal isOpen={isOpen} onClose={fecharDetalhes}>
         <TransacaoDetails onClose={fecharDetalhes} />

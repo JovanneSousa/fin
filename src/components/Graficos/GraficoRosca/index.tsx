@@ -7,6 +7,7 @@ import { ContainerCor, GraficoRoscaContainer } from "./styles";
 import Button from "../../Button";
 import { colors } from "../../../globalStyles";
 import { Title } from "../styles";
+import Loader from "../../Loader";
 
 const DESPESA_COLORS = [
   "#e63946",
@@ -35,7 +36,7 @@ type TipoGrafico = "receita" | "despesa";
 const GraficoRosca = () => {
   const [typeCategoria, setTypeCategoria] = useState<TipoGrafico>("despesa");
   const {
-    itemsPeriodo: { itemsFiltrados },
+    itemsPeriodo: { itemsFiltrados, statusPeriodo, errorPeriodo },
   } = useTransactions();
 
   const tipo = typeCategoria === "receita" ? 0 : 1;
@@ -47,7 +48,7 @@ const GraficoRosca = () => {
 
   const data = useMemo(() => {
     const transacoesFiltradasPorTipo = itemsFiltrados.filter(
-      (t) => t.type === tipo
+      (t) => t.type === tipo,
     );
 
     const mapa = new Map<string, number>();
@@ -66,9 +67,14 @@ const GraficoRosca = () => {
 
   const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 
-  return data.length == 0 ? (
-    <Feedback info="Nenhum dado encontrado" noButton={true} />
-  ) : (
+  const isLoading = statusPeriodo == "loading";
+  const isError = statusPeriodo == "failed";
+  const isEmpty = statusPeriodo == "succeeded" && data.length == 0;
+  const hasData = statusPeriodo == "succeeded" && data.length > 0;
+
+  console.log(isEmpty);
+
+  return (
     <GraficoRoscaContainer>
       <Title graph="rosca">
         <p>{titulo[typeCategoria]}</p>
@@ -94,41 +100,47 @@ const GraficoRosca = () => {
         </div>
       </Title>
       <div className="infos-container">
-        <ResponsiveContainer width={200} height={200}>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={100}
-            >
-              {data.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+        {isLoading && <Loader legenda={false} />}
+        {isEmpty && <Feedback info="Nenhum dado encontrado" noButton={true} />}
+        {isError && <Feedback error={errorPeriodo} noButton={true} />}
+        {hasData && (
+          <>
+            <ResponsiveContainer width={200} height={200}>
+              <PieChart>
+                <Pie
+                  data={data}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                >
+                  {data.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`}
                 />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="legenda-container">
+              {data.slice(0, 5).map((c, index) => (
+                <div key={c.name} className="legenda-item">
+                  <p>
+                    <ContainerCor bg={COLORS[index % COLORS.length]} />
+                    {c.name}
+                  </p>
+                  <p className={typeCategoria}>{formatCurrency(c.value)}</p>
+                </div>
               ))}
-            </Pie>
-            <Tooltip
-              formatter={(value) => `R$ ${value.toLocaleString("pt-BR")}`}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-        <div className="legenda-container">
-          {data.slice(0, 5).map((c, index) => (
-            <div key={c.name} className="legenda-item">
-              <p>
-                <ContainerCor bg={COLORS[index % COLORS.length]} />
-
-                {c.name}
-              </p>
-              <p className={typeCategoria}>{formatCurrency(c.value)}</p>
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </GraficoRoscaContainer>
   );

@@ -6,7 +6,8 @@ export const ContainerFeedback = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding-top: 24px;
+  padding: 12px;
+  margin: 0 auto;
 
   button {
     align-self: flex-end;

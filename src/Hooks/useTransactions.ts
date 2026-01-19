@@ -13,14 +13,14 @@ const useTransactions = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const {
-    periodoSelecionado: { items, success: successPeriodo },
+    periodoSelecionado: { items, status: statusPeriodo },
     periodoComparativo: {
       items: itemsComparativo,
-      success: successComparativo,
+      status: statusComparativo,
     },
   } = useSelector((state: RootReducer) => state.transactions);
 
-  const { despesa, receita, buscaCategorias } = useCategory();
+  const { despesa, receita, buscaCategorias, status } = useCategory();
 
   const filtro = useMemo(() => {
     if (tipo === "todos") return items;
@@ -57,7 +57,7 @@ const useTransactions = () => {
       fetchTransactionsPeriod({
         startDate: inicioMes.toISOString(),
         endDate: fimMes.toISOString(),
-      })
+      }),
     );
   };
 
@@ -66,7 +66,7 @@ const useTransactions = () => {
       fetchTransactionsPeriod({
         startDate: inicio.toISOString(),
         endDate: fim.toISOString(),
-      })
+      }),
     );
   };
 
@@ -74,7 +74,7 @@ const useTransactions = () => {
     (qtdMeses: number) => {
       dispatch(fetchTransactionsPeriodoComparativo(qtdMeses));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const onSelectMonth = (month: number) =>
@@ -82,21 +82,21 @@ const useTransactions = () => {
 
   const onPrevMonth = () =>
     aplicarMes(
-      new Date(mesSelecionado.getFullYear(), mesSelecionado.getMonth() - 1, 1)
+      new Date(mesSelecionado.getFullYear(), mesSelecionado.getMonth() - 1, 1),
     );
 
   const onNextMonth = () =>
     aplicarMes(
-      new Date(mesSelecionado.getFullYear(), mesSelecionado.getMonth() + 1, 1)
+      new Date(mesSelecionado.getFullYear(), mesSelecionado.getMonth() + 1, 1),
     );
   const onPrevYear = () =>
     setMesSelecionado(
-      new Date(mesSelecionado.getFullYear() - 1, mesSelecionado.getMonth(), 1)
+      new Date(mesSelecionado.getFullYear() - 1, mesSelecionado.getMonth(), 1),
     );
 
   const onNextYear = () =>
     setMesSelecionado(
-      new Date(mesSelecionado.getFullYear() + 1, mesSelecionado.getMonth(), 1)
+      new Date(mesSelecionado.getFullYear() + 1, mesSelecionado.getMonth(), 1),
     );
 
   const filtros = {
@@ -116,16 +116,17 @@ const useTransactions = () => {
     receita,
     despesa,
     buscaCategorias,
+    status,
   };
 
   const itemsPeriodo = {
     itemsFiltrados,
-    successPeriodo,
+    statusPeriodo,
   };
 
   const itemsPeriodoComparativo = {
     itemsComparativo,
-    successComparativo,
+    statusComparativo,
   };
 
   // const criarFiltroMesAtual = useCallback(() => {

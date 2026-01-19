@@ -23,6 +23,7 @@ import Seletor from "../Seletor";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
+import Icone from "../Icone";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -126,7 +127,16 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             <tr key={item.id}>
               <td>{toLocalDateIgnoreTimezone(item.dataMovimentacao)}</td>
               <td>{item.titulo}</td>
-              <td>{item.categoria?.name ?? "sem categoria"}</td>
+              <td>
+                {item.categoria != null && item.categoria != undefined ? (
+                  <div className="button-container categorias">
+                    <Icone tipoIcone={item.categoria.icone.url} />
+                    <p>{item.categoria.name}</p>
+                  </div>
+                ) : (
+                  <p>"Sem categoria"</p>
+                )}
+              </td>
               <td
                 className={`${
                   item.categoria?.type == 0 ? "despesa" : "receita"

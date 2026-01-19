@@ -15,6 +15,10 @@ export const StyledTable = styled.table`
     display: flex;
     gap: 10px;
     justify-content: center;
+
+    &.categorias {
+      justify-content: start;
+    }
   }
 
   tbody tr td {
@@ -29,9 +33,13 @@ export const StyledTable = styled.table`
   th,
   td {
     padding: 12px;
-    text-align: center;
   }
 
+  td {
+    text-align: left;
+  }
+
+  
   .despesa {
     color: ${colors.vermelho};
   }

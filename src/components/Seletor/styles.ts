@@ -10,6 +10,7 @@ interface SeletorSectionProps {
 const styles = {
   comparativo: css`
     flex-direction: row;
+    padding: 8px 24px;
 
     .container-title p {
       color: ${colors.darkGray};
@@ -17,6 +18,7 @@ const styles = {
   `,
   transacoes: css`
     flex-direction: column;
+    padding: 16px 24px;
 
     .container-pill {
       gap: 8px;
@@ -26,6 +28,7 @@ const styles = {
   `,
   default: css`
     flex-direction: column;
+    padding: 24px;
     .container-pill {
       padding-bottom: 16px;
       border-bottom: 1px solid ${colors.lightGray};
@@ -38,7 +41,6 @@ export const SeletorSection = styled.section.withConfig({
     !["positionTitle", "page", "isSelecting"].includes(prop),
 })<SeletorSectionProps>`
   background-color: ${colors.branco};
-  padding: ${({ page }) => (page == "default" ? "24px" : "16px 26px")};
   border-radius: 16px;
   display: flex;
   flex-direction: ${({ page }) => (page == "comparativo" ? "row" : "column")};

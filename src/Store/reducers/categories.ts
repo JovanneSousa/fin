@@ -6,6 +6,7 @@ import {
 import api from "../../Services/api";
 import axios from "axios";
 import type { ResponsePayload } from "./transactions";
+import type { IconType } from "../../components/Icone";
 
 export interface ErrorResponse {
   success: boolean;
@@ -16,15 +17,21 @@ export interface Category {
   id: string;
   name: string;
   type: number;
+  icone: {
+    id: string;
+    name: string;
+    url: IconType;
+  };
 }
 
 interface CategoriesState {
   receita: Category[];
   despesa: Category[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed' 
 
   loadingGet: boolean;
   errorGet: string | null;
-  successGet: string | null;
+  successGet: boolean | null;
 
   loadingPost: boolean;
   errorPost: string | null;
@@ -38,10 +45,11 @@ interface CategoriesState {
 const initialState: CategoriesState = {
   receita: [] as Category[],
   despesa: [] as Category[],
+  status: 'idle',
 
   loadingGet: false,
   errorGet: null as string | null,
-  successGet: null as string | null,
+  successGet: null as boolean | null,
 
   loadingPost: false,
   errorPost: null as string | null,
@@ -59,11 +67,14 @@ export const getCategories = createAsyncThunk<
 >("categories/fetch", async (_, { rejectWithValue }) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await api.get<ResponsePayload<Category[]>>("api/categories", {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api.get<ResponsePayload<Category[]>>(
+      "api/categories",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     return response.data;
   } catch (err: unknown) {
@@ -86,7 +97,7 @@ export const postCategories = createAsyncThunk<
     const response = await api.post<ResponsePayload<Category>>(
       "api/categories",
       { name, type },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return response.data;
@@ -141,18 +152,24 @@ const categoriesSlice = createSlice({
       .addCase(getCategories.pending, (state) => {
         state.loadingGet = true;
         state.errorGet = null;
+        state.successGet = false;
+        state.status = 'loading'
       })
       .addCase(
         getCategories.fulfilled,
         (state, action: PayloadAction<ResponsePayload<Category[]>>) => {
           state.loadingGet = false;
+          state.successGet = action.payload.success;
           state.receita = action.payload.data.filter((c) => c.type === 1);
           state.despesa = action.payload.data.filter((c) => c.type === 0);
-        }
+          state.status = 'succeeded'
+        },
       )
       .addCase(getCategories.rejected, (state, action) => {
         state.loadingGet = false;
+        state.successGet = false;
         state.errorGet = action.payload || "Erro ao carregar categorias";
+        state.status = 'failed'
       });
 
     builder.addCase(postCategories.pending, (state) => {
@@ -170,7 +187,7 @@ const categoriesSlice = createSlice({
         const isReceita = categoria.type === 1;
         (isReceita ? state.receita : state.despesa).push(categoria);
         state.successPost = "Categoria adicionada com sucesso!";
-      }
+      },
     );
     builder.addCase(postCategories.rejected, (state, action) => {
       state.loadingPost = false;
@@ -183,7 +200,8 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(deleteCategories.rejected, (state, action) => {
       state.loadingDelete = false;
-      state.errorDelete = action.payload as string || "Erro ao deletar essa categoria";
+      state.errorDelete =
+        (action.payload as string) || "Erro ao deletar essa categoria";
     });
     builder.addCase(
       deleteCategories.fulfilled,
@@ -193,7 +211,7 @@ const categoriesSlice = createSlice({
         state.despesa = state.despesa.filter((c) => c.id !== action.payload);
         state.successDelete =
           state.successDelete || "Categoria deletada com sucesso";
-      }
+      },
     );
   },
 });

@@ -15,6 +15,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import type { ModalTypes } from "../../contexts/FormNew/FormNewContext";
+import InputToggle from "../InputToggle";
 
 interface SideBarProps {
   activeTab: Tabs;
@@ -113,6 +114,9 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
               <S.StyledIcon padding="default" size="lg" icon={faFlag} />
               {isOpen && <p className="text-container">Planejamento</p>}
             </S.StyledLink>
+          </li>
+          <li>
+            <InputToggle background={colors.branco} label="Modo Escuro"/>
           </li>
         </ul>
       </nav>

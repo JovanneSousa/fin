@@ -18,6 +18,7 @@ import Button from "../Button";
 import { colors } from "../../globalStyles";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import RodapeTabelas from "./RodapeTabelas";
+import Icone from "../Icone";
 
 export const CategoriaTabela = ({ type }: TabelaProps) => {
   const {
@@ -102,7 +103,9 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             despesa.map((d) => (
               <tr key={d.id}>
                 <td>{d.name}</td>
-                <td>Icone da Tag</td>
+                <td>
+                  <Icone tipoIcone={d.icone.url}/>
+                </td>
                 <td>
                   <div className="container-cor" />
                 </td>
@@ -127,7 +130,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             receita.map((d) => (
               <tr key={d.id}>
                 <td>{d.name}</td>
-                <td>Icone da Tag</td>
+                <td><Icone tipoIcone={d.icone.url}/></td>
                 <td>"Cor da Tag"</td>
                 <td>
                   <div className="button-container">

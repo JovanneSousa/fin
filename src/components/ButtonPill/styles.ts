@@ -22,7 +22,6 @@ export const PillStyled = styled.button.withConfig({
 
   &:hover,
   &.is-active {
-    /* background-color: ${colors.verde}; */
     color: ${colors.verde};
     border-color: ${colors.verde};
     border-bottom: 2px solid ${colors.verde};

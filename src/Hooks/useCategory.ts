@@ -5,7 +5,7 @@ import { getCategories } from "../Store/reducers/categories";
 
 const useCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { despesa, receita } = useSelector(
+  const { despesa, receita, status } = useSelector(
     (state: RootReducer) => state.categories
   );
 
@@ -13,7 +13,7 @@ const useCategory = () => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  return { despesa, receita, buscaCategorias };
+  return { despesa, receita, buscaCategorias, status };
 };
 
 export default useCategory;

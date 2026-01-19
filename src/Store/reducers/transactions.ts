@@ -10,7 +10,7 @@ export interface TransactionFilter {
 }
 
 export type ResponsePayload<T> = {
-  success: boolean;
+  success: boolean | null;
   data: T;
 };
 
@@ -31,14 +31,14 @@ interface TransactionState {
     items: Transacao[];
     loading: boolean;
     error: string | null;
-    success: boolean;
+    status: "idle" | "loading" | "succeeded" | "failed";
   };
 
   periodoComparativo: {
     items: Transacao[];
     loading: boolean;
     error: string | null;
-    success: boolean;
+    status: "idle" | "loading" | "succeeded" | "failed";
   };
 
   getSaldoTotal: number | null;
@@ -66,14 +66,14 @@ const initialState: TransactionState = {
     items: [],
     loading: false,
     error: null,
-    success: false,
+    status: "idle",
   },
 
   periodoComparativo: {
     items: [],
     loading: false,
     error: null,
-    success: false,
+    status: "idle",
   },
 
   loadingUpdate: false,
@@ -130,7 +130,7 @@ export const updateTransaction = createAsyncThunk<
       transaction,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data;
   } catch (err: unknown) {
@@ -178,7 +178,7 @@ export const fetchTransactionsPeriod = createAsyncThunk<
         `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       return response.data;
@@ -188,10 +188,10 @@ export const fetchTransactionsPeriod = createAsyncThunk<
         if (data) return rejectWithValue(data);
       }
       return rejectWithValue(
-        "Erro ao carregar transações, recarregue a página!"
+        "Erro ao carregar transações, recarregue a página!",
       );
     }
-  }
+  },
 );
 
 export const fetchTransactionsPeriodoComparativo = createAsyncThunk<
@@ -207,7 +207,7 @@ export const fetchTransactionsPeriodoComparativo = createAsyncThunk<
 
     const response = await api.get(
       `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return response.data;
@@ -300,10 +300,10 @@ const transactionSlice = createSlice({
       .addCase(updateTransaction.fulfilled, (state, action) => {
         state.loadingUpdate = false;
         state.periodoSelecionado.items = state.periodoSelecionado.items.map(
-          (t) => (t.id === action.payload.data.id ? action.payload.data : t)
+          (t) => (t.id === action.payload.data.id ? action.payload.data : t),
         );
         state.periodoComparativo.items = state.periodoComparativo.items.map(
-          (t) => (t.id === action.payload.data.id ? action.payload.data : t)
+          (t) => (t.id === action.payload.data.id ? action.payload.data : t),
         );
         state.successUpdate = "Transação atualizada com sucesso";
       })
@@ -320,21 +320,24 @@ const transactionSlice = createSlice({
       .addCase(fetchTransactionsPeriod.pending, (state) => {
         state.periodoSelecionado.loading = true;
         state.periodoSelecionado.error = null;
+        state.periodoSelecionado.status = "loading";
       })
       .addCase(fetchTransactionsPeriod.fulfilled, (state, action) => {
         state.periodoSelecionado.loading = false;
         state.periodoSelecionado.items = action.payload.data;
-        state.periodoSelecionado.success = action.payload.success;
+        state.periodoSelecionado.status = "succeeded";
       })
       .addCase(fetchTransactionsPeriod.rejected, (state, action) => {
         state.periodoSelecionado.loading = false;
         state.periodoSelecionado.error =
           action.payload || "Erro ao carregar transações, recarregue a página!";
+        state.periodoSelecionado.status = "failed";
       })
 
       .addCase(fetchTransactionsPeriodoComparativo.pending, (state) => {
         state.periodoComparativo.loading = true;
         state.periodoComparativo.error = null;
+        state.periodoComparativo.status = 'loading'
       })
       .addCase(
         fetchTransactionsPeriodoComparativo.rejected,
@@ -342,15 +345,16 @@ const transactionSlice = createSlice({
           state.periodoComparativo.error =
             action.payload || "Erro ao carregar periodo!";
           state.periodoComparativo.loading = false;
-        }
+          state.periodoComparativo.status = 'failed'
+        },
       )
       .addCase(
         fetchTransactionsPeriodoComparativo.fulfilled,
         (state, action) => {
           state.periodoComparativo.loading = false;
           state.periodoComparativo.items = action.payload.data;
-          state.periodoComparativo.success = action.payload.success;
-        }
+          state.periodoComparativo.status = "succeeded";
+        },
       )
 
       .addCase(getTransacao.pending, (state) => {
@@ -373,10 +377,10 @@ const transactionSlice = createSlice({
       .addCase(deleteTransactions.fulfilled, (state, action) => {
         state.loadingDelete = false;
         state.periodoSelecionado.items = state.periodoSelecionado.items.filter(
-          (item) => item.id !== action.payload
+          (item) => item.id !== action.payload,
         );
         state.periodoComparativo.items = state.periodoComparativo.items.filter(
-          (item) => item.id !== action.payload
+          (item) => item.id !== action.payload,
         );
         state.successDelete = "Transação excluida com sucesso";
       })

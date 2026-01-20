@@ -3,9 +3,16 @@ import { breakpoints, colors } from "../../globalStyles";
 
 export const NewSection = styled.section`
   background-color: ${colors.branco};
-  border-radius: 16px;
+  border-radius: 8px;
   transition: height ease 0.3s;
   width: 450px;
+
+  .cores {
+    padding: 16px 0;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
 
   .type {
     margin: 16px 0;
@@ -51,4 +58,4 @@ export const NewSection = styled.section`
       padding: 16px;
     }
   }
-`;
+`

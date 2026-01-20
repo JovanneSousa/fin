@@ -7,6 +7,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { despesaSchema } from "../../validations/despesaSchema";
 import { createTransaction } from "../../Store/reducers/transactions";
 import { hoje } from "../../validations/baseTransacaoSchema";
+import Formulario from "../Formulario";
+import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
+import { StyledIconForm } from "../Formulario/styles";
+import type { ChildrenFormProps } from ".";
+import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 
 type DespesaFormData = {
   titulo: string;
@@ -17,7 +22,7 @@ type DespesaFormData = {
   parcelas: number;
 };
 
-const FormDespesa = () => {
+const FormDespesa = ({ size }: ChildrenFormProps) => {
   const { despesa } = useSelector((state: RootReducer) => state.categories);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -49,15 +54,17 @@ const FormDespesa = () => {
   const isParcelado = watch("isRecurring");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Formulario size="small" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <label htmlFor="descript">Descrição</label>
         <input id="descript" type="text" {...register("titulo")} />
+        <StyledIconForm size={size} icon={faNewspaper} />
         <span>{errors.titulo?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
         <input id="value" type="text" {...register("valor")} />
+        <StyledIconForm size={size} icon={faCalculator} />
         <span>{errors.valor?.message}</span>
       </div>
       <div className="input-wrapper">
@@ -70,6 +77,7 @@ const FormDespesa = () => {
             </option>
           ))}
         </select>
+        <StyledIconForm size={size} icon={faTags} />
         <span>{errors.categoriaId?.message}</span>
       </div>
       <div className="input-wrapper">
@@ -77,19 +85,17 @@ const FormDespesa = () => {
         <input id="date" type="date" {...register("dataMovimentacao")} />
         <span>{errors.dataMovimentacao?.message}</span>
       </div>
-      <div className="container-check">
+      <div className={`container-check ${isParcelado ? "open" : ""}`}>
         <div className="input-check">
           <input id="recurrency" type="checkbox" {...register("isRecurring")} />
           <label htmlFor="recurrency">Despesa Parcelada</label>
           <span>{errors.isRecurring?.message}</span>
         </div>
-        {isParcelado && (
-          <div className="parcelas">
-            <label htmlFor="parc">Quantidade de parcelas</label>
-            <input type="number" id="parc" {...register("parcelas")} />
-            <span>{errors.parcelas?.message}</span>
-          </div>
-        )}
+        <div className={`parcelas ${isParcelado ? "open" : ""}`}>
+          <label htmlFor="parc">Quantidade de parcelas</label>
+          <input type="number" id="parc" {...register("parcelas")} />
+          <span>{errors.parcelas?.message}</span>
+        </div>
       </div>
       <Button
         padding="small"
@@ -97,7 +103,7 @@ const FormDespesa = () => {
         type="submit"
         children="Adicionar Transação"
       />
-    </form>
+    </Formulario>
   );
 };
 

@@ -7,6 +7,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createTransaction } from "../../Store/reducers/transactions";
 import { receitaSchema } from "../../validations/receitaSchema";
 import { hoje } from "../../validations/baseTransacaoSchema";
+import Formulario from "../Formulario";
+import type { ChildrenFormProps } from ".";
+import { StyledIconForm } from "../Formulario/styles";
+import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
+import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 
 type ReceitaFormData = {
   titulo: string;
@@ -17,7 +22,7 @@ type ReceitaFormData = {
   type?: number;
 };
 
-const FormReceita = () => {
+const FormReceita = ({ size }: ChildrenFormProps) => {
   const { receita } = useSelector((state: RootReducer) => state.categories);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -44,15 +49,17 @@ const FormReceita = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Formulario size="small" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <label htmlFor="descript">Descrição</label>
         <input id="descript" type="text" {...register("titulo")} />
+        <StyledIconForm size={size} icon={faNewspaper} />
         <span>{errors.titulo?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
         <input id="value" type="text" {...register("valor")} />
+        <StyledIconForm size={size} icon={faCalculator} />
         <span>{errors.valor?.message}</span>
       </div>
       <div className="input-wrapper">
@@ -65,6 +72,7 @@ const FormReceita = () => {
             </option>
           ))}
         </select>
+        <StyledIconForm size={size} icon={faTags} />
         <span>{errors.categoriaId?.message}</span>
       </div>
       <div className="input-wrapper">
@@ -88,7 +96,7 @@ const FormReceita = () => {
         type="submit"
         children="Adicionar Transação"
       />
-    </form>
+    </Formulario>
   );
 };
 

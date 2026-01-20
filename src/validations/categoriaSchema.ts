@@ -11,4 +11,7 @@ export const categoriaSchema = yup.object({
     .number()
     .required("O campo Tipo é obrigatório")
     .oneOf([0, 1], "Tipo inválido: use 0 para Despesa ou 1 para Receita"),
+
+  cor: yup.string().required("O campo de cor da categoria é obrigatório"),
+  iconeId: yup.string().required("O campo de ícone da categoria é obrigatório"),
 });

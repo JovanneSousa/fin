@@ -72,8 +72,6 @@ const GraficoRosca = () => {
   const isEmpty = statusPeriodo == "succeeded" && data.length == 0;
   const hasData = statusPeriodo == "succeeded" && data.length > 0;
 
-  console.log(isEmpty);
-
   return (
     <GraficoRoscaContainer>
       <Title graph="rosca">

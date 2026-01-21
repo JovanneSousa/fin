@@ -17,6 +17,7 @@ export interface Category {
   id: string;
   name: string;
   type: number;
+  cor: string;
   icone: {
     id: string;
     name: string;

@@ -19,6 +19,7 @@ import { colors } from "../../globalStyles";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import RodapeTabelas from "./RodapeTabelas";
 import Icone from "../Icone";
+import ContainerCor from "../ContainerCor";
 
 export const CategoriaTabela = ({ type }: TabelaProps) => {
   const {
@@ -117,7 +118,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
                   <Icone tipoIcone={d.icone.url} />
                 </td>
                 <td>
-                  <div className="container-cor" />
+                  <ContainerCor cor={colors.verde} />
                 </td>
                 <td>
                   <div className="button-container">
@@ -141,7 +142,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
               <tr key={d.id}>
                 <td>{d.name}</td>
                 <td>
-                  <Icone tipoIcone={d.icone.url} />
+                  <Icone background={d.cor} tipoIcone={d.icone.url} />
                 </td>
                 <td>"Cor da Tag"</td>
                 <td>

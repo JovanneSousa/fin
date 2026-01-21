@@ -57,6 +57,10 @@ export const StyledTable = styled.table.withConfig({
   }
 
   td {
+    p {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .despesa {
@@ -65,14 +69,6 @@ export const StyledTable = styled.table.withConfig({
 
   .receita {
     color: ${colors.verde};
-  }
-
-  .container-cor {
-    margin: 0 auto;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: ${colors.vermelho};
   }
 `;
 

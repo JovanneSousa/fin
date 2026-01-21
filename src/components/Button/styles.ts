@@ -24,6 +24,9 @@ export const ButtonStyled = styled.button.withConfig({
   font-size: 16px;
   transition: all 0.4s ease;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
 
   &:hover {
     @media (min-width: ${breakpoints.tablet}) {

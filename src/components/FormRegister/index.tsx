@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
 import { systemName } from "../../Services/systemName";
+import Formulario from "../Formulario";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
@@ -42,7 +43,7 @@ const FormRegister = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Formulario size="default" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <input type="text" placeholder="Nome" {...registerInput("nome")} />
         <i className="fa fa-user"></i>
@@ -76,7 +77,7 @@ const FormRegister = () => {
         {loading ? "Cadastrando..." : "Cadastrar"}
       </Button>
       {error && <span className="error-message-span">{error}</span>}
-    </form>
+    </Formulario>
   );
 };
 

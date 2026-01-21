@@ -14,15 +14,20 @@ interface FormNewProps {
   onClose: () => void;
 }
 
+export interface ChildrenFormProps {
+  size: "small" | "default";
+}
+
 const FormNew = ({ typeForm, onClose }: FormNewProps) => {
+  const tamanhoForm = "small";
   const Form = {
     categoria: <FormCategoria />,
-    despesa: <FormDespesa />,
-    receita: <FormReceita />,
+    despesa: <FormDespesa size={tamanhoForm} />,
+    receita: <FormReceita size={tamanhoForm} />,
   };
 
   const { loadingPost, errorPost, successPost } = useSelector(
-    (state: RootReducer) => state.transactions
+    (state: RootReducer) => state.transactions,
   );
 
   const title = {

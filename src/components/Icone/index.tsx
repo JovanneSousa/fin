@@ -28,11 +28,15 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHouse } from "@fortawesome/free-regular-svg-icons";
+import { BackgroundIcon } from "./styles";
 
 export type IconType = keyof typeof tipos;
 
 interface IconeProps {
   tipoIcone: IconType;
+  background?: string;
+  onClick?: () => void;
+  className?: string;
 }
 
 const tipos = {
@@ -66,8 +70,16 @@ const tipos = {
   null: "Sem ícone",
 };
 
-const Icone = ({ tipoIcone }: IconeProps) => {
-  return <span>{tipos[tipoIcone]}</span>;
+const Icone = ({ tipoIcone, background, onClick, className }: IconeProps) => {
+  return (
+    <BackgroundIcon
+      onClick={onClick}
+      background={background}
+      className={className}
+    >
+      {tipos[tipoIcone]}
+    </BackgroundIcon>
+  );
 };
 
 export default Icone;

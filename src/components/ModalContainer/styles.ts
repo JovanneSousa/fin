@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -18,6 +18,8 @@ export const Overlay = styled.div`
   }
 
   .modal {
+    background-color: ${colors.defaultBackgroundColor};
+    border-radius: 16px;
     @media (max-width: ${breakpoints.tablet}) {
       width: 100%;
     }

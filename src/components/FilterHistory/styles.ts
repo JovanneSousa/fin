@@ -27,11 +27,6 @@ export const FilterHistorySection = styled.div`
     gap: 8px;
   }
 
-  .flex {
-    display: flex;
-    gap: 8px;
-  }
-
   .container-title-filter {
     display: flex;
     justify-content: space-between;
@@ -82,6 +77,6 @@ export const FilterHistorySection = styled.div`
 
   @media (max-width: ${breakpoints.tablet}) {
     gap: 10px;
-      min-width: auto;
+    min-width: auto;
   }
 `;

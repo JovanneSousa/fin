@@ -54,7 +54,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
         </div>
       </form>
       <p>{`${linhas.linhasAtuais.inicio} - ${linhas.linhasAtuais.fim} de ${linhas.linhasTotais}`}</p>
-      <div>
+      <div className="flex">
         <Button
           disabled={estaNaPrimeiraPagina}
           className="prev"

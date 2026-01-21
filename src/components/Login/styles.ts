@@ -8,7 +8,7 @@ export const LoginSection = styled.section`
   display: flex;
   gap: 44px;
   height: 650px;
-  
+
   button {
     margin-top: 0;
   }
@@ -25,20 +25,6 @@ export const LoginSection = styled.section`
 
     &:hover img {
       transform: rotateX(10deg) rotateY(10deg);
-    }
-  }
-
-  .input-wrapper {
-    position: relative;
-
-    i {
-      position: absolute;
-      left: 24px;
-      top: 40%;
-      transform: translateY(-50%);
-      color: ${colors.gray};
-      font-size: 16px;
-      transition: color 0.5s ease;
     }
   }
 

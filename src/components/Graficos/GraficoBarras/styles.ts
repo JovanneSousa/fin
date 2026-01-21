@@ -24,7 +24,7 @@
       gap: 16px;
       padding: 16px 24px;
       border-radius: 16px;
-      background-color: ${colors.branco};
+      background-color: ${colors.defaultBackgroundColor};
     }
 
     .legenda-container {

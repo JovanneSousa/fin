@@ -38,7 +38,7 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
           <p className="new-title">{title[typeForm]}</p>
           <Button
             onClick={onClose}
-            bgColor={colors.branco}
+            bgColor={colors.defaultBackgroundColor}
             padding="small"
             type="button"
             icon="close"

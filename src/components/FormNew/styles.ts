@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const NewSection = styled.section`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
   transition: height ease 0.3s;
   width: 450px;

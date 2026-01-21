@@ -10,7 +10,7 @@ interface TableProps {
 export const StyledTable = styled.table.withConfig({
   shouldForwardProp: (props) => !["rowHeight"].includes(props),
 })<TableProps>`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   font-size: 14px;
   border-collapse: separate;
   border-spacing: 0;
@@ -113,7 +113,7 @@ export const DetailBox = styled.div`
 `;
 
 const PerifericosTabela = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   width: 100%;
   padding: 16px;
 

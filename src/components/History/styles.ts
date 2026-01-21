@@ -3,7 +3,7 @@ import { breakpoints, colors } from "../../globalStyles";
 import { hexToRgb } from "../../Utils";
 
 export const HistorySection = styled.section`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   width: 100%;
   padding: 24px;
   border-radius: 16px;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 
 export const ContainerCat = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   border-radius: 8px;
 
   span {

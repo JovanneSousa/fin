@@ -8,7 +8,7 @@ interface PillProps {
 export const PillStyled = styled.button.withConfig({
   shouldForwardProp: (prop) => !["radius"].includes(prop),
 })<PillProps>`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   color: ${colors.darkGray};
   display: flex;
   justify-content: center;
@@ -18,7 +18,7 @@ export const PillStyled = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  border-bottom: 2px solid ${colors.branco};
+  border-bottom: 2px solid ${colors.defaultBackgroundColor};
 
   &:hover,
   &.is-active {
@@ -56,7 +56,7 @@ export const PillStyled = styled.button.withConfig({
     color: ${colors.verde};
     &:hover {
       background-color: ${colors.verde};
-      color: ${colors.branco};
+      color: ${colors.defaultBackgroundColor};
     }
   }
 `;

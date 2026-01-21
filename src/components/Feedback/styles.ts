@@ -38,7 +38,7 @@ export const ProgressBar = styled.div<{
   width: 100%;
   height: 6px;
   border-radius: 4px;
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   margin-top: 30px;
 
   &::after {

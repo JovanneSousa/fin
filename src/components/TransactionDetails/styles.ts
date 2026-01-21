@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const ContainerDetails = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 16px;
   border-radius: 8px;
   width: 350px;

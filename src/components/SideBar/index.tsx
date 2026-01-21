@@ -116,7 +116,7 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
             </S.StyledLink>
           </li>
           <li>
-            <InputToggle background={colors.branco} label="Modo Escuro"/>
+            <InputToggle background={colors.defaultBackgroundColor} label="Modo Escuro"/>
           </li>
         </ul>
       </nav>

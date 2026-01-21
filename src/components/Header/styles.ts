@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 
 export const HeaderSection = styled.header`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 8px;
   position: sticky;
   top: 0;

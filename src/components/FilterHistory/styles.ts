@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const FilterHistorySection = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 24px;
   border-radius: 8px;
   display: flex;

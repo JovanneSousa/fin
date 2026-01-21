@@ -15,22 +15,22 @@ export const CardStyled = styled.div`
   }
 
   &.receita {
-    background-color: color-mix(in srgb, ${colors.verde} 20%, white);
+    background-color: color-mix(in srgb, ${colors.verde} 20%, ${colors.defaultBackgroundColor});
     border: 1px solid ${colors.verde};
   }
   &.despesa {
-    background-color: color-mix(in srgb, ${colors.vermelho} 20%, white);
+    background-color: color-mix(in srgb, ${colors.vermelho} 20%, ${colors.defaultBackgroundColor});
     border: 1px solid ${colors.vermelho};
   }
   &.saldo {
-    background-color: color-mix(in srgb, ${colors.azul} 20%, white);
+    background-color: color-mix(in srgb, ${colors.azul} 20%, ${colors.defaultBackgroundColor});
     border: 1px solid ${colors.azul};
   }
 
   .valor {
     font-size: 22px;
     font-weight: 500;
-    color: ${colors.preto};
+    color: ${colors.textColor};
     margin: 8px 0;
   }
 

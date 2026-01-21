@@ -17,7 +17,7 @@ export const GraficoLinhaContainer = styled.section`
     gap: 16px;
     padding: 16px 24px;
     border-radius: 16px;
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     flex-direction: column;
     min-height: 250px;
     justify-content: center;
@@ -56,5 +56,5 @@ export const GraficoLinhaContainer = styled.section`
 `;
 
 export const StyledLineChart = styled(LineChart)`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
 `;

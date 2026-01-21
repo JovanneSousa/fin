@@ -41,7 +41,7 @@ export const SeletorSection = styled.section.withConfig({
     !["positionTitle", "page", "isSelecting"].includes(prop),
 })<SeletorSectionProps>`
   width: 100%;
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
   display: flex;
   flex-direction: ${({ page }) => (page == "comparativo" ? "row" : "column")};
@@ -148,7 +148,7 @@ export const SeletorSection = styled.section.withConfig({
     }
 
     select {
-      background-color: ${colors.branco};
+      background-color: ${colors.defaultBackgroundColor};
       border: 1px solid ${colors.lightGray};
       padding: 8px 0;
       padding-left: 32px;

@@ -28,7 +28,7 @@ export const DashboardsSection = styled.div.withConfig({
   }
 
   .conteudo {
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     border-radius: 16px;
     padding: 24px;
     display: flex;

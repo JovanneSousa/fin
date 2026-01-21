@@ -60,7 +60,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.branco}
+          bgColor={colors.defaultBackgroundColor}
           icon={"doubleLeft"}
           onClick={primeiraPagina}
         />
@@ -69,7 +69,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="next"
           type="button"
           padding="small"
-          bgColor={colors.branco}
+          bgColor={colors.defaultBackgroundColor}
           icon={"left"}
           onClick={paginaAnterior}
         />
@@ -78,7 +78,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.branco}
+          bgColor={colors.defaultBackgroundColor}
           icon={"right"}
           onClick={proximaPagina}
         />
@@ -87,7 +87,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.branco}
+          bgColor={colors.defaultBackgroundColor}
           icon={"doubleRight"}
           onClick={ultimaPagina}
         />

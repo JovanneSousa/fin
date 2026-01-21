@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export const SideBarSection = styled.aside.withConfig({
   shouldForwardProp: (prop) => !["isOpen"].includes(prop),
 })<PropsOpen>`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 8px 0;
   position: relative;
   z-index: 2;
@@ -31,7 +31,7 @@ export const SideBarSection = styled.aside.withConfig({
     position: absolute;
     right: -16px;
     top: 68px;
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     padding: 4px;
     border: 1px solid ${colors.lightGray};
     border-radius: 16px;
@@ -57,7 +57,7 @@ export const SideBarSection = styled.aside.withConfig({
     li {
       display: flex;
       cursor: pointer;
-      border-left: 5px solid ${colors.branco};
+      border-left: 5px solid ${colors.defaultBackgroundColor};
       transition: all ease 0.3s;
 
       &.is-active {
@@ -107,7 +107,7 @@ export const ButtonContainer = styled.div`
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     width: 266px;
     z-index: 1;
     border-radius: 16px;

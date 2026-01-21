@@ -51,7 +51,7 @@ const CardCategories: React.FC<CardProps> = ({ type }) => {
   );
 
   return (
-    <CardStyled className={config.className}>
+    <CardStyled className={`${config.className} shadow`}>
       {statusPeriodo == "loading" && LoaderCard}
       {statusPeriodo == "succeeded" && (
         <>

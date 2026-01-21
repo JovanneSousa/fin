@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const LoginSection = styled.section`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 110px 90px 33px;
   border-radius: 16px;
   display: flex;
@@ -49,7 +49,7 @@ export const LoginSection = styled.section`
     color: ${colors.gray};
     cursor: pointer;
     border: none;
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     margin-top: 8px;
 
     &:hover {

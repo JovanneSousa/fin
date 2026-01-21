@@ -28,8 +28,8 @@ export const ButtonStyled = styled.button.withConfig({
   &:hover {
     @media (min-width: ${breakpoints.tablet}) {
       background-color: ${({ bgColor }) =>
-        bgColor == colors.branco ? colors.lightGray : colors.darkGray};
-      color: ${colors.branco};
+        bgColor == colors.defaultBackgroundColor ? colors.lightGray : colors.darkGray};
+      color: ${colors.defaultBackgroundColor};
     }
   }
 

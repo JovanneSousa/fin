@@ -13,26 +13,33 @@ export interface ErrorResponse {
   errors: string[];
 }
 
+export interface Icone {
+  id: string;
+  name: string;
+  url: IconType;
+}
+
 export interface Category {
   id: string;
   name: string;
   type: number;
   cor: string;
-  icone: {
-    id: string;
-    name: string;
-    url: IconType;
-  };
+  icone: Icone;
 }
 
 interface CategoriesState {
   receita: Category[];
   despesa: Category[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed' 
-
+  status: "idle" | "loading" | "succeeded" | "failed";
   loadingGet: boolean;
   errorGet: string | null;
   successGet: boolean | null;
+
+  icone: {
+    item: Icone[];
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+  };
 
   loadingPost: boolean;
   errorPost: string | null;
@@ -46,11 +53,17 @@ interface CategoriesState {
 const initialState: CategoriesState = {
   receita: [] as Category[],
   despesa: [] as Category[],
-  status: 'idle',
+  status: "idle",
 
   loadingGet: false,
   errorGet: null as string | null,
   successGet: null as boolean | null,
+
+  icone: {
+    item: [],
+    status: "idle",
+    error: null,
+  },
 
   loadingPost: false,
   errorPost: null as string | null,
@@ -60,6 +73,32 @@ const initialState: CategoriesState = {
   errorDelete: null as string | null,
   successDelete: null as string | null,
 };
+
+export const getIcones = createAsyncThunk<
+  ResponsePayload<Icone[]>,
+  void,
+  { rejectValue: string }
+>("icones/fetch", async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.get<ResponsePayload<Icone[]>>(
+      "api/categories/icones",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const erro = err.response?.data.errors;
+      if (erro) return rejectWithValue(erro[0]);
+    }
+    return rejectWithValue("Houve um erro ao buscar os icones");
+  }
+});
 
 export const getCategories = createAsyncThunk<
   ResponsePayload<Category[]>,
@@ -154,7 +193,7 @@ const categoriesSlice = createSlice({
         state.loadingGet = true;
         state.errorGet = null;
         state.successGet = false;
-        state.status = 'loading'
+        state.status = "loading";
       })
       .addCase(
         getCategories.fulfilled,
@@ -163,57 +202,71 @@ const categoriesSlice = createSlice({
           state.successGet = action.payload.success;
           state.receita = action.payload.data.filter((c) => c.type === 1);
           state.despesa = action.payload.data.filter((c) => c.type === 0);
-          state.status = 'succeeded'
+          state.status = "succeeded";
         },
       )
       .addCase(getCategories.rejected, (state, action) => {
         state.loadingGet = false;
         state.successGet = false;
         state.errorGet = action.payload || "Erro ao carregar categorias";
-        state.status = 'failed'
-      });
+        state.status = "failed";
+      })
 
-    builder.addCase(postCategories.pending, (state) => {
-      state.loadingPost = true;
-      state.errorPost = null;
-    });
-    builder.addCase(
-      postCategories.fulfilled,
-      (state, action: PayloadAction<ResponsePayload<Category>>) => {
+      .addCase(postCategories.pending, (state) => {
+        state.loadingPost = true;
+        state.errorPost = null;
+      })
+      .addCase(
+        postCategories.fulfilled,
+        (state, action: PayloadAction<ResponsePayload<Category>>) => {
+          state.loadingPost = false;
+
+          const categoria = action.payload.data;
+          if (!categoria) return;
+
+          const isReceita = categoria.type === 1;
+          (isReceita ? state.receita : state.despesa).push(categoria);
+          state.successPost = "Categoria adicionada com sucesso!";
+        },
+      )
+      .addCase(postCategories.rejected, (state, action) => {
         state.loadingPost = false;
+        state.errorPost = action.payload || "Erro ao adicionar categoria";
+      })
 
-        const categoria = action.payload.data;
-        if (!categoria) return;
-
-        const isReceita = categoria.type === 1;
-        (isReceita ? state.receita : state.despesa).push(categoria);
-        state.successPost = "Categoria adicionada com sucesso!";
-      },
-    );
-    builder.addCase(postCategories.rejected, (state, action) => {
-      state.loadingPost = false;
-      state.errorPost = action.payload || "Erro ao adicionar categoria";
-    });
-
-    builder.addCase(deleteCategories.pending, (state) => {
-      state.loadingDelete = true;
-      state.errorDelete = null;
-    });
-    builder.addCase(deleteCategories.rejected, (state, action) => {
-      state.loadingDelete = false;
-      state.errorDelete =
-        (action.payload as string) || "Erro ao deletar essa categoria";
-    });
-    builder.addCase(
-      deleteCategories.fulfilled,
-      (state, action: PayloadAction<string>) => {
+      .addCase(deleteCategories.pending, (state) => {
+        state.loadingDelete = true;
+        state.errorDelete = null;
+      })
+      .addCase(deleteCategories.rejected, (state, action) => {
         state.loadingDelete = false;
-        state.receita = state.receita.filter((c) => c.id !== action.payload);
-        state.despesa = state.despesa.filter((c) => c.id !== action.payload);
-        state.successDelete =
-          state.successDelete || "Categoria deletada com sucesso";
-      },
-    );
+        state.errorDelete =
+          (action.payload as string) || "Erro ao deletar essa categoria";
+      })
+      .addCase(
+        deleteCategories.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loadingDelete = false;
+          state.receita = state.receita.filter((c) => c.id !== action.payload);
+          state.despesa = state.despesa.filter((c) => c.id !== action.payload);
+          state.successDelete =
+            state.successDelete || "Categoria deletada com sucesso";
+        },
+      )
+
+      .addCase(getIcones.pending, (state) => {
+        state.icone.error = null;
+        state.icone.status = "loading";
+      })
+      .addCase(getIcones.rejected, (state, action) => {
+        state.icone.error = action.payload || "Erro ao buscar icones";
+        state.icone.status = "failed";
+      })
+      .addCase(getIcones.fulfilled, (state, action) => {
+        state.icone.item = action.payload.data;
+        state.icone.status = "succeeded";
+        state.icone.error = null;
+      });
   },
 });
 

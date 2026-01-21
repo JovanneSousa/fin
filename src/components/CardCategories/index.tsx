@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import { CardStyled } from "./styles";
 import { formatCurrency, tiposCard } from "../../Utils";
-import { IconBox } from "../../globalStyles";
+import { CustomSkeleton, IconBox } from "../../globalStyles";
 import { cardConfig } from "./CardConfig";
 import useTransactions from "../../Hooks/useTransactions";
-import Skeleton from "react-loading-skeleton";
 
 interface CardProps {
   type: number;
@@ -42,11 +41,11 @@ const CardCategories: React.FC<CardProps> = ({ type }) => {
     <>
       <div className="content">
         <p>
-          <Skeleton />
+          <CustomSkeleton />
         </p>
-        <Skeleton className="valor" />
+        <CustomSkeleton className="valor" />
       </div>
-      <Skeleton circle={true} />
+      <CustomSkeleton circle={true} />
     </>
   );
 

@@ -7,10 +7,6 @@ export const NewSection = styled.section`
   transition: height ease 0.3s;
   width: 450px;
 
-  .items {
-    position: relative;
-  }
-
   .items,
   .all-items {
     padding: 16px 0;
@@ -53,6 +49,11 @@ export const NewSection = styled.section`
         visibility: visible;
       }
     }
+  }
+
+  .items {
+    position: relative;
+    height: 68px;
   }
 
   .type {

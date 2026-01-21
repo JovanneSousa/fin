@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { hexToRgb } from "./Utils";
+import Skeleton from "react-loading-skeleton";
 
 export const colors = {
   rosa: "#c850c0",

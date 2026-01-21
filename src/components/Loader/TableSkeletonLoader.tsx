@@ -1,5 +1,5 @@
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { CustomSkeleton } from "../../globalStyles";
 
 type Props = {
   columns: number;
@@ -10,7 +10,7 @@ export function TableSkeletonRow({ columns }: Props) {
     <tr>
       {Array.from({ length: columns }).map((_, index) => (
         <td key={index}>
-          <Skeleton height={18} />
+          <CustomSkeleton altura="18px" />
         </td>
       ))}
     </tr>

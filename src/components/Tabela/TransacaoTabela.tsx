@@ -14,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { TabelaProps } from ".";
 import Modal from "../ModalContainer";
-import TransacaoDetails from "../TransactionDetails";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
@@ -31,18 +30,16 @@ import Feedback from "../Feedback";
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
     isDeleteModalOpen,
-    isOpen,
     itemSelecionado,
     isSearching,
     tipo,
     statusPeriodo,
     setIsDeleteModalOpen,
-    abrirDetalhes,
-    fecharDetalhes,
     setItemSelecionado,
     abreBusca,
     fechaBusca,
     changeType,
+    abrirDetalhes,
     paginacao,
     errorPeriodo,
   } = useTransactionTable();
@@ -67,7 +64,10 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         <td>
           {item.categoria != null && item.categoria != undefined ? (
             <div className="button-container categorias">
-              <Icone tipoIcone={item.categoria.icone.url} />
+              <Icone
+                background={item.categoria.cor.url}
+                tipoIcone={item.categoria.icone.url}
+              />
               <p>{item.categoria.name}</p>
             </div>
           ) : (
@@ -181,9 +181,6 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         </thead>
         <tbody>{conteudoTabela()}</tbody>
       </StyledTable>
-      <Modal isOpen={isOpen} onClose={fecharDetalhes}>
-        <TransacaoDetails onClose={fecharDetalhes} />
-      </Modal>
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

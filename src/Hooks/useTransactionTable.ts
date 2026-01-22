@@ -4,6 +4,7 @@ import { getTransacao, type Transacao } from "../Store/reducers/transactions";
 import type { AppDispatch } from "../Store";
 import useTransactions from "./useTransactions";
 import { usePaginacao } from "./usePaginacao";
+import { useFormNew } from "../contexts/FormNew/useFormNew";
 
 export const useTransactionTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,9 +13,10 @@ export const useTransactionTable = () => {
     setTipo,
     tipo,
   } = useTransactions();
-  const paginacao = usePaginacao(itemsFiltrados);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const { abreModal } = useFormNew();
+
+  const paginacao = usePaginacao(itemsFiltrados);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemSelecionado, setItemSelecionado] = useState<Transacao | null>(
     null,
@@ -37,11 +39,7 @@ export const useTransactionTable = () => {
 
   const abrirDetalhes = (id: string) => {
     dispatch(getTransacao(id));
-    setIsOpen(true);
-  };
-
-  const fecharDetalhes = () => {
-    setIsOpen(false);
+    abreModal("editTransacao");
   };
 
   const changeType = (tipo: "todos" | "receita" | "despesa") => {
@@ -50,7 +48,6 @@ export const useTransactionTable = () => {
   };
 
   return {
-    isOpen,
     isDeleteModalOpen,
     itemSelecionado,
     valorBusca,
@@ -60,12 +57,11 @@ export const useTransactionTable = () => {
     statusPeriodo,
     errorPeriodo,
     setValorBusca,
+    abrirDetalhes,
     fechaBusca,
     abreBusca,
     setIsDeleteModalOpen,
     setItemSelecionado,
-    abrirDetalhes,
-    fecharDetalhes,
     changeType,
   };
 };

@@ -28,6 +28,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
     abreBusca,
     fechaBusca,
     isSearching,
+    abrirDetalhes,
   } = useCategoryTable();
 
   const [filter, setFilter] = useState<"receita" | "despesa">("despesa");
@@ -118,11 +119,11 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
                   <Icone tipoIcone={d.icone.url} />
                 </td>
                 <td>
-                  <ContainerCor cor={colors.verde} />
+                  <ContainerCor cor={d.cor.url} />
                 </td>
                 <td>
                   <div className="button-container">
-                    <DetailBox>
+                    <DetailBox onClick={() => abrirDetalhes(d.id)}>
                       <FontAwesomeIcon icon={faCircleInfo} size="lg" />
                     </DetailBox>
                     <CloseBox
@@ -142,9 +143,11 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
               <tr key={d.id}>
                 <td>{d.name}</td>
                 <td>
-                  <Icone background={d.cor} tipoIcone={d.icone.url} />
+                  <Icone tipoIcone={d.icone.url} />
                 </td>
-                <td>"Cor da Tag"</td>
+                <td>
+                  <ContainerCor cor={d.cor.url} />
+                </td>
                 <td>
                   <div className="button-container">
                     <DetailBox>
@@ -164,21 +167,6 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             ))}
         </tbody>
       </StyledTable>
-      {/* <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
-        <TransacaoDetails onClose={() => setIsOpen(false)} />
-      </Modal>
-      <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-      >
-        <Delete
-          onClose={() => {
-            setIsDeleteModalOpen(false);
-            setItemSelecionado(null);
-          }}
-          item={itemSelecionado}
-        />
-      </Modal> */}
       <RodapeTabelas
         paginacao={filter == "despesa" ? despesaPaginada : receitaPaginada}
       />

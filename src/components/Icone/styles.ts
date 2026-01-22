@@ -14,6 +14,7 @@ export const BackgroundIcon = styled.span.withConfig({
   shouldForwardProp: (props) => !["background"].includes(props),
 })<BackgroundIconProps>`
   background-color: ${({ background }) => background ?? colors.lightGray};
+  color: ${({ background }) => (background ? colors.branco : colors.gray)};
   padding: 8px;
   border-radius: 50%;
   margin: 0;
@@ -25,9 +26,5 @@ export const BackgroundIcon = styled.span.withConfig({
   &.is-active {
     background-color: ${colors.gray};
     color: ${colors.defaultBackgroundColor};
-  }
-
-  &:hover {
-    opacity: .6;
   }
 `;

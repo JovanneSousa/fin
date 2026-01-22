@@ -19,11 +19,16 @@ export interface Icone {
   url: IconType;
 }
 
+export interface Cor {
+  id: string;
+  url: string;
+}
+
 export interface Category {
   id: string;
   name: string;
   type: number;
-  cor: string;
+  cor: Cor;
   icone: Icone;
 }
 
@@ -37,6 +42,12 @@ interface CategoriesState {
 
   icone: {
     item: Icone[];
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+  };
+
+  cores: {
+    item: Cor[];
     status: "idle" | "loading" | "succeeded" | "failed";
     error: string | null;
   };
@@ -60,6 +71,12 @@ const initialState: CategoriesState = {
   successGet: null as boolean | null,
 
   icone: {
+    item: [],
+    status: "idle",
+    error: null,
+  },
+
+  cores: {
     item: [],
     status: "idle",
     error: null,
@@ -97,6 +114,32 @@ export const getIcones = createAsyncThunk<
       if (erro) return rejectWithValue(erro[0]);
     }
     return rejectWithValue("Houve um erro ao buscar os icones");
+  }
+});
+
+export const getCores = createAsyncThunk<
+  ResponsePayload<Cor[]>,
+  void,
+  { rejectValue: string }
+>("cores/fetch", async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.get<ResponsePayload<Cor[]>>(
+      "api/categories/cores",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const erro = err.response?.data.errors;
+      if (erro) return rejectWithValue(erro[0]);
+    }
+    return rejectWithValue("Houve um erro ao buscar as cores");
   }
 });
 
@@ -266,6 +309,20 @@ const categoriesSlice = createSlice({
         state.icone.item = action.payload.data;
         state.icone.status = "succeeded";
         state.icone.error = null;
+      })
+
+      .addCase(getCores.pending, (state) => {
+        state.cores.error = null;
+        state.cores.status = "loading";
+      })
+      .addCase(getCores.rejected, (state, action) => {
+        state.cores.error = action.payload || "Erro ao buscar cores";
+        state.cores.status = "failed";
+      })
+      .addCase(getCores.fulfilled, (state, action) => {
+        state.cores.item = action.payload.data;
+        state.cores.status = "succeeded";
+        state.cores.error = null;
       });
   },
 });

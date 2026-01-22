@@ -19,8 +19,11 @@ type CategoriaFormData = {
   cor: string;
   iconeId: string;
 };
+interface TransacaoDetailsProps {
+  onClose: () => void;
+}
 
-const FormCategoria = () => {
+const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const colorRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
@@ -58,6 +61,10 @@ const FormCategoria = () => {
   const corIsError = cores.status == "failed";
   const corIsEmpty = cores.item.length == 0;
   const corHasData = cores.item.length > 0;
+
+  useEffect(() => {
+    console.log("renderizou");
+  }, []);
 
   useEffect(() => {
     if (icone.status == "idle") buscarIcones();
@@ -111,7 +118,7 @@ const FormCategoria = () => {
           </select>
           <span>{errors.type?.message}</span>
         </div>
-        <div className="flex">
+        <div onClick={onClose} className="flex">
           <div className="flex column">
             <p className="label">Cor da categoria:</p>
             {corIsLoading && (
@@ -228,4 +235,4 @@ const FormCategoria = () => {
   );
 };
 
-export default FormCategoria;
+export default EditCategory;

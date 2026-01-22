@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { ContainerDetails } from "./styles";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
@@ -11,6 +10,10 @@ import { despesaSchema } from "../../validations/despesaSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { updateTransaction } from "../../Store/reducers/transactions";
+import Formulario from "../Formulario";
+import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
+import { StyledIconForm } from "../Formulario/styles";
+import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 
 interface TransacaoDetailsProps {
   onClose: () => void;
@@ -25,7 +28,7 @@ type EditFormTransacao = {
   parcelas?: number;
 };
 
-const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
+const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     selected,
@@ -37,13 +40,19 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
   } = useSelector((state: RootReducer) => state.transactions);
 
   const { despesa, receita } = useSelector(
-    (state: RootReducer) => state.categories
+    (state: RootReducer) => state.categories,
   );
   const [isEditing, setIsEditing] = useState(false);
 
   const schema = selected?.type === 0 ? receitaSchema : despesaSchema;
 
-  const { register, handleSubmit, reset, watch } = useForm<EditFormTransacao>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<EditFormTransacao>({
     resolver: yupResolver(schema),
     defaultValues: selected!,
   });
@@ -75,8 +84,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
   }, [selected, reset]);
 
   return (
-    <ContainerDetails>
-      <p>{isEditing ? "Editando Transação" : "Detalhes da Transação"}</p>
+    <>
       {loadingGetItem || loadingUpdate ? (
         <Loader />
       ) : errorGetItem ? (
@@ -86,7 +94,8 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
       ) : successUpdate ? (
         <Feedback success={successUpdate} />
       ) : (
-        <form
+        <Formulario
+          size="small"
           onSubmit={handleSubmit(onSubmit)}
           className={isEditing ? "is-editing" : ""}
         >
@@ -96,10 +105,10 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
             {isEditing ? (
               <input id="descript" type="text" {...register("titulo")} />
             ) : (
-              <span className="input-span">{selected?.titulo}</span>
+              <div className="input-span">{selected?.titulo}</div>
             )}
-
-            {/* <span>{errors.titulo?.message}</span> */}
+            <StyledIconForm size="small" icon={faNewspaper} />
+            <span>{errors.titulo?.message}</span>
           </div>
           <div className="input-wrapper">
             <label htmlFor="edit-value">Valor</label>
@@ -109,7 +118,8 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
               {...register("valor")}
               disabled={!isEditing}
             />
-            {/* <span>{errors.valor?.message}</span> */}
+            <StyledIconForm size="small" icon={faCalculator} />
+            <span>{errors.valor?.message}</span>
           </div>
           <div className="input-wrapper">
             <label htmlFor="edit-cat-receita">Categoria</label>
@@ -133,7 +143,8 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
                     </option>
                   ))}
             </select>
-            {/* <span>{errors.categoriaId?.message}</span> */}
+            <StyledIconForm size="small" icon={faTags} />
+            <span>{errors.categoriaId?.message}</span>
           </div>
           <div className="input-wrapper">
             <label htmlFor="edit-dataMovimentacao">Data</label>
@@ -143,7 +154,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
               type="date"
               {...register("dataMovimentacao")}
             />
-            {/* <span>{errors.dataMovimentacao?.message}</span> */}
+            <span>{errors.dataMovimentacao?.message}</span>
           </div>
 
           {selected?.type === 0 ? (
@@ -155,7 +166,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
                 {...register("isRecurring")}
               />
               <label htmlFor="edit-recurrency">Receita Recorrente</label>
-              {/* <span>{errors.isRecurring?.message}</span> */}
+              <span>{errors.isRecurring?.message}</span>
             </div>
           ) : (
             <div className="container-check">
@@ -167,7 +178,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
                   disabled={!isEditing}
                 />
                 <label htmlFor="edit-recurrency">Despesa Parcelada</label>
-                {/* <span>{errors.isRecurring?.message}</span> */}
+                <span>{errors.isRecurring?.message}</span>
               </div>
               {isParcelado && (
                 <div className="parcelas">
@@ -178,7 +189,7 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
                     {...register("parcelas")}
                     disabled={!isEditing}
                   />
-                  {/* <span>{errors.parcelas?.message}</span> */}
+                  <span>{errors.parcelas?.message}</span>
                 </div>
               )}
             </div>
@@ -209,10 +220,10 @@ const TransacaoDetails: React.FC<TransacaoDetailsProps> = ({ onClose }) => {
               />
             ) : null}
           </div>
-        </form>
+        </Formulario>
       )}
-    </ContainerDetails>
+    </>
   );
 };
 
-export default TransacaoDetails;
+export default EditTransaction;

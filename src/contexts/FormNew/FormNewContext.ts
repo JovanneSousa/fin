@@ -1,6 +1,12 @@
 import { createContext } from "react";
 
-export type ModalTypes = "despesa" | "receita" | "categoria" | null;
+export type ModalTypes =
+  | "receita"
+  | "despesa"
+  | "categoria"
+  | "editCategoria"
+  | "editTransacao"
+  | null;
 
 export type FormNewContextType = {
   isOpenModal: ModalTypes;

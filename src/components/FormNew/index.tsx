@@ -8,9 +8,16 @@ import { colors } from "../../globalStyles";
 import FormCategoria from "./FormCategoria";
 import FormDespesa from "./FormDespesa";
 import FormReceita from "./FormReceita";
+import EditCategory from "./EditCategory";
+import EditTransaction from "./EditTransaction";
 
 interface FormNewProps {
-  typeForm: "receita" | "despesa" | "categoria";
+  typeForm:
+    | "receita"
+    | "despesa"
+    | "categoria"
+    | "editCategoria"
+    | "editTransacao";
   onClose: () => void;
 }
 
@@ -24,6 +31,8 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     categoria: <FormCategoria />,
     despesa: <FormDespesa size={tamanhoForm} />,
     receita: <FormReceita size={tamanhoForm} />,
+    editCategoria: <EditCategory onClose={onClose} />,
+    editTransacao: <EditTransaction onClose={onClose} />,
   };
 
   const { loadingPost, errorPost, successPost } = useSelector(
@@ -34,6 +43,8 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     receita: "Nova Receita",
     despesa: "Nova Despesa",
     categoria: "Nova Categoria",
+    editCategoria: "Editar Categoria",
+    editTransacao: "Editar Transação",
   };
 
   return (

@@ -1,11 +1,48 @@
 import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
+export const ContainerDetails = styled.div`
+  background-color: ${colors.defaultBackgroundColor};
+  width: 450px;
+
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  form {
+    padding: 0;
+
+    &.is-editing {
+      input {
+        background-color: ${colors.lighterGray};
+        border: 1px solid ${colors.lightGray};
+      }
+    }
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 100%;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+  }
+`;
+
 export const NewSection = styled.section`
   background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
   transition: height ease 0.3s;
   width: 450px;
+
+  span {
+    &:hover {
+      opacity: 0.6;
+    }
+  }
 
   .items,
   .all-items {

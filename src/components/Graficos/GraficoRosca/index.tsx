@@ -9,28 +9,6 @@ import { colors } from "../../../globalStyles";
 import { Title } from "../styles";
 import Loader from "../../Loader";
 
-const DESPESA_COLORS = [
-  "#e63946",
-  "#ff6b6b",
-  "#c850c0",
-  "#d6336c",
-  "#9b59b6",
-  "#8e44ad",
-  "#f06292",
-  "#ff4d4d",
-];
-
-const RECEITA_COLORS = [
-  "#57b846",
-  "#6fcf97",
-  "#27ae60",
-  "#3498db",
-  "#5dade2",
-  "#f39c12",
-  "#f1c40f",
-  "#2ecc71",
-];
-
 type TipoGrafico = "receita" | "despesa";
 
 const GraficoRosca = () => {
@@ -51,21 +29,34 @@ const GraficoRosca = () => {
       (t) => t.type === tipo,
     );
 
-    const mapa = new Map<string, number>();
+    const mapa = new Map<string, { value: number; color: string }>();
     transacoesFiltradasPorTipo.forEach((t) => {
       const nomeCategoria = t.categoria?.name || "Sem categoria";
-      mapa.set(nomeCategoria, (mapa.get(nomeCategoria) || 0) + t.valor);
+      const cor = t.categoria?.cor.url || colors.gray;
+
+      const atual = mapa.get(nomeCategoria);
+
+      if (atual) {
+        mapa.set(nomeCategoria, {
+          value: atual.value + t.valor,
+          color: atual.color ?? cor,
+        });
+      } else {
+        mapa.set(nomeCategoria, {
+          value: t.valor,
+          color: cor,
+        });
+      }
     });
 
     return Array.from(mapa.entries())
-      .sort((a, b) => b[1] - a[1])
-      .map(([name, value]) => ({
+      .sort((a, b) => b[1].value - a[1].value)
+      .map(([name, { value, color }]) => ({
         name,
         value,
+        color,
       }));
   }, [itemsFiltrados, tipo]);
-
-  const COLORS = tipo === 0 ? RECEITA_COLORS : DESPESA_COLORS;
 
   const isLoading = statusPeriodo == "loading";
   const isError = statusPeriodo == "failed";
@@ -114,11 +105,8 @@ const GraficoRosca = () => {
                   innerRadius={60}
                   outerRadius={100}
                 >
-                  {data.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip
@@ -127,12 +115,12 @@ const GraficoRosca = () => {
               </PieChart>
             </ResponsiveContainer>
             <div className="legenda-container">
-              {data.slice(0, 5).map((c, index) => (
+              {data.slice(0, 5).map((c) => (
                 <div key={c.name} className="legenda-item">
-                  <p>
-                    <ContainerCor bg={COLORS[index % COLORS.length]} />
+                  <div>
+                    <ContainerCor bg={c.color} />
                     {c.name}
-                  </p>
+                  </div>
                   <p className={typeCategoria}>{formatCurrency(c.value)}</p>
                 </div>
               ))}

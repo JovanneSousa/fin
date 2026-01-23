@@ -12,6 +12,8 @@ export const categoriaSchema = yup.object({
     .required("O campo Tipo é obrigatório")
     .oneOf([0, 1], "Tipo inválido: use 0 para Despesa ou 1 para Receita"),
 
-  cor: yup.string().required("O campo de cor da categoria é obrigatório"),
-  iconeId: yup.string().required("O campo de ícone da categoria é obrigatório"),
+  corId: yup.string().required("O campo de cor da categoria é obrigatório"),
+  iconId: yup.string().required("O campo de ícone da categoria é obrigatório"),
 });
+
+export type CategoriaFormData = yup.InferType<typeof categoriaSchema>;

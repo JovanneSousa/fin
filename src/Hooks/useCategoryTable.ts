@@ -1,14 +1,10 @@
 import { useState } from "react";
 import useCategory from "./useCategory";
 import { usePaginacao } from "./usePaginacao";
-import { useDispatch } from "react-redux";
-import { type AppDispatch } from "../Store";
 import { useFormNew } from "../contexts/FormNew/useFormNew";
-import { getCategories } from "../Store/reducers/categories";
 
 export const useCategoryTable = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { despesa, receita } = useCategory();
+  const { despesa, receita, buscaPorId } = useCategory();
 
   const { abreModal } = useFormNew();
 
@@ -20,9 +16,8 @@ export const useCategoryTable = () => {
   };
 
   const abrirDetalhes = (id: string) => {
-    dispatch(getCategories());
+    buscaPorId(id);
     abreModal("editCategoria");
-    console.log(id);
   };
 
   const fechaBusca = () => {

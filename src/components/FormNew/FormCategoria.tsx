@@ -1,33 +1,42 @@
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { postCategories } from "../../Store/reducers/categories";
-import { type AppDispatch } from "../../Store";
 import { categoriaSchema } from "../../validations/categoriaSchema";
 import Formulario from "../Formulario";
 import ContainerCor from "../ContainerCor";
 import Icone from "../Icone";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useCategory from "../../Hooks/useCategory";
 import SkeletonCustom from "../SkeletonCustom";
+import useClickOutside from "../../Hooks/useClickOutside";
 
 type CategoriaFormData = {
   name: string;
   type: number;
-  cor: string;
-  iconeId: string;
+  iconId: string;
+  corId: string;
 };
 
 const FormCategoria = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const colorRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
 
   const [isColorSelectorVisible, setIsColorSelectorVisible] = useState(false);
   const [isIconSelectorVisible, setIsIconSelectorVisible] = useState(false);
 
+  useClickOutside([
+    {
+      ref: colorRef,
+      isOpen: isColorSelectorVisible,
+      onClose: () => setIsColorSelectorVisible(true),
+    },
+    {
+      ref: iconRef,
+      isOpen: isIconSelectorVisible,
+      onClose: () => setIsIconSelectorVisible(true),
+    },
+  ]);
   const {
     register,
     handleSubmit,
@@ -39,13 +48,14 @@ const FormCategoria = () => {
     resolver: yupResolver(categoriaSchema),
   });
 
-  const { icone, buscarIcones, cores, buscarCores } = useCategory();
+  const { icone, buscarIcones, cores, buscarCores, criarCategoria } =
+    useCategory();
 
-  const corSelecionada = watch("cor");
-  const iconeSelecionado = watch("iconeId");
+  const corSelecionada = watch("corId");
+  const iconeSelecionado = watch("iconId");
 
   const onSubmit = (data: CategoriaFormData) => {
-    dispatch(postCategories(data));
+    criarCategoria(data);
     reset();
   };
 
@@ -67,33 +77,22 @@ const FormCategoria = () => {
     if (cores.status == "idle") buscarCores();
   }, [cores.status, buscarCores]);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as Node;
+  const coresOrdenadas = useMemo(() => {
+    if (!corSelecionada) return cores.item;
 
-      if (
-        isColorSelectorVisible &&
-        colorRef.current &&
-        !colorRef.current.contains(target)
-      ) {
-        setIsColorSelectorVisible(false);
-      }
+    return [
+      ...cores.item.filter((c) => c.id === corSelecionada),
+      ...cores.item.filter((c) => c.id !== corSelecionada),
+    ];
+  }, [cores.item, corSelecionada]);
 
-      if (
-        isIconSelectorVisible &&
-        iconRef.current &&
-        !iconRef.current.contains(target)
-      ) {
-        setIsIconSelectorVisible(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isColorSelectorVisible, isIconSelectorVisible]);
+  const iconesOrdenados = useMemo(() => {
+    if (!iconeSelecionado) return icone.item;
+    return [
+      ...icone.item.filter((i) => i.id === iconeSelecionado),
+      ...icone.item.filter((i) => i.id !== iconeSelecionado),
+    ];
+  }, [icone.item, iconeSelecionado]);
 
   return (
     <>
@@ -124,11 +123,11 @@ const FormCategoria = () => {
 
             {corHasData && (
               <div className="items">
-                {cores.item.slice(0, 3).map((cor, index) => (
+                {coresOrdenadas.slice(0, 3).map((cor, index) => (
                   <ContainerCor
                     className={`${corSelecionada == cor.id ? "is-active" : ""}`}
                     onClick={() => {
-                      setValue("cor", cor.id, { shouldValidate: true });
+                      setValue("corId", cor.id, { shouldValidate: true });
                     }}
                     key={index}
                     cor={cor.url}
@@ -138,11 +137,11 @@ const FormCategoria = () => {
                   ref={colorRef}
                   className={`all-items shadow ${isColorSelectorVisible ? "is-visible" : ""}`}
                 >
-                  {cores.item.map((cor, index) => (
+                  {coresOrdenadas.map((cor, index) => (
                     <ContainerCor
                       className={`${corSelecionada == cor.id ? "is-active" : ""}`}
                       onClick={() => {
-                        setValue("cor", cor.id, { shouldValidate: true });
+                        setValue("corId", cor.id, { shouldValidate: true });
                         setIsColorSelectorVisible(false);
                       }}
                       key={index}
@@ -175,12 +174,12 @@ const FormCategoria = () => {
 
             {iconeHasData && (
               <div className="items">
-                {icone.item.slice(0, 3).map((icone) => (
+                {iconesOrdenados.slice(0, 3).map((icone) => (
                   <Icone
                     onClick={() => {
-                      setValue("iconeId", icone.url, { shouldValidate: true });
+                      setValue("iconId", icone.id, { shouldValidate: true });
                     }}
-                    className={`${iconeSelecionado == icone.url ? "is-active" : ""}`}
+                    className={`${iconeSelecionado == icone.id ? "is-active" : ""}`}
                     key={icone.id}
                     tipoIcone={icone.url}
                   />
@@ -189,15 +188,15 @@ const FormCategoria = () => {
                   ref={iconRef}
                   className={`all-items shadow ${isIconSelectorVisible ? "is-visible" : ""}`}
                 >
-                  {icone.item.map((icone) => (
+                  {iconesOrdenados.map((icone) => (
                     <Icone
                       onClick={() => {
-                        setValue("iconeId", icone.url, {
+                        setValue("iconId", icone.id, {
                           shouldValidate: true,
                         });
                         setIsIconSelectorVisible(false);
                       }}
-                      className={`${iconeSelecionado == icone.url ? "is-active" : ""}`}
+                      className={`${iconeSelecionado == icone.id ? "is-active" : ""}`}
                       key={icone.id}
                       tipoIcone={icone.url}
                     />

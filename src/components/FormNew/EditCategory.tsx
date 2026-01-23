@@ -5,31 +5,37 @@ import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { postCategories } from "../../Store/reducers/categories";
 import { type AppDispatch } from "../../Store";
-import { categoriaSchema } from "../../validations/categoriaSchema";
+import {
+  categoriaSchema,
+  type CategoriaFormData,
+} from "../../validations/categoriaSchema";
 import Formulario from "../Formulario";
 import ContainerCor from "../ContainerCor";
 import Icone from "../Icone";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useCategory from "../../Hooks/useCategory";
 import SkeletonCustom from "../SkeletonCustom";
+import useClickOutside from "../../Hooks/useClickOutside";
 
-type CategoriaFormData = {
-  name: string;
-  type: number;
-  cor: string;
-  iconeId: string;
-};
-interface TransacaoDetailsProps {
-  onClose: () => void;
-}
-
-const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
+const EditCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
   const colorRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
 
   const [isColorSelectorVisible, setIsColorSelectorVisible] = useState(false);
   const [isIconSelectorVisible, setIsIconSelectorVisible] = useState(false);
+  useClickOutside([
+    {
+      ref: colorRef,
+      isOpen: isColorSelectorVisible,
+      onClose: () => setIsColorSelectorVisible(false),
+    },
+    {
+      ref: iconRef,
+      isOpen: isIconSelectorVisible,
+      onClose: () => setIsIconSelectorVisible(false),
+    },
+  ]);
 
   const {
     register,
@@ -38,14 +44,14 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
     setValue,
     reset,
     watch,
-  } = useForm<CategoriaFormData>({
+  } = useForm({
     resolver: yupResolver(categoriaSchema),
   });
 
-  const { icone, buscarIcones, cores, buscarCores } = useCategory();
+  const { icone, buscarIcones, cores, buscarCores, itemById } = useCategory();
 
-  const corSelecionada = watch("cor");
-  const iconeSelecionado = watch("iconeId");
+  const corSelecionada = watch("corId");
+  const iconeSelecionado = watch("iconId");
 
   const onSubmit = (data: CategoriaFormData) => {
     dispatch(postCategories(data));
@@ -75,32 +81,32 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
   }, [cores.status, buscarCores]);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as Node;
-
-      if (
-        isColorSelectorVisible &&
-        colorRef.current &&
-        !colorRef.current.contains(target)
-      ) {
-        setIsColorSelectorVisible(false);
-      }
-
-      if (
-        isIconSelectorVisible &&
-        iconRef.current &&
-        !iconRef.current.contains(target)
-      ) {
-        setIsIconSelectorVisible(false);
-      }
+    if (itemById.item) {
+      reset({
+        corId: itemById.item.cor.id,
+        iconId: itemById.item.icone.id,
+        name: itemById.item.name,
+        type: itemById.item.type,
+      });
     }
+  }, [itemById.item, reset]);
 
-    document.addEventListener("mousedown", handleClickOutside);
+  const coresOrdenadas = useMemo(() => {
+    if (!corSelecionada) return cores.item;
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isColorSelectorVisible, isIconSelectorVisible]);
+    return [
+      ...cores.item.filter((c) => c.id === corSelecionada),
+      ...cores.item.filter((c) => c.id !== corSelecionada),
+    ];
+  }, [cores.item, corSelecionada]);
+
+  const iconesOrdenados = useMemo(() => {
+    if (!iconeSelecionado) return icone.item;
+    return [
+      ...icone.item.filter((i) => i.id === iconeSelecionado),
+      ...icone.item.filter((i) => i.id !== iconeSelecionado),
+    ];
+  }, [icone.item, iconeSelecionado]);
 
   return (
     <>
@@ -118,7 +124,7 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
           </select>
           <span>{errors.type?.message}</span>
         </div>
-        <div onClick={onClose} className="flex">
+        <div className="flex">
           <div className="flex column">
             <p className="label">Cor da categoria:</p>
             {corIsLoading && (
@@ -131,11 +137,11 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
 
             {corHasData && (
               <div className="items">
-                {cores.item.slice(0, 3).map((cor, index) => (
+                {coresOrdenadas.slice(0, 3).map((cor, index) => (
                   <ContainerCor
                     className={`${corSelecionada == cor.id ? "is-active" : ""}`}
                     onClick={() => {
-                      setValue("cor", cor.id, { shouldValidate: true });
+                      setValue("corId", cor.id, { shouldValidate: true });
                     }}
                     key={index}
                     cor={cor.url}
@@ -145,17 +151,24 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
                   ref={colorRef}
                   className={`all-items shadow ${isColorSelectorVisible ? "is-visible" : ""}`}
                 >
-                  {cores.item.map((cor, index) => (
-                    <ContainerCor
-                      className={`${corSelecionada == cor.id ? "is-active" : ""}`}
-                      onClick={() => {
-                        setValue("cor", cor.id, { shouldValidate: true });
-                        setIsColorSelectorVisible(false);
-                      }}
-                      key={index}
-                      cor={cor.url}
-                    />
-                  ))}
+                  {coresOrdenadas
+                    .slice()
+                    .sort((a, b) => {
+                      if (a.id === corSelecionada) return -1;
+                      if (b.id === corSelecionada) return 1;
+                      return 0;
+                    })
+                    .map((cor, index) => (
+                      <ContainerCor
+                        className={`${corSelecionada == cor.id ? "is-active" : ""}`}
+                        onClick={() => {
+                          setValue("corId", cor.id, { shouldValidate: true });
+                          setIsColorSelectorVisible(false);
+                        }}
+                        key={index}
+                        cor={cor.url}
+                      />
+                    ))}
                 </div>
                 <Button
                   padding="small"
@@ -182,12 +195,12 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
 
             {iconeHasData && (
               <div className="items">
-                {icone.item.slice(0, 3).map((icone) => (
+                {iconesOrdenados.slice(0, 3).map((icone) => (
                   <Icone
                     onClick={() => {
-                      setValue("iconeId", icone.url, { shouldValidate: true });
+                      setValue("iconId", icone.id, { shouldValidate: true });
                     }}
-                    className={`${iconeSelecionado == icone.url ? "is-active" : ""}`}
+                    className={`${iconeSelecionado == icone.id ? "is-active" : ""}`}
                     key={icone.id}
                     tipoIcone={icone.url}
                   />
@@ -196,15 +209,15 @@ const EditCategory = ({ onClose }: TransacaoDetailsProps) => {
                   ref={iconRef}
                   className={`all-items shadow ${isIconSelectorVisible ? "is-visible" : ""}`}
                 >
-                  {icone.item.map((icone) => (
+                  {iconesOrdenados.map((icone) => (
                     <Icone
                       onClick={() => {
-                        setValue("iconeId", icone.url, {
+                        setValue("iconId", icone.id, {
                           shouldValidate: true,
                         });
                         setIsIconSelectorVisible(false);
                       }}
-                      className={`${iconeSelecionado == icone.url ? "is-active" : ""}`}
+                      className={`${iconeSelecionado == icone.id ? "is-active" : ""}`}
                       key={icone.id}
                       tipoIcone={icone.url}
                     />

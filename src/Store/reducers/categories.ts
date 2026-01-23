@@ -7,6 +7,7 @@ import api from "../../Services/api";
 import axios from "axios";
 import type { ResponsePayload } from "./transactions";
 import type { IconType } from "../../components/Icone";
+import type { CategoriaFormData } from "../../validations/categoriaSchema";
 
 export interface ErrorResponse {
   success: boolean;
@@ -40,6 +41,12 @@ interface CategoriesState {
   errorGet: string | null;
   successGet: boolean | null;
 
+  itemById: {
+    item: Category | null;
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+  };
+
   icone: {
     item: Icone[];
     status: "idle" | "loading" | "succeeded" | "failed";
@@ -59,6 +66,11 @@ interface CategoriesState {
   loadingDelete: boolean;
   errorDelete: string | null;
   successDelete: string | null;
+
+  update: {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+  };
 }
 
 const initialState: CategoriesState = {
@@ -82,6 +94,12 @@ const initialState: CategoriesState = {
     error: null,
   },
 
+  itemById: {
+    item: null,
+    status: "idle",
+    error: null,
+  },
+
   loadingPost: false,
   errorPost: null as string | null,
   successPost: null as string | null,
@@ -89,6 +107,11 @@ const initialState: CategoriesState = {
   loadingDelete: false,
   errorDelete: null as string | null,
   successDelete: null as string | null,
+
+  update: {
+    status: "idle",
+    error: null,
+  },
 };
 
 export const getIcones = createAsyncThunk<
@@ -114,6 +137,32 @@ export const getIcones = createAsyncThunk<
       if (erro) return rejectWithValue(erro[0]);
     }
     return rejectWithValue("Houve um erro ao buscar os icones");
+  }
+});
+
+export const updateCategoria = createAsyncThunk<
+  ResponsePayload<Category>,
+  Category,
+  { rejectValue: string }
+>("updateCategories", async (categoria, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.put<ResponsePayload<Category>>(
+      "api/categories",
+      categoria,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const erro = err.response?.data.errors;
+      if (erro) return rejectWithValue(erro[0]);
+    }
+    return rejectWithValue("Falha ao atualizar categoria");
   }
 });
 
@@ -169,17 +218,43 @@ export const getCategories = createAsyncThunk<
   }
 });
 
+export const getCategorieById = createAsyncThunk<
+  ResponsePayload<Category>,
+  string,
+  { rejectValue: string }
+>("categoriesById/fetch", async (id, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.get<ResponsePayload<Category>>(
+      `api/categories/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const erro = err.response?.data.errors;
+      if (erro) return rejectWithValue(erro[0]);
+    }
+    return rejectWithValue("Houve um erro ao buscar a categoria!");
+  }
+});
+
 export const postCategories = createAsyncThunk<
   ResponsePayload<Category>,
-  { name: string; type: number },
+  CategoriaFormData,
   { rejectValue: string }
->("categories/post", async ({ name, type }, { rejectWithValue }) => {
+>("categories/post", async (categoria, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
 
     const response = await api.post<ResponsePayload<Category>>(
       "api/categories",
-      { name, type },
+      categoria,
       { headers: { Authorization: `Bearer ${token}` } },
     );
 
@@ -323,6 +398,33 @@ const categoriesSlice = createSlice({
         state.cores.item = action.payload.data;
         state.cores.status = "succeeded";
         state.cores.error = null;
+      })
+
+      .addCase(getCategorieById.pending, (state) => {
+        state.itemById.status = "loading";
+        state.itemById.error = null;
+      })
+      .addCase(getCategorieById.rejected, (state, action) => {
+        state.itemById.error = action.payload || "Erro ao buscar categoria";
+        state.itemById.status = "failed";
+      })
+      .addCase(getCategorieById.fulfilled, (state, action) => {
+        state.itemById.status = "succeeded";
+        state.itemById.item = action.payload.data;
+        state.itemById.error = null;
+      })
+
+      .addCase(updateCategoria.pending, (state) => {
+        state.update.status = "loading";
+        state.update.error = null;
+      })
+      .addCase(updateCategoria.rejected, (state, action) => {
+        state.update.status = "failed";
+        state.update.error = action.payload;
+      })
+      .addCase(updateCategoria.fulfilled, (state) => {
+        state.update.status = "succeeded";
+        state.update.error = null;
       });
   },
 });

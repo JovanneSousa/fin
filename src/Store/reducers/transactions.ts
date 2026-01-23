@@ -23,7 +23,7 @@ export type Transacao = {
   isRecurring: boolean;
   type?: number;
   categoria?: Category;
-  parcelas?: number;
+  parcelas?: number | undefined;
 };
 
 interface TransactionState {

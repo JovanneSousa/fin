@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootReducer } from "../../Store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { despesaSchema } from "../../validations/despesaSchema";
+import {
+  despesaSchema,
+  type DespesaFormData,
+} from "../../validations/despesaSchema";
 import { createTransaction } from "../../Store/reducers/transactions";
 import { hoje } from "../../validations/baseTransacaoSchema";
 import Formulario from "../Formulario";
@@ -12,15 +15,6 @@ import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import { StyledIconForm } from "../Formulario/styles";
 import type { ChildrenFormProps } from ".";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
-
-type DespesaFormData = {
-  titulo: string;
-  valor: number;
-  categoriaId: string;
-  dataMovimentacao: string;
-  isRecurring: boolean;
-  parcelas: number;
-};
 
 const FormDespesa = ({ size }: ChildrenFormProps) => {
   const { despesa } = useSelector((state: RootReducer) => state.categories);
@@ -33,7 +27,7 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<DespesaFormData>({
+  } = useForm({
     resolver: yupResolver(despesaSchema),
     defaultValues: {
       dataMovimentacao: hoje,
@@ -41,6 +35,7 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
   });
 
   const onSubmit = (data: DespesaFormData) => {
+    console.log("Chamou");
     const payload = {
       ...data,
       dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
@@ -48,6 +43,7 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
       parcelas: data.isRecurring ? data.parcelas : undefined,
     };
     dispatch(createTransaction(payload));
+    console.log("Respondeu");
     reset();
   };
 
@@ -97,12 +93,9 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
           <span>{errors.parcelas?.message}</span>
         </div>
       </div>
-      <Button
-        padding="small"
-        bgColor={colors.verde}
-        type="submit"
-        children="Adicionar Transação"
-      />
+      <Button padding="small" bgColor={colors.verde} type="submit">
+        Adicionar Transação
+      </Button>
     </Formulario>
   );
 };

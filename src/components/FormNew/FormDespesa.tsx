@@ -1,25 +1,24 @@
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   despesaSchema,
   type DespesaFormData,
 } from "../../validations/despesaSchema";
-import { createTransaction } from "../../Store/reducers/transactions";
 import { hoje } from "../../validations/baseTransacaoSchema";
 import Formulario from "../Formulario";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import { StyledIconForm } from "../Formulario/styles";
 import type { ChildrenFormProps } from ".";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
+import useTransactions from "../../Hooks/useTransactions";
 
 const FormDespesa = ({ size }: ChildrenFormProps) => {
-  const { despesa } = useSelector((state: RootReducer) => state.categories);
-
-  const dispatch = useDispatch<AppDispatch>();
+  const {
+    categorias: { despesa },
+    transacaoCreate: { criaTransacao },
+  } = useTransactions();
 
   const {
     register,
@@ -35,15 +34,13 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
   });
 
   const onSubmit = (data: DespesaFormData) => {
-    console.log("Chamou");
     const payload = {
       ...data,
       dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 1,
       parcelas: data.isRecurring ? data.parcelas : undefined,
     };
-    dispatch(createTransaction(payload));
-    console.log("Respondeu");
+    criaTransacao(payload);
     reset();
   };
 

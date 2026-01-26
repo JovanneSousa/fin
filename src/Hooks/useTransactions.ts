@@ -2,9 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootReducer } from "../Store";
 import { useCallback, useMemo, useState } from "react";
 import {
+  createTransaction,
   fetchSaldoTotal,
   fetchTransactionsPeriod,
   fetchTransactionsPeriodoComparativo,
+  getTransacao,
+  updateTransaction,
+  type Transacao,
 } from "../Store/reducers/transactions";
 import useCategory from "./useCategory";
 
@@ -20,9 +24,12 @@ const useTransactions = () => {
       status: statusComparativo,
       error: errorComparativo,
     },
+    itemById: itemPorId,
+    createTrancacao,
+    updateTransacao,
   } = useSelector((state: RootReducer) => state.transactions);
 
-  const { despesa, receita, buscaCategorias, status } = useCategory();
+  const { categorias } = useCategory();
 
   const filtro = useMemo(() => {
     if (tipo === "todos") return items;
@@ -42,7 +49,7 @@ const useTransactions = () => {
 
   const itemsFiltrados = filtro.map((item) => {
     if (!item.categoria) {
-      const source = item.type === 0 ? receita : despesa;
+      const source = item.type === 0 ? categorias.receita : categorias.despesa;
       const categoria = source.find((c) => c.id === item.categoriaId);
       return { ...item, categoria };
     }
@@ -105,6 +112,14 @@ const useTransactions = () => {
       new Date(mesSelecionado.getFullYear() + 1, mesSelecionado.getMonth(), 1),
     );
 
+  const buscaPorId = useCallback(
+    (id: string) => {
+      dispatch(getTransacao(id));
+    },
+    [dispatch],
+  );
+  const itemById = { ...itemPorId, buscaPorId };
+
   const filtros = {
     onSelectMonth,
     aplicarPeriodoComparativo,
@@ -116,13 +131,6 @@ const useTransactions = () => {
     onNextMonth,
     onPrevYear,
     onNextYear,
-  };
-
-  const categorias = {
-    receita,
-    despesa,
-    buscaCategorias,
-    status,
   };
 
   const itemsPeriodo = {
@@ -144,7 +152,21 @@ const useTransactions = () => {
   //   return criarFiltro(inicio, fim);
   // }, []);
 
+  const criaTransacao = (transacao: Transacao) => {
+    dispatch(createTransaction(transacao));
+  };
+
+  const atualizarTransacao = (transacao: Transacao) => {
+    dispatch(updateTransaction(transacao));
+  };
+
+  const transacaoCreate = { ...createTrancacao, criaTransacao };
+  const transacaoUpdate = { ...updateTransacao, atualizarTransacao };
+
   return {
+    transacaoUpdate,
+    transacaoCreate,
+    itemById,
     categorias,
     itemsPeriodo,
     itemsPeriodoComparativo,

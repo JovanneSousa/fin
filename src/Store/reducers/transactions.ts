@@ -41,24 +41,30 @@ interface TransactionState {
     status: "idle" | "loading" | "succeeded" | "failed";
   };
 
+  itemById: {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+    item: Transacao | null;
+  };
+
   getSaldoTotal: number | null;
   loadingGetSaldoTotal: boolean;
 
-  loadingGetItem: boolean;
-  errorGetItem: string | null;
-  selected?: Transacao | null;
-
-  loadingPost: boolean;
-  errorPost: string | null;
-  successPost: string | null;
+  createTrancacao: {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+    success: string | null;
+  };
 
   loadingDelete: boolean;
   errorDelete: string | null;
   successDelete: string | null;
 
-  loadingUpdate: boolean;
-  errorUpdate: string | null;
-  successUpdate: string | null;
+  updateTransacao: {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+    success: string | null;
+  };
 }
 
 const initialState: TransactionState = {
@@ -76,19 +82,26 @@ const initialState: TransactionState = {
     status: "idle",
   },
 
-  loadingUpdate: false,
-  errorUpdate: null,
-  successUpdate: null,
+  createTrancacao: {
+    status: "idle",
+    error: null,
+    success: null,
+  },
+
+  updateTransacao: {
+    status: "idle",
+    error: null,
+    success: null,
+  },
 
   getSaldoTotal: null,
   loadingGetSaldoTotal: false,
 
-  loadingGetItem: false,
-  errorGetItem: null,
-
-  loadingPost: false,
-  errorPost: null,
-  successPost: null,
+  itemById: {
+    status: "idle",
+    error: null,
+    item: null,
+  },
 
   loadingDelete: false,
   errorDelete: null,
@@ -264,52 +277,55 @@ const transactionSlice = createSlice({
   initialState,
   reducers: {
     clearError(state) {
-      state.errorPost = null;
+      state.createTrancacao.error = null;
       state.periodoSelecionado.error = null;
       state.periodoComparativo.error = null;
       state.errorDelete = null;
+      state.updateTransacao.error = null;
     },
     clearSuccess(state) {
       // state.successGet = null;
-      state.successPost = null;
+      state.createTrancacao.success = null;
       state.successDelete = null;
-      state.successUpdate = null;
+      state.updateTransacao.success = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createTransaction.pending, (state) => {
-        state.loadingPost = true;
-        state.errorPost = null;
+        state.createTrancacao.status = "loading";
+        state.createTrancacao.error = null;
       })
       .addCase(createTransaction.fulfilled, (state, action) => {
-        state.loadingPost = false;
+        state.createTrancacao.status = "succeeded";
         state.periodoSelecionado.items.push(action.payload.data);
         state.periodoComparativo.items.push(action.payload.data);
-        state.successPost = "Transação criada com sucesso";
+        state.createTrancacao.success = "Transação criada com sucesso";
       })
       .addCase(createTransaction.rejected, (state, action) => {
-        state.loadingPost = false;
-        state.errorPost = action.payload || "Erro ao criar transação";
+        state.createTrancacao.status = "failed";
+        state.createTrancacao.error =
+          action.payload || "Erro ao criar transação";
       })
 
       .addCase(updateTransaction.pending, (state) => {
-        state.loadingUpdate = true;
-        state.errorUpdate = null;
+        state.updateTransacao.status = "loading";
+        state.updateTransacao.error = null;
       })
       .addCase(updateTransaction.fulfilled, (state, action) => {
-        state.loadingUpdate = false;
+        state.updateTransacao.status = "succeeded";
         state.periodoSelecionado.items = state.periodoSelecionado.items.map(
           (t) => (t.id === action.payload.data.id ? action.payload.data : t),
         );
         state.periodoComparativo.items = state.periodoComparativo.items.map(
           (t) => (t.id === action.payload.data.id ? action.payload.data : t),
         );
-        state.successUpdate = "Transação atualizada com sucesso";
+        state.updateTransacao.success = "Transação atualizada com sucesso";
       })
       .addCase(updateTransaction.rejected, (state, action) => {
-        state.loadingUpdate = false;
-        state.errorUpdate = action.payload || "Erro ao atualizar transação";
+        state.updateTransacao.status = "failed";
+        state.updateTransacao.error =
+          action.payload || "Erro ao atualizar transação";
       })
 
       .addCase(fetchSaldoTotal.fulfilled, (state, action) => {
@@ -337,7 +353,7 @@ const transactionSlice = createSlice({
       .addCase(fetchTransactionsPeriodoComparativo.pending, (state) => {
         state.periodoComparativo.loading = true;
         state.periodoComparativo.error = null;
-        state.periodoComparativo.status = 'loading'
+        state.periodoComparativo.status = "loading";
       })
       .addCase(
         fetchTransactionsPeriodoComparativo.rejected,
@@ -345,7 +361,7 @@ const transactionSlice = createSlice({
           state.periodoComparativo.error =
             action.payload || "Erro ao carregar periodo!";
           state.periodoComparativo.loading = false;
-          state.periodoComparativo.status = 'failed'
+          state.periodoComparativo.status = "failed";
         },
       )
       .addCase(
@@ -358,16 +374,16 @@ const transactionSlice = createSlice({
       )
 
       .addCase(getTransacao.pending, (state) => {
-        state.loadingGetItem = true;
-        state.errorGetItem = null;
+        state.itemById.status = "loading";
+        state.itemById.error = null;
       })
       .addCase(getTransacao.fulfilled, (state, action) => {
-        state.loadingGetItem = false;
-        state.selected = action.payload.data;
+        state.itemById.status = "succeeded";
+        state.itemById.item = action.payload.data;
       })
       .addCase(getTransacao.rejected, (state, action) => {
-        state.loadingGetItem = false;
-        state.errorGetItem = action.payload || "Erro ao carregar transação";
+        state.itemById.status = "failed";
+        state.itemById.error = action.payload || "Erro ao carregar transação";
       })
 
       .addCase(deleteTransactions.pending, (state) => {

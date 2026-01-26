@@ -20,7 +20,7 @@ interface LoginResponse {
           {
             value: string;
             type: string;
-          }
+          },
         ];
       };
     };
@@ -33,7 +33,7 @@ const salvaDados = (response: LoginResponse) => {
   localStorage.setItem("userId", response.data.token.userToken.id);
   localStorage.setItem(
     "expiresIn",
-    (Date.now() + response.data.token.expiresIn * 1000).toString()
+    (Date.now() + response.data.token.expiresIn * 1000).toString(),
   );
 };
 
@@ -55,7 +55,7 @@ export const login = createAsyncThunk<
   try {
     const response = await apiAuth.post<LoginResponse>(
       `api/auth/login`,
-      credentials
+      credentials,
     );
     return response.data;
   } catch (err: unknown) {
@@ -82,7 +82,7 @@ export const register = createAsyncThunk<
   try {
     const response = await apiAuth.post<LoginResponse>(
       `api/auth/registrar`,
-      userData
+      userData,
     );
     return response.data;
   } catch (err: unknown) {
@@ -107,7 +107,7 @@ export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
       }
       return rejectWithValue("Erro ao acordar API");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -135,7 +135,7 @@ const authSlice = createSlice({
       state: AuthState,
       action:
         | ReturnType<typeof login.rejected>
-        | ReturnType<typeof register.rejected>
+        | ReturnType<typeof register.rejected>,
     ) => {
       state.loading = false;
       state.error = action.payload as string;
@@ -148,7 +148,7 @@ const authSlice = createSlice({
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
           salvaDados(action.payload);
-        }
+        },
       )
       .addCase(login.rejected, setRejected)
       .addCase(register.pending, setPending)
@@ -157,7 +157,7 @@ const authSlice = createSlice({
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
           salvaDados(action.payload);
-        }
+        },
       )
       .addCase(register.rejected, setRejected);
   },

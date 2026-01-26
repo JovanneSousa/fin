@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
 import Feedback from "../Feedback";
@@ -9,11 +7,11 @@ import { receitaSchema } from "../../validations/receitaSchema";
 import { despesaSchema } from "../../validations/despesaSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { updateTransaction } from "../../Store/reducers/transactions";
 import Formulario from "../Formulario";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import { StyledIconForm } from "../Formulario/styles";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
+import useTransactions from "../../Hooks/useTransactions";
 
 interface TransacaoDetailsProps {
   onClose: () => void;
@@ -29,20 +27,14 @@ type EditFormTransacao = {
 };
 
 const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
-  const dispatch = useDispatch<AppDispatch>();
   const {
-    selected,
-    loadingGetItem,
-    errorGetItem,
-    loadingUpdate,
-    errorUpdate,
-    successUpdate,
-  } = useSelector((state: RootReducer) => state.transactions);
-
-  const { despesa, receita } = useSelector(
-    (state: RootReducer) => state.categories,
-  );
+    itemById,
+    transacaoUpdate,
+    categorias: { receita, despesa },
+  } = useTransactions();
   const [isEditing, setIsEditing] = useState(false);
+
+  const selected = itemById.item;
 
   const schema = selected?.type === 0 ? receitaSchema : despesaSchema;
 
@@ -54,7 +46,6 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
     formState: { errors },
   } = useForm<EditFormTransacao>({
     resolver: yupResolver(schema),
-    defaultValues: selected!,
   });
 
   const onSubmit = (data: EditFormTransacao) => {
@@ -63,7 +54,7 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
       dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       id: selected?.id,
     };
-    dispatch(updateTransaction(payload));
+    transacaoUpdate.atualizarTransacao(payload);
     reset();
     setIsEditing(false);
   };
@@ -83,16 +74,20 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
     }
   }, [selected, reset]);
 
+  const isLoading = transacaoUpdate.status == "loading";
+  const isError = transacaoUpdate.status == "failed";
+  const errorMessage = transacaoUpdate.error;
+  const isSuccess = transacaoUpdate.status == "succeeded";
+  const successMessage = transacaoUpdate.success;
+
   return (
     <>
-      {loadingGetItem || loadingUpdate ? (
+      {isLoading ? (
         <Loader />
-      ) : errorGetItem ? (
-        <Feedback error={errorGetItem} />
-      ) : errorUpdate ? (
-        <Feedback error={errorUpdate} />
-      ) : successUpdate ? (
-        <Feedback success={successUpdate} />
+      ) : isError ? (
+        <Feedback error={errorMessage} />
+      ) : isSuccess ? (
+        <Feedback success={successMessage!} />
       ) : (
         <Formulario
           size="small"
@@ -128,9 +123,6 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
               id="edit-cat-receita"
               {...register("categoriaId")}
             >
-              <option value={selected?.categoria?.id}>
-                {selected?.categoria?.name}
-              </option>
               {selected?.type === 0
                 ? receita.map((cat) => (
                     <option key={cat.id} value={cat.id}>

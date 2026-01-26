@@ -43,23 +43,21 @@ export const Feedback: React.FC<FeedbackProps> = ({
       const step = (interval / duration) * 100;
 
       const timer = setInterval(() => {
-        setProgress((prev) => {
-          if (prev <= 0) {
-            clearInterval(timer);
-
-            dispatch(clearErrorCategories());
-            dispatch(clearSucessCategories());
-            dispatch(clearErrorTransactions());
-            dispatch(clearSucessTransactions());
-            return 0;
-          }
-          return prev - step;
-        });
+        setProgress((prev) => Math.max(prev - step, 0));
       }, interval);
 
       return () => clearInterval(timer);
     }
-  }, [success, error, duration, dispatch]);
+  }, [success, error, duration]);
+
+  useEffect(() => {
+    if (progress === 0) {
+      dispatch(clearErrorCategories());
+      dispatch(clearSucessCategories());
+      dispatch(clearErrorTransactions());
+      dispatch(clearSucessTransactions());
+    }
+  }, [progress, dispatch]);
 
   return (
     <ContainerFeedback>

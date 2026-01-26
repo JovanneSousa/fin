@@ -4,7 +4,7 @@ import { usePaginacao } from "./usePaginacao";
 import { useFormNew } from "../contexts/FormNew/useFormNew";
 
 export const useCategoryTable = () => {
-  const { despesa, receita, buscaPorId } = useCategory();
+  const { categorias: items, buscaPorId, deletarCategoria, } = useCategory();
 
   const { abreModal } = useFormNew();
 
@@ -27,18 +27,20 @@ export const useCategoryTable = () => {
     }
     return;
   };
-  const despesaPaginada = usePaginacao(despesa);
-  const receitaPaginada = usePaginacao(receita);
+  const despesaPaginada = usePaginacao(items.despesa);
+  const receitaPaginada = usePaginacao(items.receita);
+
+  const categorias = { ...items, despesaPaginada, receitaPaginada };
 
   return {
-    despesaPaginada,
-    receitaPaginada,
+    categorias,
     valorBusca,
     isSearching,
     abrirDetalhes,
     abreBusca,
     fechaBusca,
     setValorBusca,
+    deletarCategoria,
   };
 };
 

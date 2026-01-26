@@ -1,10 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../globalStyles";
 import Button from "../Button";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createTransaction } from "../../Store/reducers/transactions";
 import { receitaSchema } from "../../validations/receitaSchema";
 import { hoje } from "../../validations/baseTransacaoSchema";
 import Formulario from "../Formulario";
@@ -12,6 +9,7 @@ import type { ChildrenFormProps } from ".";
 import { StyledIconForm } from "../Formulario/styles";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
+import useTransactions from "../../Hooks/useTransactions";
 
 type ReceitaFormData = {
   titulo: string;
@@ -23,8 +21,10 @@ type ReceitaFormData = {
 };
 
 const FormReceita = ({ size }: ChildrenFormProps) => {
-  const { receita } = useSelector((state: RootReducer) => state.categories);
-  const dispatch = useDispatch<AppDispatch>();
+  const {
+    categorias: { receita },
+    transacaoCreate: { criaTransacao },
+  } = useTransactions();
 
   const {
     register,
@@ -44,7 +44,7 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
       dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 0,
     };
-    dispatch(createTransaction(payload));
+    criaTransacao(payload);
     reset();
   };
 

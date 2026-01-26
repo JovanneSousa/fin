@@ -26,7 +26,6 @@ export const useTransactionTable = () => {
 
   const abreBusca = () => {
     setIsSearching(true);
-    console.log(isSearching);
   };
 
   const fechaBusca = () => {

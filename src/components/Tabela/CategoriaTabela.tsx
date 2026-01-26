@@ -20,30 +20,101 @@ import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import RodapeTabelas from "./RodapeTabelas";
 import Icone from "../Icone";
 import ContainerCor from "../ContainerCor";
+import { TableSkeletonRow } from "../Loader/TableSkeletonLoader";
+import Feedback from "../Feedback";
 
 export const CategoriaTabela = ({ type }: TabelaProps) => {
   const {
-    despesaPaginada,
-    receitaPaginada,
+    categorias,
     abreBusca,
     fechaBusca,
     isSearching,
     abrirDetalhes,
+    deletarCategoria,
   } = useCategoryTable();
 
   const [filter, setFilter] = useState<"receita" | "despesa">("despesa");
   const [valorBusca, setValorBusca] = useState("");
 
   const {
-    itemsPaginados: despesa,
-    linhas: { alturaLinha: alturaTabelaDespesa },
-  } = despesaPaginada;
-  const {
-    itemsPaginados: receita,
-    linhas: { alturaLinha: alturaTabelaReceita },
-  } = receitaPaginada;
+    despesaPaginada: {
+      itemsPaginados: despesa,
+      linhas: { alturaLinha: alturaTabelaDespesa },
+      qtdRegistros: qtdRegistrosDespesa,
+    },
+    receitaPaginada: {
+      itemsPaginados: receita,
+      linhas: { alturaLinha: alturaTabelaReceita },
+      qtdRegistros: qtdRegistrosReceita,
+    },
+  } = categorias;
 
   const { abreModal } = useFormNew();
+
+  const isLoading = categorias.status == "loading";
+  const isError = categorias.status == "failed";
+  const isEmpty =
+    categorias.status == "succeeded" &&
+    (despesa.length == 0 || receita.length == 0);
+  const errorMessage = categorias.error;
+  const qtdRegistros = qtdRegistrosDespesa || qtdRegistrosReceita;
+
+  const conteudoTabela = () => {
+    if (isError) return <Feedback error={errorMessage} noButton={true} />;
+
+    if (isLoading)
+      return Array.from({ length: qtdRegistros }).map((_, index) => (
+        <TableSkeletonRow key={index} columns={5} />
+      ));
+
+    if (isEmpty)
+      return <Feedback info="Nenhum item encontrado" noButton={true} />;
+
+    if (filter == "despesa")
+      return despesa.map((d) => (
+        <tr key={d.id}>
+          <td>{d.name}</td>
+          <td>
+            <Icone tipoIcone={d.icone.url} />
+          </td>
+          <td>
+            <ContainerCor cor={d.cor.url} />
+          </td>
+          <td>
+            <div className="button-container">
+              <DetailBox onClick={() => abrirDetalhes(d.id)}>
+                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+              </DetailBox>
+              <CloseBox onClick={() => deletarCategoria(d.id)}>
+                <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+              </CloseBox>
+            </div>
+          </td>
+        </tr>
+      ));
+    if (filter == "receita")
+      return receita.map((d) => (
+        <tr key={d.id}>
+          <td>{d.name}</td>
+          <td>
+            <Icone tipoIcone={d.icone.url} />
+          </td>
+          <td>
+            <ContainerCor cor={d.cor.url} />
+          </td>
+          <td>
+            <div className="button-container">
+              <DetailBox>
+                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+              </DetailBox>
+              <CloseBox onClick={() => deletarCategoria(d.id)}>
+                <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+              </CloseBox>
+            </div>
+          </td>
+        </tr>
+      ));
+  };
 
   return (
     <>
@@ -110,65 +181,14 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
-          {filter == "despesa" &&
-            despesa.map((d) => (
-              <tr key={d.id}>
-                <td>{d.name}</td>
-                <td>
-                  <Icone tipoIcone={d.icone.url} />
-                </td>
-                <td>
-                  <ContainerCor cor={d.cor.url} />
-                </td>
-                <td>
-                  <div className="button-container">
-                    <DetailBox onClick={() => abrirDetalhes(d.id)}>
-                      <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                    </DetailBox>
-                    <CloseBox
-                    //   onClick={() => {
-                    //     setIsDeleteModalOpen(true);
-                    //     setItemSelecionado(item);
-                    //   }}
-                    >
-                      <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                    </CloseBox>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          {filter == "receita" &&
-            receita.map((d) => (
-              <tr key={d.id}>
-                <td>{d.name}</td>
-                <td>
-                  <Icone tipoIcone={d.icone.url} />
-                </td>
-                <td>
-                  <ContainerCor cor={d.cor.url} />
-                </td>
-                <td>
-                  <div className="button-container">
-                    <DetailBox>
-                      <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-                    </DetailBox>
-                    <CloseBox
-                    //   onClick={() => {
-                    //     setIsDeleteModalOpen(true);
-                    //     setItemSelecionado(item);
-                    //   }}
-                    >
-                      <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-                    </CloseBox>
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </tbody>
+        <tbody>{conteudoTabela()}</tbody>
       </StyledTable>
       <RodapeTabelas
-        paginacao={filter == "despesa" ? despesaPaginada : receitaPaginada}
+        paginacao={
+          filter == "despesa"
+            ? categorias.despesaPaginada
+            : categorias.receitaPaginada
+        }
       />
     </>
   );

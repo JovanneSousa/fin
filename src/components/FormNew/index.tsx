@@ -1,6 +1,4 @@
 import { NewSection } from "./styles";
-import { useSelector } from "react-redux";
-import type { RootReducer } from "../../Store";
 import Loader from "../Loader";
 import Feedback from "../Feedback";
 import Button from "../Button";
@@ -10,6 +8,8 @@ import FormDespesa from "./FormDespesa";
 import FormReceita from "./FormReceita";
 import EditCategory from "./EditCategory";
 import EditTransaction from "./EditTransaction";
+import useTransactions from "../../Hooks/useTransactions";
+import useCategory from "../../Hooks/useCategory";
 
 interface FormNewProps {
   typeForm:
@@ -31,13 +31,12 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     categoria: <FormCategoria />,
     despesa: <FormDespesa size={tamanhoForm} />,
     receita: <FormReceita size={tamanhoForm} />,
-    editCategoria: <EditCategory onClose={onClose} />,
+    editCategoria: <EditCategory />,
     editTransacao: <EditTransaction onClose={onClose} />,
   };
 
-  const { loadingPost, errorPost, successPost } = useSelector(
-    (state: RootReducer) => state.transactions,
-  );
+  const { itemById, transacaoCreate, transacaoUpdate } = useTransactions();
+  const { itemById: categoriaPorId } = useCategory();
 
   const title = {
     receita: "Nova Receita",
@@ -46,6 +45,29 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     editCategoria: "Editar Categoria",
     editTransacao: "Editar Transação",
   };
+
+  const statuses = [itemById, transacaoCreate, transacaoUpdate, categoriaPorId];
+
+  const isLoading = statuses.some((s) => s.status == "loading");
+  const isError = statuses.some((s) => s.status == "failed");
+  const errorMessage = statuses.find((s) => s.error)?.error;
+  const isSuccess = [transacaoCreate, transacaoUpdate].some(
+    (s) => s.status == "succeeded",
+  );
+  const successMessage = [transacaoCreate, transacaoUpdate].find(
+    (s) => s.success,
+  )?.success;
+
+  console.log({
+    isLoading: statuses.some((s) => s.status == "loading"),
+    isError: statuses.some((s) => s.status == "failed"),
+    errorMessage: statuses.find((s) => s.error)?.error,
+    isSuccess: [transacaoCreate, transacaoUpdate].some(
+      (s) => s.status == "succeeded",
+    ),
+    successMessage: [transacaoCreate, transacaoUpdate].find((s) => s.success)
+      ?.success,
+  });
 
   return (
     <NewSection>
@@ -60,12 +82,12 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
             icon="close"
           />
         </div>
-        {loadingPost ? (
+        {isLoading ? (
           <Loader />
-        ) : errorPost ? (
-          <Feedback error={errorPost} />
-        ) : successPost ? (
-          <Feedback success={successPost} />
+        ) : isError ? (
+          <Feedback error={errorMessage} />
+        ) : isSuccess ? (
+          <Feedback success={successMessage!} />
         ) : (
           Form[typeForm]
         )}

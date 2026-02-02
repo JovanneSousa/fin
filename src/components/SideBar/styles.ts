@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -16,7 +16,9 @@ export const SideBarSection = styled.aside.withConfig({
   .text-container {
     opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
     transform: translateX(${({ isOpen }) => (isOpen ? "0" : "-8px")});
-    transition: opacity 0.2s ease, transform 0.3s ease;
+    transition:
+      opacity 0.2s ease,
+      transform 0.3s ease;
     white-space: nowrap;
   }
 
@@ -41,7 +43,9 @@ export const SideBarSection = styled.aside.withConfig({
 
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
 
     &.open {
       transform: rotate(0deg);
@@ -53,7 +57,6 @@ export const SideBarSection = styled.aside.withConfig({
   }
 
   ul {
-    overflow: hidden;
     li {
       display: flex;
       cursor: pointer;
@@ -69,6 +72,49 @@ export const SideBarSection = styled.aside.withConfig({
       }
     }
   }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    nav,
+    .ul-menu {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+
+      li {
+        border: none !important;
+        border-bottom: 5px solid ${colors.defaultBackgroundColor};
+        transition: all ease 0.3s;
+
+        &.is-active {
+          border-bottom: 5px solid ${colors.verde};
+          color: ${colors.verde};
+        }
+        &:hover {
+          background-color: inherit;
+        }
+      }
+    }
+
+    .text-container {
+      display: none;
+    }
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    ul {
+      overflow: hidden;
+    }
+  }
 `;
 
 export const Label = styled.p.withConfig({
@@ -76,20 +122,22 @@ export const Label = styled.p.withConfig({
 })<PropsOpen>`
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transform: translateX(${({ isOpen }) => (isOpen ? "0" : "-8px")});
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
   white-space: nowrap;
 `;
 
 interface StyledIconProps {
   padding: "zero" | "default";
-  color?: string
+  color?: string;
 }
 
 export const StyledIcon = styled(FontAwesomeIcon).withConfig({
   shouldForwardProp: (prop) => !["padding", "color"].includes(prop),
 })<StyledIconProps>`
-  padding: ${({ padding }) => (padding == 'zero' ? "0 24px" : "12px 24px")};
-  color: ${({color}) => color ? color : 'inherit'};
+  padding: ${({ padding }) => (padding == "zero" ? "0 24px" : "12px 24px")};
+  color: ${({ color }) => (color ? color : "inherit")};
 `;
 
 export const ButtonContainer = styled.div`
@@ -116,7 +164,10 @@ export const ButtonContainer = styled.div`
     opacity: 0;
     pointer-events: none;
     transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0.25s ease;
     visibility: hidden;
 
     ul {
@@ -142,6 +193,16 @@ export const ButtonContainer = styled.div`
       visibility: visible;
     }
   }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 64px;
+    height: 64px;
+
+    .menu-novo {
+      top: -150px;
+      left: -100px;
+    }
+  }
 `;
 
 export const Logo = styled.div`
@@ -157,6 +218,9 @@ export const Logo = styled.div`
 
   p {
     color: ${colors.gray};
+  }
+  @media (max-width: ${breakpoints.tablet}) {
+    display: none;
   }
 `;
 

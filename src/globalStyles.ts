@@ -97,6 +97,10 @@ export const GlobalStyle = createGlobalStyle`
   width: 100%;
   max-height: 100vh;
   overflow-y: scroll;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding-bottom: 64px;
+  }
 }
 
 #root {

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 
 interface TitleProps {
   graph: "line" | "bar" | "rosca";
@@ -30,4 +30,8 @@ export const Title = styled.div.withConfig({
     css`
       justify-content: space-between;
     `}
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding: 8px 0;
+  }
 `;

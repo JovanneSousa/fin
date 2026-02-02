@@ -36,6 +36,7 @@ export const NewSection = styled.section`
   background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
   transition: height ease 0.3s;
+  max-width: 100%;
   width: 450px;
 
   span {

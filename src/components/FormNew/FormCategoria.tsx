@@ -29,14 +29,15 @@ const FormCategoria = () => {
     {
       ref: colorRef,
       isOpen: isColorSelectorVisible,
-      onClose: () => setIsColorSelectorVisible(true),
+      onClose: () => setIsColorSelectorVisible(false),
     },
     {
       ref: iconRef,
       isOpen: isIconSelectorVisible,
-      onClose: () => setIsIconSelectorVisible(true),
+      onClose: () => setIsIconSelectorVisible(false),
     },
   ]);
+
   const {
     register,
     handleSubmit,

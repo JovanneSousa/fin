@@ -2,16 +2,21 @@ import { useMemo } from "react";
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { colors } from "../../../globalStyles";
 import Seletor from "../../Seletor";
-import { GraficoLinhaContainer, StyledLineChart } from "./styles";
-import { Title } from "../styles";
+import { GraficoLinhaContainer, StyledLineChart, TitleLinha } from "./styles";
 import useTransactions from "../../../Hooks/useTransactions";
 import Loader from "../../Loader";
 import Feedback from "../../Feedback";
+import useIsMobile from "../../../Hooks/useIsMobile";
 
 const GraficoLinha = () => {
   const {
-    itemsPeriodoComparativo: { itemsComparativo: items, statusComparativo, errorComparativo },
+    itemsPeriodoComparativo: {
+      itemsComparativo: items,
+      statusComparativo,
+      errorComparativo,
+    },
   } = useTransactions();
+  const isMobile = useIsMobile();
 
   const data = useMemo(() => {
     const mapa = new Map<string, { receita: number; despesa: number }>();
@@ -55,26 +60,27 @@ const GraficoLinha = () => {
   const isEmpty = statusComparativo == "succeeded" && data.length == 0;
   const hasData = statusComparativo == "succeeded" && data.length > 0;
 
+  const heigth = !isMobile ? "350px" : "250px";
+
   return (
     <GraficoLinhaContainer>
-      <Title graph="line" className="title">
+      <TitleLinha graph="line" className="title">
         <p>Comparativo Mensal</p>
         <Seletor page="comparativo" />
-      </Title>
-
+      </TitleLinha>
 
       <div className="infos-container">
-      {isLoading && <Loader />}
+        {isLoading && <Loader />}
 
-      {isError && <Feedback error={errorComparativo} noButton={true} />}
+        {isError && <Feedback error={errorComparativo} noButton={true} />}
 
-      {isEmpty && <Feedback info="Nenhum dado encontrado" noButton={true} />}
-      
-      {hasData && (
+        {isEmpty && <Feedback info="Nenhum dado encontrado" noButton={true} />}
+
+        {hasData && (
           <StyledLineChart
             style={{
               width: "100%",
-              height: "350px",
+              height: heigth,
               aspectRatio: 1.618,
             }}
             responsive
@@ -133,7 +139,7 @@ const GraficoLinha = () => {
               z={2}
             />
           </StyledLineChart>
-      )}
+        )}
       </div>
     </GraficoLinhaContainer>
   );

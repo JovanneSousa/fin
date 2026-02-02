@@ -12,6 +12,7 @@ export const DashboardsSection = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: hidden;
 
   .container-analysis {
     display: grid;
@@ -22,8 +23,17 @@ export const DashboardsSection = styled.div.withConfig({
       "c c";
     gap: 16px;
 
+    > * {
+      min-width: 0;
+      width: 100%;
+    }
+
     @media (max-width: ${breakpoints.tablet}) {
       grid-template-columns: 1fr;
+      grid-template-areas:
+        "a"
+        "b"
+        "c";
     }
   }
 

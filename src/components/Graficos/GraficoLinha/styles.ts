@@ -1,6 +1,7 @@
 import { LineChart } from "recharts";
 import styled from "styled-components";
-import { colors } from "../../../globalStyles";
+import { breakpoints, colors } from "../../../globalStyles";
+import { Title } from "../styles";
 
 export const GraficoLinhaContainer = styled.section`
   grid-area: c;
@@ -57,4 +58,19 @@ export const GraficoLinhaContainer = styled.section`
 
 export const StyledLineChart = styled(LineChart)`
   background-color: ${colors.defaultBackgroundColor};
+`;
+
+export const TitleLinha = styled(Title)`
+  @media (max-width: ${breakpoints.tablet}) {
+    flex-direction: column;
+
+    section {
+      display: block;
+      padding: 8px 16px;
+
+      .container-pill {
+        justify-content: space-between;
+      }
+    }
+  }
 `;

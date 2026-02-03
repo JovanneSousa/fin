@@ -39,7 +39,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
   const {
     despesaPaginada: {
       itemsPaginados: despesa,
-      linhas: { alturaLinha: alturaTabelaDespesa },
+      linhas: { alturaLinha: alturaTabelaDespesa, tamanhoPadraoLinha },
       qtdRegistros: qtdRegistrosDespesa,
     },
     receitaPaginada: {
@@ -104,12 +104,14 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
           </td>
           <td>
             <div className="button-container">
-              <DetailBox>
-                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-              </DetailBox>
-              <CloseBox onClick={() => deletarCategoria(d.id)}>
-                <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-              </CloseBox>
+              <div className="button-container">
+                <DetailBox onClick={() => abrirDetalhes(d.id)}>
+                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                </DetailBox>
+                <CloseBox onClick={() => deletarCategoria(d.id)}>
+                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                </CloseBox>
+              </div>
             </div>
           </td>
         </tr>
@@ -169,6 +171,8 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
         </form>
       </StyledTopoTabela>
       <StyledTable
+        isMobile
+        tableHeight={tamanhoPadraoLinha.toString()}
         rowHeight={
           filter == "despesa" ? alturaTabelaDespesa : alturaTabelaReceita
         }

@@ -58,17 +58,6 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     (s) => s.success,
   )?.success;
 
-  console.log({
-    isLoading: statuses.some((s) => s.status == "loading"),
-    isError: statuses.some((s) => s.status == "failed"),
-    errorMessage: statuses.find((s) => s.error)?.error,
-    isSuccess: [transacaoCreate, transacaoUpdate].some(
-      (s) => s.status == "succeeded",
-    ),
-    successMessage: [transacaoCreate, transacaoUpdate].find((s) => s.success)
-      ?.success,
-  });
-
   return (
     <NewSection>
       <div className="padding">

@@ -3,6 +3,7 @@ import api from "../../Services/api";
 import type { Category, ErrorResponse } from "./categories";
 import axios from "axios";
 import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
+import { logout } from "./auth";
 
 export interface TransactionFilter {
   startDate: string;
@@ -67,7 +68,7 @@ interface TransactionState {
   };
 }
 
-const initialState: TransactionState = {
+export const initialState: TransactionState = {
   periodoSelecionado: {
     items: [],
     loading: false,
@@ -284,14 +285,14 @@ const transactionSlice = createSlice({
       state.updateTransacao.error = null;
     },
     clearSuccess(state) {
-      // state.successGet = null;
-      state.createTrancacao.success = null;
-      state.successDelete = null;
-      state.updateTransacao.success = null;
+      state.createTrancacao.status = "idle";
+      state.periodoSelecionado.status = "idle";
+      state.periodoComparativo.status = "idle";
     },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(logout, () => initialState)
       .addCase(createTransaction.pending, (state) => {
         state.createTrancacao.status = "loading";
         state.createTrancacao.error = null;

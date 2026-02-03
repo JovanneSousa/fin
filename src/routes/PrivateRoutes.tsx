@@ -1,8 +1,10 @@
+import { useSelector } from "react-redux";
+import type { RootReducer } from "../Store";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
-  const token = localStorage.getItem("token");
-  return token ? <Outlet /> : <Navigate to="/login" replace />;
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

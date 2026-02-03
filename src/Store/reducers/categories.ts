@@ -8,6 +8,7 @@ import axios from "axios";
 import type { ResponsePayload } from "./transactions";
 import type { IconType } from "../../components/Icone";
 import type { CategoriaFormData } from "../../validations/categoriaSchema";
+import { logout } from "./auth";
 
 export interface ErrorResponse {
   success: boolean;
@@ -74,7 +75,7 @@ interface CategoriesState {
   };
 }
 
-const initialState: CategoriesState = {
+export const initialState: CategoriesState = {
   items: {
     receita: [] as Category[],
     despesa: [] as Category[],
@@ -317,11 +318,14 @@ const categoriesSlice = createSlice({
       state.update.error = null;
     },
     clearSuccess(state) {
-      state.successPost = null;
-      state.loadingPost = false;
+      state.items.status = "idle";
+      state.icone.status = "idle";
 
+      state.cores.status = "idle";
+
+      state.itemById.status = "idle";
       state.successDelete = null;
-      state.loadingDelete = false;
+      state.successPost = null;
 
       state.update.status = "idle";
       state.update.success = null;
@@ -329,6 +333,7 @@ const categoriesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(logout, () => initialState)
       .addCase(getCategories.pending, (state) => {
         state.items.status = "loading";
         state.items.error = null;

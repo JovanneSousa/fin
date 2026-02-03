@@ -14,9 +14,9 @@ const LegendaItem = ({ label, loading, value, className }: LegendItemProps) => {
   return (
     <LegendItemStyled>
       <p>{label}</p>
-      <p className={className}>
+      <span className={className}>
         {loading ? <SkeletonCustom /> : formatCurrency(value ?? 0)}
-      </p>
+      </span>
     </LegendItemStyled>
   );
 };

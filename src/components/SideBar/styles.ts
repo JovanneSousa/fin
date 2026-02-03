@@ -91,7 +91,7 @@ export const SideBarSection = styled.aside.withConfig({
       justify-content: space-between;
 
       li {
-        border: none !important;
+        border-left: none !important;
         border-bottom: 5px solid ${colors.defaultBackgroundColor};
         transition: all ease 0.3s;
 

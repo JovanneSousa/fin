@@ -6,8 +6,9 @@ import {
 import apiAuth from "../../Services/apiAuth";
 import type { ErrorResponse } from "./categories";
 import axios from "axios";
+import { authStorage } from "../../Services/authStorage";
 
-interface LoginResponse {
+export interface LoginResponse {
   sucess: boolean;
   data: {
     token: {
@@ -27,24 +28,23 @@ interface LoginResponse {
   };
 }
 
-const salvaDados = (response: LoginResponse) => {
-  localStorage.setItem("token", response.data.token.accessToken);
-  localStorage.setItem("user", response.data.token.userToken.name);
-  localStorage.setItem("userId", response.data.token.userToken.id);
-  localStorage.setItem(
-    "expiresIn",
-    (Date.now() + response.data.token.expiresIn * 1000).toString(),
-  );
-};
+const persisted = authStorage.hydrate();
 
 interface AuthState {
   loading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
+  user: {
+    id: string;
+    name: string;
+  } | null;
 }
 
 const initialState: AuthState = {
   loading: false,
   error: null,
+  isAuthenticated: persisted.isAuthenticated,
+  user: persisted.user,
 };
 
 export const login = createAsyncThunk<
@@ -114,8 +114,12 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout() {
-      localStorage.clear();
+    logout(state) {
+      authStorage.clear();
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = null;
+      state.loading = false;
     },
     clearError(state) {
       state.error = null;
@@ -147,7 +151,13 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          salvaDados(action.payload);
+          state.isAuthenticated = true;
+          state.user = {
+            id: action.payload.data.token.userToken.id!,
+            name: action.payload.data.token.userToken.name!,
+          };
+
+          authStorage.save(action.payload.data.token);
         },
       )
       .addCase(login.rejected, setRejected)
@@ -156,7 +166,13 @@ const authSlice = createSlice({
         register.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          salvaDados(action.payload);
+          state.isAuthenticated = true;
+          state.user = {
+            id: action.payload.data.token.userToken.id!,
+            name: action.payload.data.token.userToken.name!,
+          };
+
+          authStorage.save(action.payload.data.token);
         },
       )
       .addCase(register.rejected, setRejected);

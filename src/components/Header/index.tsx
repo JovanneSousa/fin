@@ -1,12 +1,12 @@
 import { HeaderSection } from "./styles";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../Store";
-import { logout } from "../../Store/reducers/auth";
-import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import type { Tabs } from "../../Layouts/DefaultLayout";
+import { logout } from "../../Store/reducers/auth";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../Store";
 
 interface HeaderProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -21,16 +21,15 @@ const texto = {
 };
 
 const Header = ({ scrollRef, activeTabs }: HeaderProps) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const [show, setShow] = useState(true);
-  const expiresIn = Number(localStorage.getItem("expiresIn"));
-  const lastScrollY = useRef(0);
-
-  const deslogar = useCallback(() => {
+  const navigate = useNavigate();
+  const deslogar = () => {
     dispatch(logout());
-    navigate("/");
-  }, [dispatch, navigate]);
+    navigate("/login");
+  };
+
+  const [show, setShow] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -47,12 +46,6 @@ const Header = ({ scrollRef, activeTabs }: HeaderProps) => {
     el.addEventListener("scroll", handleScroll);
     return () => el.removeEventListener("scroll", handleScroll);
   }, [scrollRef]);
-
-  useEffect(() => {
-    if (!expiresIn || Date.now() >= expiresIn) {
-      deslogar();
-    }
-  }, [expiresIn, deslogar]);
 
   return (
     <HeaderSection className={show ? "show" : "hide"}>

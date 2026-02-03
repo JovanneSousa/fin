@@ -159,10 +159,11 @@ export const RodapeTabela = styled(PerifericosTabela)`
 interface Props {
   isSearching: boolean;
   page: "categorias" | "transacoes";
+  isMobile: boolean;
 }
 
 export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
-  shouldForwardProp: (prop) => !["isSearching"].includes(prop),
+  shouldForwardProp: (prop) => !["isSearching", "isMobile"].includes(prop),
 })<Props>`
   border-radius: 16px 16px 0 0;
   display: flex;
@@ -180,18 +181,39 @@ export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
   form.tipo {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: ${({ isMobile, isSearching }) =>
+      isMobile && isSearching ? "flex-end" : "space-between"};
+  }
+
+  .seletor {
+    max-width: 200px;
+    overflow: hidden;
+
+    opacity: ${({ isMobile, isSearching }) =>
+      !isMobile || (isMobile && !isSearching) ? "1" : "0"};
+
+    pointer-events: ${({ isMobile, isSearching }) =>
+      !isMobile || (isMobile && !isSearching) ? "auto" : "none"};
+
+    transition:
+      opacity 0.2s ease,
+      max-width 0.3s ease;
+
+    &.hidden {
+      max-width: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   .input-wrapper {
     position: relative;
-
     input {
       padding-right: 32px;
       transition: width ease 0.3s;
       width: ${({ isSearching }) => (isSearching ? "420px" : "32px")};
+      max-width: ${({ isMobile }) => (isMobile ? "80vw" : "auto")};
     }
-
     select {
       option {
         color: ${colors.preto};
@@ -199,16 +221,13 @@ export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
       &.receita {
         background-color: ${colors.verde};
         color: ${colors.branco};
-
         option {
           background-color: ${colors.verdeClaro};
         }
       }
-
       &.despesa {
         background-color: ${colors.vermelho};
         color: ${colors.branco};
-
         option {
           background-color: ${colors.vermelhoClaro};
         }

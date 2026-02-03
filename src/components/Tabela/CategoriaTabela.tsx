@@ -41,6 +41,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
       itemsPaginados: despesa,
       linhas: { alturaLinha: alturaTabelaDespesa, tamanhoPadraoLinha },
       qtdRegistros: qtdRegistrosDespesa,
+      isMobile,
     },
     receitaPaginada: {
       itemsPaginados: receita,
@@ -121,11 +122,14 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
   return (
     <>
       <StyledTopoTabela
+        isMobile
         onClick={fechaBusca}
         page={type}
         isSearching={isSearching}
       >
-        <div className="button-container">
+        <div
+          className={`button-container seletor ${!isMobile || (isMobile && !isSearching) ? "" : "hidden"}`}
+        >
           <Button
             bgColor={filter == "despesa" ? colors.vermelho : colors.lightGray}
             padding="small"
@@ -145,15 +149,17 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
         </div>
         <form>
           <div className="button-container">
-            <Button
-              bgColor={colors.lightGray}
-              padding="small"
-              type="button"
-              icon="plus"
-              onClick={() => abreModal("categoria")}
-            >
-              Nova Categoria
-            </Button>
+            {!isMobile && (
+              <Button
+                bgColor={colors.lightGray}
+                padding="small"
+                type="button"
+                icon="plus"
+                onClick={() => abreModal("categoria")}
+              >
+                Nova Categoria
+              </Button>
+            )}
             <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
               <input
                 className="search"
@@ -171,7 +177,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
         </form>
       </StyledTopoTabela>
       <StyledTable
-        isMobile
+        isMobile={isMobile}
         tableHeight={tamanhoPadraoLinha.toString()}
         rowHeight={
           filter == "despesa" ? alturaTabelaDespesa : alturaTabelaReceita

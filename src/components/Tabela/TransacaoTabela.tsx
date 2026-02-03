@@ -191,12 +191,15 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
   return (
     <>
       <StyledTopoTabela
+        isMobile={isMobile}
         isSearching={isSearching}
         onClick={fechaBusca}
         page={type}
       >
         <form className="tipo">
-          <div className="input-wrapper">
+          <div
+            className={`input-wrapper seletor ${!isMobile || (isMobile && !isSearching) ? "" : "hidden"}`}
+          >
             <select
               className={tipo}
               onChange={(e) =>
@@ -210,7 +213,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             </select>
           </div>
           <div className="button-container">
-            {tipo !== "todos" && button[tipo]}
+            {tipo !== "todos" && !isMobile && button[tipo]}
             <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
               <input
                 className="search"
@@ -230,7 +233,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
       </StyledTopoTabela>
       <StyledTable
         rowHeight={tamanhoPadraoLinha.toString()}
-        isMobile
+        isMobile={isMobile}
         tableHeight={alturaLinha}
       >
         <thead>{titulosTabela}</thead>

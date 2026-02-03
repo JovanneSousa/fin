@@ -52,7 +52,7 @@ export const SeletorSection = styled.section.withConfig({
     page === "transacoes" &&
     css`
       overflow: hidden;
-      max-height: ${isSelecting ? "140px" : "84px"};
+      max-height: ${isSelecting ? "250px" : "84px"};
       transition: max-height 0.7s ease;
     `}
 
@@ -61,7 +61,8 @@ export const SeletorSection = styled.section.withConfig({
   .month-container {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 14px;
+    flex-wrap: wrap;
 
     opacity: ${({ isSelecting }) => (isSelecting ? "1" : "0")};
     transform: ${({ isSelecting }) =>

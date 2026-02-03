@@ -32,3 +32,11 @@ export const tiposCard: TypeCard = {
   receita: 0,
   saldoAtual: 2,
 };
+
+export const limitarTexto = (texto: string, limite = 16): string => {
+  if (texto.length > limite) {
+    return texto.slice(0, limite) + "...";
+  }
+
+  return texto;
+};

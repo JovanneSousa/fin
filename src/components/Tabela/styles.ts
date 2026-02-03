@@ -5,10 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface TableProps {
   rowHeight: string;
+  isMobile: boolean;
+  tableHeight: string;
 }
 
 export const StyledTable = styled.table.withConfig({
-  shouldForwardProp: (props) => !["rowHeight"].includes(props),
+  shouldForwardProp: (props) =>
+    !["rowHeight", "isMobile", "tableHeight"].includes(props),
 })<TableProps>`
   background-color: ${colors.defaultBackgroundColor};
   font-size: 14px;
@@ -34,8 +37,16 @@ export const StyledTable = styled.table.withConfig({
   tbody {
     display: block;
     overflow: hidden;
-    height: ${({ rowHeight }) => rowHeight};
+    height: ${({ tableHeight }) => tableHeight};
     transition: height 250ms ease;
+  }
+
+  .icone {
+    width: 50px;
+  }
+
+  tr {
+    height: ${({ rowHeight }) => `${rowHeight}px`};
   }
 
   thead,
@@ -52,7 +63,7 @@ export const StyledTable = styled.table.withConfig({
   th,
   td {
     height: 56px;
-    padding: 0 18px;
+    padding: ${({ isMobile }) => (isMobile ? "4px 8px" : "0 18px")};
     text-align: left;
   }
 
@@ -69,6 +80,10 @@ export const StyledTable = styled.table.withConfig({
 
   .receita {
     color: ${colors.verde};
+  }
+
+  .cat {
+    font-size: 12px;
   }
 `;
 

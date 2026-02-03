@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useIsMobile from "./useIsMobile";
 
 export type QtdRegistros = 5 | 10 | 25 | 50 | 100;
 
@@ -33,14 +34,18 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     setQtdRegistros(qtd);
     setPaginaAtual(1);
   };
+  const isMobile = useIsMobile();
+
+  const tamanhoPadraoLinha = isMobile ? 61 : 56;
 
   const alturaLinha =
     itemsPaginados.length == 0
-      ? `${3 * 56}px`
-      : `${itemsPaginados.length * 56}px`;
+      ? `${3 * tamanhoPadraoLinha}px`
+      : `${itemsPaginados.length * tamanhoPadraoLinha}px`;
 
   const linhas = {
     alturaLinha,
+    tamanhoPadraoLinha,
     linhasTotais: itemsFiltrados.length,
     linhasAtuais: {
       inicio: (paginaAtual - 1) * qtdRegistros + 1,
@@ -59,5 +64,6 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     itemsPaginados,
     estaNaPrimeiraPagina,
     estaNaUltimaPagina,
+    isMobile,
   };
 };

@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { formatCurrency, toLocalDateIgnoreTimezone } from "../../Utils";
+import {
+  formatCurrency,
+  limitarTexto,
+  toLocalDateIgnoreTimezone,
+} from "../../Utils";
 import {
   CloseBox,
   DetailBox,
@@ -45,6 +49,30 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
   } = useTransactionTable();
   const [valorBusca, setValorBusca] = useState("");
 
+  const {
+    itemsPaginados,
+    qtdRegistros,
+    isMobile,
+    linhas: { alturaLinha, tamanhoPadraoLinha },
+  } = paginacao;
+
+  const titulosTabela = isMobile ? (
+    <tr>
+      <th className="icone"></th>
+      <th>Descrição</th>
+      <th>Valor</th>
+      <th>Ações</th>
+    </tr>
+  ) : (
+    <tr>
+      <th>Data</th>
+      <th>Descrição</th>
+      <th>Categoria</th>
+      <th>Valor</th>
+      <th>Ações</th>
+    </tr>
+  );
+
   const conteudoTabela = () => {
     if (statusPeriodo == "failed")
       return <Feedback error={errorPeriodo} noButton={true} />;
@@ -56,6 +84,44 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
 
     if (statusPeriodo == "succeeded" && itemsPaginados.length == 0)
       return <Feedback info="Nenhum item encontrado" noButton={true} />;
+
+    if (isMobile)
+      return itemsPaginados.map((item) => (
+        <tr key={item.id}>
+          <td className="icone">
+            {item.categoria != null && item.categoria != undefined && (
+              <Icone
+                background={item.categoria.cor.url}
+                tipoIcone={item.categoria.icone.url}
+              />
+            )}
+          </td>
+          <td>
+            {limitarTexto(item.titulo)}
+            <p className="cat">{item.categoria?.name || "Sem categoria"}</p>
+          </td>
+          <td
+            className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}
+          >
+            {formatCurrency(item.valor)}
+          </td>
+          <td>
+            <div className="button-container">
+              <DetailBox onClick={() => abrirDetalhes(item.id!)}>
+                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+              </DetailBox>
+              <CloseBox
+                onClick={() => {
+                  setIsDeleteModalOpen(true);
+                  setItemSelecionado(item);
+                }}
+              >
+                <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+              </CloseBox>
+            </div>
+          </td>
+        </tr>
+      ));
 
     return itemsPaginados.map((item) => (
       <tr key={item.id}>
@@ -95,13 +161,6 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
       </tr>
     ));
   };
-
-  const {
-    itemsPaginados,
-    qtdRegistros,
-    linhas: { alturaLinha },
-  } = paginacao;
-
   const { abreModal } = useFormNew();
 
   const button = {
@@ -169,16 +228,12 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         </form>
         <Seletor page={type} />
       </StyledTopoTabela>
-      <StyledTable rowHeight={alturaLinha}>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Valor</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
+      <StyledTable
+        rowHeight={tamanhoPadraoLinha.toString()}
+        isMobile
+        tableHeight={alturaLinha}
+      >
+        <thead>{titulosTabela}</thead>
         <tbody>{conteudoTabela()}</tbody>
       </StyledTable>
       <Modal

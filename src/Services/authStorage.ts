@@ -5,6 +5,7 @@ export const authStorage = {
     localStorage.setItem("token", token.accessToken);
     localStorage.setItem("claims", JSON.stringify(token.userToken));
     localStorage.setItem("user", token.userToken.name);
+    localStorage.setItem("userId", token.userToken.id);
     localStorage.setItem(
       "expiresIn",
       (Date.now() + token.expiresIn * 1000).toString(),

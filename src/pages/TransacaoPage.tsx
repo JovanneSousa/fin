@@ -1,10 +1,12 @@
 import ContainerCategories from "../components/ContainerCategories";
 import Transacoes from "../components/Transacoes";
+import useIsMobile from "../Hooks/useIsMobile";
 
 const TransacaoPage = () => {
+  const isMobile = useIsMobile();
   return (
     <>
-      <ContainerCategories />
+      {!isMobile && <ContainerCategories />}
       <Transacoes />
     </>
   );

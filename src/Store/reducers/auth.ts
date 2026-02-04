@@ -118,8 +118,6 @@ const authSlice = createSlice({
       authStorage.clear();
       state.isAuthenticated = false;
       state.user = null;
-      state.error = null;
-      state.loading = false;
     },
     clearError(state) {
       state.error = null;
@@ -165,8 +163,8 @@ const authSlice = createSlice({
       .addCase(
         register.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
-          state.loading = false;
           state.isAuthenticated = true;
+          state.loading = false;
           state.user = {
             id: action.payload.data.token.userToken.id!,
             name: action.payload.data.token.userToken.name!,

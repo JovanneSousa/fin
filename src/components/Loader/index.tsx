@@ -2,11 +2,15 @@ import { OrbitProgress } from "react-loading-indicators";
 import { colors } from "../../globalStyles";
 import { ContainerLoader } from "./styles";
 
-const Loader = () => {
+interface LoaderProps {
+  legenda?: boolean;
+}
+
+const Loader = ({ legenda = true }: LoaderProps) => {
   return (
     <ContainerLoader>
       <OrbitProgress variant="track-disc" color={colors.rosa} size="medium" />
-      <p>Carregando...</p>
+      {legenda && <p>Carregando...</p>}
     </ContainerLoader>
   );
 };

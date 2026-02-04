@@ -2,9 +2,9 @@ import {
   FontAwesomeIcon,
   FontAwesomeIcon as FontAwesomeIconSucess,
 } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
+import { faCircleCheck, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon as FontAwesomeIconError } from "@fortawesome/react-fontawesome";
-import { faCircleXmark, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { ContainerFeedback, ProgressBar } from "./styles";
 import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
@@ -22,7 +22,7 @@ import Button from "../Button";
 
 type FeedbackProps = {
   success?: string;
-  error?: string;
+  error?: string | null;
   info?: string;
   noButton?: boolean;
 };
@@ -34,7 +34,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
   noButton = false,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const duration = success ? 3000 : 5000;
+  const duration = success ? 3000 : error ? 5000 : 10000;
   const [progress, setProgress] = useState(100);
 
   useEffect(() => {
@@ -43,23 +43,21 @@ export const Feedback: React.FC<FeedbackProps> = ({
       const step = (interval / duration) * 100;
 
       const timer = setInterval(() => {
-        setProgress((prev) => {
-          if (prev <= 0) {
-            clearInterval(timer);
-
-            dispatch(clearErrorCategories());
-            dispatch(clearSucessCategories());
-            dispatch(clearErrorTransactions());
-            dispatch(clearSucessTransactions());
-            return 0;
-          }
-          return prev - step;
-        });
+        setProgress((prev) => Math.max(prev - step, 0));
       }, interval);
 
       return () => clearInterval(timer);
     }
-  }, [success, error, duration, dispatch]);
+  }, [success, error, duration]);
+
+  useEffect(() => {
+    if (progress === 0) {
+      dispatch(clearErrorCategories());
+      dispatch(clearSucessCategories());
+      dispatch(clearErrorTransactions());
+      dispatch(clearSucessTransactions());
+    }
+  }, [progress, dispatch]);
 
   return (
     <ContainerFeedback>
@@ -85,7 +83,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
         />
       ) : info ? (
         <FontAwesomeIcon
-          icon={faCircleInfo}
+          icon={faCompass}
           size="6x"
           style={{ color: colors.azul }}
         />

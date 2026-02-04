@@ -14,8 +14,9 @@ export const formatCurrency = (valor: number): string => {
   }).format(valor);
 };
 export const toLocalDateIgnoreTimezone = (dateString: string) => {
-  const [y, m, d] = dateString.split("T")[0].split("-").map(Number);
-  return new Date(y, m - 1, d);
+  const [y, m, d] = dateString.split("T")[0].split("-");
+
+  return `${d.padStart(2, "0")}/${m.padStart(2, "0")}/${y}`;
 };
 
 export type TypeCard = {
@@ -30,4 +31,12 @@ export const tiposCard: TypeCard = {
   despesa: 1,
   receita: 0,
   saldoAtual: 2,
+};
+
+export const limitarTexto = (texto: string, limite = 16): string => {
+  if (texto.length > limite) {
+    return texto.slice(0, limite) + "...";
+  }
+
+  return texto;
 };

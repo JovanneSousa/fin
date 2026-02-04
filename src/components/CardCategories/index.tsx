@@ -1,52 +1,67 @@
 import React, { useEffect, useMemo } from "react";
 import { CardStyled } from "./styles";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { formatCurrency, tiposCard } from "../../Utils";
-import { useDispatch, useSelector } from "react-redux";
 import { IconBox } from "../../globalStyles";
 import { cardConfig } from "./CardConfig";
-import { fetchSaldoTotal } from "../../Store/reducers/transactions";
+import useTransactions from "../../Hooks/useTransactions";
+import SkeletonCustom from "../SkeletonCustom";
 
 interface CardProps {
   type: number;
 }
 
 const CardCategories: React.FC<CardProps> = ({ type }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { items, getSaldoTotal } = useSelector(
-    (state: RootReducer) => state.transactions
-  );
+  const {
+    itemsPeriodo: { itemsFiltrados: items, statusPeriodo },
+    saldoTotal,
+    buscaSaldoTotal,
+  } = useTransactions();
 
   useEffect(() => {
-    if (type === tiposCard.saldoAtual) {
-      dispatch(fetchSaldoTotal());
-    }
-  }, [type, dispatch]);
+    if (type === tiposCard.saldoAtual && !saldoTotal) buscaSaldoTotal();
+  }, [type, saldoTotal, buscaSaldoTotal]);
 
   const valorTotal = useMemo(() => {
-  let receita = 0;
-  let despesa = 0;
+    let receita = 0;
+    let despesa = 0;
 
-  for (const item of items) {
-    if (item.type === 0) receita += item.valor;
-    if (item.type === 1) despesa += item.valor;
-  }
+    for (const item of items) {
+      if (item.type === 0) receita += item.valor;
+      if (item.type === 1) despesa += item.valor;
+    }
 
-  if (type === tiposCard.saldoAtual) return getSaldoTotal ?? 0;
-  if (type === tiposCard.balanco) return receita - despesa;
+    if (type === tiposCard.saldoAtual) return saldoTotal ?? 0;
+    if (type === tiposCard.balanco) return receita - despesa;
 
-  return type === 0 ? receita : despesa;
-}, [items, type, getSaldoTotal]);
+    return type === 0 ? receita : despesa;
+  }, [items, type, saldoTotal]);
 
   const config = cardConfig[type];
 
-  return (
-    <CardStyled className={config.className}>
-      <div>
-        <p>{config.title}</p>
-        <p className="valor">{formatCurrency(valorTotal)}</p>
+  const LoaderCard = (
+    <>
+      <div className="content">
+        <div>
+          <SkeletonCustom />
+        </div>
+        <SkeletonCustom className="valor" />
       </div>
-      <IconBox color={config.color}>{config.icon}</IconBox>
+      <SkeletonCustom circle={true} />
+    </>
+  );
+
+  return (
+    <CardStyled className={`${config.className} shadow`}>
+      {statusPeriodo == "loading" && LoaderCard}
+      {statusPeriodo == "succeeded" && (
+        <>
+          <div className="content">
+            <p>{config.title}</p>
+            <p className="valor">{formatCurrency(valorTotal)}</p>
+          </div>
+          <IconBox color={config.color}>{config.icon}</IconBox>
+        </>
+      )}
     </CardStyled>
   );
 };

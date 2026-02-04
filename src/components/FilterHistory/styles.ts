@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const FilterHistorySection = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 24px;
   border-radius: 8px;
   display: flex;
@@ -24,11 +24,6 @@ export const FilterHistorySection = styled.div`
   .filtros {
     display: flex;
     justify-content: space-around;
-    gap: 8px;
-  }
-
-  .flex {
-    display: flex;
     gap: 8px;
   }
 
@@ -82,6 +77,6 @@ export const FilterHistorySection = styled.div`
 
   @media (max-width: ${breakpoints.tablet}) {
     gap: 10px;
-      min-width: auto;
+    min-width: auto;
   }
 `;

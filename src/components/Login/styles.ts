@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../globalStyles";
 
 export const LoginSection = styled.section`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 110px 90px 33px;
   border-radius: 16px;
   display: flex;
   gap: 44px;
   height: 650px;
-  
+
   button {
     margin-top: 0;
   }
@@ -28,20 +28,6 @@ export const LoginSection = styled.section`
     }
   }
 
-  .input-wrapper {
-    position: relative;
-
-    i {
-      position: absolute;
-      left: 24px;
-      top: 40%;
-      transform: translateY(-50%);
-      color: ${colors.gray};
-      font-size: 16px;
-      transition: color 0.5s ease;
-    }
-  }
-
   .create {
     text-align: center;
     width: 100%;
@@ -49,7 +35,7 @@ export const LoginSection = styled.section`
     color: ${colors.gray};
     cursor: pointer;
     border: none;
-    background-color: ${colors.branco};
+    background-color: ${colors.defaultBackgroundColor};
     margin-top: 8px;
 
     &:hover {

@@ -5,10 +5,20 @@ interface PillProps {
   children: string;
   className?: string;
   onClick?: () => void;
+  radius?: boolean;
 }
 
-const ButtonPill: React.FC<PillProps> = ({ children, className, onClick }) => {
-  return <PillStyled onClick={onClick} className={className}>{children}</PillStyled>;
+const ButtonPill: React.FC<PillProps> = ({
+  children,
+  className,
+  onClick,
+  radius = true,
+}) => {
+  return (
+    <PillStyled radius={radius} onClick={onClick} className={className}>
+      {children}
+    </PillStyled>
+  );
 };
 
-export default ButtonPill
+export default ButtonPill;

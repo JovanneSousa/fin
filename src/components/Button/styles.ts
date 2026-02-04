@@ -24,11 +24,37 @@ export const ButtonStyled = styled.button.withConfig({
   font-size: 16px;
   transition: all 0.4s ease;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
 
   &:hover {
     @media (min-width: ${breakpoints.tablet}) {
-      background-color: ${colors.darkGray};
-      color: ${colors.branco};
+      background-color: ${({ bgColor }) =>
+        bgColor == colors.defaultBackgroundColor ? colors.lightGray : colors.darkGray};
+      color: ${colors.defaultBackgroundColor};
+    }
+  }
+
+  &.prev,
+  &.next,
+  &.icon {
+    margin: 0;
+    max-width: 44px;
+    max-height: 44px;
+    background-color: inherit;
+    color: ${colors.verde};
+    border-radius: 45%;
+
+    &:hover {
+      background-color: ${colors.lighterGray};
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    &:hover {
+      background-color: inherit;
     }
   }
 `;

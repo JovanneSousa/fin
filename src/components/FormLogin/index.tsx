@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
 import { systemName } from "../../Services/systemName";
+import Formulario from "../Formulario";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
@@ -34,7 +35,7 @@ const FormLogin = () => {
     };
     await dispatch(login(payload)).unwrap();
     reset();
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   const loginTeste = async () => {
@@ -44,16 +45,16 @@ const FormLogin = () => {
     const payload = {
       email: user,
       password: pass,
-      system: systemName
-    }
+      system: systemName,
+    };
 
     await dispatch(login(payload));
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Formulario size="default" onSubmit={handleSubmit(onSubmit)}>
         <div className="input-wrapper">
           <input type="email" placeholder="Email" {...loginInput("email")} />
           <i className="fa fa-envelope" aria-hidden="true"></i>
@@ -75,7 +76,7 @@ const FormLogin = () => {
           type="submit"
         />
         {error && <span className="error-message-span">{error}</span>}
-      </form>
+      </Formulario>
       <Button
         className="login-visit"
         bgColor={colors.verde}

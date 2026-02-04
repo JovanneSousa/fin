@@ -5,18 +5,64 @@ export const colors = {
   rosa: "#c850c0",
   roxo: "#4158d0",
   gradient: `linear-gradient(-135deg, #c850c0, #4158d0)`,
+  textColor: "#000",
+  defaultBackgroundColor: "#fff",
+
   preto: "#000",
   shadow: "0 1px 3px 0 rgba(0, 0, 0, 0.3)",
   branco: "#fff",
   gray: "#666666",
   lightGray: "#e6e6e6",
   lighterGray: "#f5f5f5",
+  shiningGray: "#f9f9f9",
   darkGray: "#333333",
   verde: "#57b846",
   vermelho: "#e63946",
   azul: "#3498db",
   laranja: "#f39c12",
   transparent: "transparent",
+  verdeClaro: "#e6f4ea",
+  vermelhoClaro: "#fde8ea",
+};
+
+export const darkColors = {
+  /* Base */
+  background: "#121212", // fundo principal
+  surface: "#1e1e1e", // cards, modais
+  surfaceAlt: "#252525", // hover, áreas elevadas
+
+  /* Texto */
+  textPrimary: "#eaeaea", // texto principal
+  textSecondary: "#b3b3b3", // texto secundário
+  textDisabled: "#7a7a7a",
+
+  /* Cinzas */
+  gray: "#9e9e9e",
+  darkGray: "#2c2c2c",
+  darkerGray: "#1a1a1a",
+
+  /* Brand / Destaque */
+  rosa: "#d16cc8", // rosa suavizado
+  roxo: "#5c6ee5", // roxo menos agressivo
+  gradient: "linear-gradient(-135deg, #d16cc8, #5c6ee5)",
+
+  /* Feedback */
+  verde: "#6fcf97",
+  vermelho: "#eb5757",
+  azul: "#56ccf2",
+  laranja: "#f2c94c",
+
+  /* Backgrounds de feedback */
+  verdeClaro: "rgba(111, 207, 151, 0.15)",
+  vermelhoClaro: "rgba(235, 87, 87, 0.15)",
+
+  /* Outros */
+  branco: "#ffffff",
+  preto: "#000000",
+  transparent: "transparent",
+
+  /* Sombra */
+  shadow: "0 4px 12px rgba(0, 0, 0, 0.6)",
 };
 
 export const IconBox = styled.div<{ color: string }>`
@@ -35,7 +81,7 @@ export const IconBox = styled.div<{ color: string }>`
 export const breakpoints = {
   desktop: "1024px",
   tablet: "768px",
-  containerMaxWidth: "1200px",
+  containerMaxWidth: "1472px",
 };
 export const GlobalStyle = createGlobalStyle`
 * {
@@ -45,11 +91,17 @@ export const GlobalStyle = createGlobalStyle`
     font-family: lexend , sans-serif;
     list-style: none;
     text-decoration: none;
-    
 }
 
+
 .main {
-    width: 100%;
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: scroll;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding-bottom: 64px;
+  }
 }
 
 #root {
@@ -63,6 +115,12 @@ body {
     min-height: 100vh;
     position: relative;
     background-size: cover;
+    color: ${colors.textColor};
+}
+
+.flex {
+  display: flex;
+  gap: 8px;
 }
 
 .col {
@@ -74,8 +132,8 @@ body {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 24px;
+    gap: 8px;
+    margin-bottom: 16px;
 
     @media (max-width: ${breakpoints.tablet}) {
         grid-template-columns: 1fr 1fr;
@@ -83,9 +141,15 @@ body {
     }
 }
 
+.button-container {
+  display: flex;
+  gap: 8px;
+}
+
 .container {
     max-width: ${breakpoints.containerMaxWidth};
     margin: 0 auto;
+    padding: 16px;
     display: flex;
     justify-content: center;
     align-items:center;
@@ -104,21 +168,27 @@ body {
     }
 }
 
-form {
+.shadow {
+      box-shadow:    0 0 15px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.08);
+}
+
+form, .pag-wrapper {
     .input-wrapper {
       display: flex;
       flex-direction: column;
       margin-bottom: 16px;
     }
 
-    input,
+
+     input,
     select, 
     .input-span {
-      padding: 8px 12px;
+      padding: 12px;
       font-size: 16px;
       border: none;
       outline: none;
-      border-radius: 8px;
+      border-radius: 32px;
       background-color: ${colors.lightGray};
       color: ${colors.gray};
       font-weight: 500;
@@ -128,49 +198,13 @@ form {
       &:focus {
         box-shadow: 0 0 12px ${colors.verde};
       }
-    }
+    } 
   }
 
   .input-check {
   }
 
-  .input-check,
-  .container-check,
-  input[type="checkbox"] {
-    display: flex;
-    width: auto;
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: ${colors.lightGray};
-    color: ${colors.gray};
-    font-weight: 500;
-    cursor: pointer;
-    gap: 8px;
-
-    &:checked {
-      background-color: ${colors.verde};
-    }
-  }
-  .container-check {
-    display: block;
-
-    & > .input-check {
-      padding-left: 0;
-      margin-top: 0;
-    }
-    .parcelas {
-      margin-top: 8px;
-      label {
-        font-size: 12px;
-        display: block;
-        padding: 8px 0;
-      }
-      input {
-        background-color: ${colors.lighterGray};
-      }
-    }
-  }
+  
 
   tspan {
     @media (max-width: ${breakpoints.tablet}) {

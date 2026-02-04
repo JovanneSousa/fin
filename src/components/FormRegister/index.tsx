@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
 import { systemName } from "../../Services/systemName";
+import Formulario from "../Formulario";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
@@ -35,19 +36,19 @@ const FormRegister = () => {
     try {
       await dispatch(register(payload)).unwrap();
       reset();
-      navigate("/home");
+      navigate("/dashboard");
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Formulario size="default" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <input type="text" placeholder="Nome" {...registerInput("nome")} />
         <i className="fa fa-user"></i>
+        <span className="error-span">{errors.nome?.message}</span>
       </div>
-      <span className="error-span">{errors.nome?.message}</span>
       <div className="input-wrapper">
         <input type="email" placeholder="Email" {...registerInput("email")} />
         <i className="fa fa-envelope" aria-hidden="true"></i>
@@ -69,14 +70,14 @@ const FormRegister = () => {
           {...registerInput("confirmPassword")}
         />
         <i className="fa fa-lock" aria-hidden="true"></i>
+        <span className="error-span">{errors.confirmPassword?.message}</span>
       </div>
-      <span className="error-span">{errors.confirmPassword?.message}</span>
 
       <Button padding="big" bgColor={colors.verde} type="submit">
         {loading ? "Cadastrando..." : "Cadastrar"}
       </Button>
       {error && <span className="error-message-span">{error}</span>}
-    </form>
+    </Formulario>
   );
 };
 

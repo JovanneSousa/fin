@@ -6,27 +6,54 @@ import {
   faChevronRight,
   faChevronDown,
   faChevronUp,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faClose,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
+type IconTypes =
+  | "left"
+  | "right"
+  | "down"
+  | "up"
+  | "doubleLeft"
+  | "doubleRight"
+  | "close"
+  | "plus";
+
 export interface ButtonProps {
-  children: React.ReactNode;
-  type: "button" | "submit" | "reset";
+  children?: React.ReactNode;
+  type?: "button" | "submit" | "reset";
   bgColor: string;
-  padding: "big" | "medium" | "small";
+  padding?: "big" | "medium" | "small";
   onClick?: () => void;
-  icon?: "left" | "right" | "down" | "up";
+  icon?: IconTypes;
   className?: string;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const icone = {
+  left: <FontAwesomeIcon icon={faChevronLeft} />,
+  right: <FontAwesomeIcon icon={faChevronRight} />,
+  doubleLeft: <FontAwesomeIcon icon={faAngleDoubleLeft} />,
+  doubleRight: <FontAwesomeIcon icon={faAngleDoubleRight} />,
+  down: <FontAwesomeIcon icon={faChevronDown} />,
+  up: <FontAwesomeIcon icon={faChevronUp} />,
+  close: <FontAwesomeIcon icon={faClose} />,
+  plus: <FontAwesomeIcon icon={faPlus} />,
+};
+
+const Button = ({
   children,
   type = "button",
   bgColor,
-  padding,
+  padding = "small",
   onClick,
   icon,
   className,
-}) => {
+  disabled,
+}: ButtonProps) => {
   return (
     <ButtonStyled
       className={className}
@@ -34,25 +61,9 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       bgColor={bgColor}
       padding={padding}
+      disabled={disabled}
     >
-      {icon === "left" ? (
-        <FontAwesomeIcon icon={faChevronLeft} />
-      ) : icon === "right" ? (
-        <FontAwesomeIcon icon={faChevronRight} />
-      ) : null}
-      {children}
-
-      {icon === "down" ? (
-        <>
-          {" "}
-          <FontAwesomeIcon icon={faChevronDown} />
-        </>
-      ) : icon === "up" ? (
-        <>
-          {" "}
-          <FontAwesomeIcon icon={faChevronUp} />
-        </>
-      ) : null}
+      {icon && icone[icon]} {children}
     </ButtonStyled>
   );
 };

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 
 export const DeleteSection = styled.div`
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   padding: 16px;
   border-radius: 8px;
   max-width: 400px;

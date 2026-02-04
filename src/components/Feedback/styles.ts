@@ -6,7 +6,8 @@ export const ContainerFeedback = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding-top: 24px;
+  padding: 12px;
+  margin: 0 auto;
 
   button {
     align-self: flex-end;
@@ -37,7 +38,7 @@ export const ProgressBar = styled.div<{
   width: 100%;
   height: 6px;
   border-radius: 4px;
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   margin-top: 30px;
 
   &::after {

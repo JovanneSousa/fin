@@ -6,8 +6,9 @@ import {
 import apiAuth from "../../Services/apiAuth";
 import type { ErrorResponse } from "./categories";
 import axios from "axios";
+import { authStorage } from "../../Services/authStorage";
 
-interface LoginResponse {
+export interface LoginResponse {
   sucess: boolean;
   data: {
     token: {
@@ -20,31 +21,30 @@ interface LoginResponse {
           {
             value: string;
             type: string;
-          }
+          },
         ];
       };
     };
   };
 }
 
-const salvaDados = (response: LoginResponse) => {
-  localStorage.setItem("token", response.data.token.accessToken);
-  localStorage.setItem("user", response.data.token.userToken.name);
-  localStorage.setItem("userId", response.data.token.userToken.id);
-  localStorage.setItem(
-    "expiresIn",
-    (Date.now() + response.data.token.expiresIn * 1000).toString()
-  );
-};
+const persisted = authStorage.hydrate();
 
 interface AuthState {
   loading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
+  user: {
+    id: string;
+    name: string;
+  } | null;
 }
 
 const initialState: AuthState = {
   loading: false,
   error: null,
+  isAuthenticated: persisted.isAuthenticated,
+  user: persisted.user,
 };
 
 export const login = createAsyncThunk<
@@ -55,7 +55,7 @@ export const login = createAsyncThunk<
   try {
     const response = await apiAuth.post<LoginResponse>(
       `api/auth/login`,
-      credentials
+      credentials,
     );
     return response.data;
   } catch (err: unknown) {
@@ -82,7 +82,7 @@ export const register = createAsyncThunk<
   try {
     const response = await apiAuth.post<LoginResponse>(
       `api/auth/registrar`,
-      userData
+      userData,
     );
     return response.data;
   } catch (err: unknown) {
@@ -107,15 +107,17 @@ export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
       }
       return rejectWithValue("Erro ao acordar API");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout() {
-      localStorage.clear();
+    logout(state) {
+      authStorage.clear();
+      state.isAuthenticated = false;
+      state.user = null;
     },
     clearError(state) {
       state.error = null;
@@ -135,7 +137,7 @@ const authSlice = createSlice({
       state: AuthState,
       action:
         | ReturnType<typeof login.rejected>
-        | ReturnType<typeof register.rejected>
+        | ReturnType<typeof register.rejected>,
     ) => {
       state.loading = false;
       state.error = action.payload as string;
@@ -147,17 +149,29 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
-          salvaDados(action.payload);
-        }
+          state.isAuthenticated = true;
+          state.user = {
+            id: action.payload.data.token.userToken.id!,
+            name: action.payload.data.token.userToken.name!,
+          };
+
+          authStorage.save(action.payload.data.token);
+        },
       )
       .addCase(login.rejected, setRejected)
       .addCase(register.pending, setPending)
       .addCase(
         register.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
+          state.isAuthenticated = true;
           state.loading = false;
-          salvaDados(action.payload);
-        }
+          state.user = {
+            id: action.payload.data.token.userToken.id!,
+            name: action.payload.data.token.userToken.name!,
+          };
+
+          authStorage.save(action.payload.data.token);
+        },
       )
       .addCase(register.rejected, setRejected);
   },

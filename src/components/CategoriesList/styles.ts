@@ -4,7 +4,7 @@ import { hexToRgb } from "../../Utils";
 
 export const ContainerListCat = styled.div`
   padding: 24px;
-  background-color: ${colors.branco};
+  background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
 
   .container-title-categories {

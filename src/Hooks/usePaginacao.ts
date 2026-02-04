@@ -37,11 +37,12 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
   const isMobile = useIsMobile();
 
   const tamanhoPadraoLinha = isMobile ? 61 : 56;
+  const tamanhoTopoLinha = isMobile ? 23 : 0;
 
   const alturaLinha =
     itemsPaginados.length == 0
       ? `${3 * tamanhoPadraoLinha}px`
-      : `${itemsPaginados.length * tamanhoPadraoLinha}px`;
+      : `${itemsPaginados.length * (tamanhoPadraoLinha + tamanhoTopoLinha)}px`;
 
   const linhas = {
     alturaLinha,

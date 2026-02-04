@@ -36,7 +36,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
 
   return (
     <RodapeTabela>
-      <form>
+      <div className="pag-wrapper">
         <div className="input-wrapper">
           <label htmlFor="row">Linhas por página</label>
           <select
@@ -52,8 +52,8 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
             <option value={100}>100</option>
           </select>
         </div>
-      </form>
-      <p>{`${linhas.linhasAtuais.inicio} - ${linhas.linhasAtuais.fim} de ${linhas.linhasTotais}`}</p>
+        <p>{`${linhas.linhasAtuais.inicio} - ${linhas.linhasAtuais.fim} de ${linhas.linhasTotais}`}</p>
+      </div>
       <div className="flex">
         <Button
           disabled={estaNaPrimeiraPagina}

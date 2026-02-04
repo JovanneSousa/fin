@@ -30,6 +30,7 @@ import Icone from "../Icone";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TableSkeletonRow } from "../Loader/TableSkeletonLoader";
 import Feedback from "../Feedback";
+import { formataDataExtenso } from "../../Utils/Datas";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const {
@@ -87,40 +88,45 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
 
     if (isMobile)
       return itemsPaginados.map((item) => (
-        <tr key={item.id}>
-          <td className="icone">
-            {item.categoria != null && item.categoria != undefined && (
-              <Icone
-                background={item.categoria.cor.url}
-                tipoIcone={item.categoria.icone.url}
-              />
-            )}
-          </td>
-          <td>
-            {limitarTexto(item.titulo)}
-            <p className="cat">{item.categoria?.name || "Sem categoria"}</p>
-          </td>
-          <td
-            className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}
-          >
-            {formatCurrency(item.valor)}
-          </td>
-          <td>
-            <div className="button-container">
-              <DetailBox onClick={() => abrirDetalhes(item.id!)}>
-                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-              </DetailBox>
-              <CloseBox
-                onClick={() => {
-                  setIsDeleteModalOpen(true);
-                  setItemSelecionado(item);
-                }}
-              >
-                <FontAwesomeIcon icon={faCircleXmark} size="lg" />
-              </CloseBox>
-            </div>
-          </td>
-        </tr>
+        <>
+          <tr className="data-wrapper">
+            <td>{formataDataExtenso(item.dataMovimentacao)}</td>
+          </tr>
+          <tr key={item.id}>
+            <td className="icone">
+              {item.categoria != null && item.categoria != undefined && (
+                <Icone
+                  background={item.categoria.cor.url}
+                  tipoIcone={item.categoria.icone.url}
+                />
+              )}
+            </td>
+            <td>
+              {limitarTexto(item.titulo)}
+              <p className="cat">{item.categoria?.name || "Sem categoria"}</p>
+            </td>
+            <td
+              className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}
+            >
+              {formatCurrency(item.valor)}
+            </td>
+            <td>
+              <div className="button-container">
+                <DetailBox onClick={() => abrirDetalhes(item.id!)}>
+                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                </DetailBox>
+                <CloseBox
+                  onClick={() => {
+                    setIsDeleteModalOpen(true);
+                    setItemSelecionado(item);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCircleXmark} size="lg" />
+                </CloseBox>
+              </div>
+            </td>
+          </tr>
+        </>
       ));
 
     return itemsPaginados.map((item) => (

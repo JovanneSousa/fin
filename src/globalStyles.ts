@@ -14,6 +14,7 @@ export const colors = {
   gray: "#666666",
   lightGray: "#e6e6e6",
   lighterGray: "#f5f5f5",
+  shiningGray: "#f9f9f9",
   darkGray: "#333333",
   verde: "#57b846",
   vermelho: "#e63946",
@@ -172,7 +173,7 @@ body {
     0 0 6px rgba(0, 0, 0, 0.08);
 }
 
-form {
+form, .pag-wrapper {
     .input-wrapper {
       display: flex;
       flex-direction: column;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { hexToRgb } from "../../Utils";
-import { colors } from "../../globalStyles";
+import { breakpoints, colors } from "../../globalStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface TableProps {
@@ -60,6 +60,17 @@ export const StyledTable = styled.table.withConfig({
     background-color: ${colors.lighterGray};
   }
 
+  .data-wrapper {
+    background-color: ${colors.shiningGray};
+    font-size: 12px;
+    height: 16px;
+
+    td {
+      height: 16px;
+      border: none;
+    }
+  }
+
   th,
   td {
     height: 56px;
@@ -84,6 +95,21 @@ export const StyledTable = styled.table.withConfig({
 
   .cat {
     font-size: 12px;
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    thead {
+      background-color: ${colors.lightGray};
+
+      tr,
+      th {
+        background-color: ${colors.lightGray};
+      }
+    }
+
+    td, tr {
+      border: none;
+    }
   }
 `;
 
@@ -145,13 +171,27 @@ export const RodapeTabela = styled(PerifericosTabela)`
   font-size: 14px;
   gap: 16px;
 
-  .input-wrapper {
-    flex-direction: row;
-    align-items: center;
+  .pag-wrapper {
+    display: flex;
     gap: 16px;
+    align-items: center;
 
-    label {
-      white-space: nowrap;
+    .input-wrapper {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+
+      label {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    flex-direction: column;
+
+    .input-wrapper {
+      margin: 0;
     }
   }
 `;

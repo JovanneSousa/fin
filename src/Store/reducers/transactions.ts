@@ -3,7 +3,7 @@ import api from "../../Services/api";
 import type { Category, ErrorResponse } from "./categories";
 import axios from "axios";
 import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
-import { logout } from "./auth";
+import { login, logout } from "./auth";
 
 export interface TransactionFilter {
   startDate: string;
@@ -293,6 +293,7 @@ const transactionSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logout, () => initialState)
+      .addCase(login.fulfilled, () => initialState)
       .addCase(createTransaction.pending, (state) => {
         state.createTrancacao.status = "loading";
         state.createTrancacao.error = null;

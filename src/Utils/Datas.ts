@@ -15,7 +15,7 @@ export const subtraiMeses = (data: Date, qtd: number) =>
 export const formataDataExtenso = (dataPuro: Date | string) => {
   const data = new Date(dataPuro);
 
-  const mes = new Date(data.getMonth()).toLocaleDateString("pt-BR", {
+  const mes = data.toLocaleDateString("pt-BR", {
     month: "short",
     timeZone: "UTC",
   });

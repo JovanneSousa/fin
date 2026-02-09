@@ -49,10 +49,9 @@ export const usePaginacao = <T extends Item>(itemsFiltrados: T[]) => {
   const inicio = (paginaAtual - 1) * qtdRegistros;
   const fim = inicio + qtdRegistros;
 
-  const itemsPaginados = aplicaFiltroTexto(
-    itemsFiltrados.slice(inicio, fim),
-    busca,
-  );
+  const itemsFIltradosPorTexto = aplicaFiltroTexto(itemsFiltrados, busca);
+
+  const itemsPaginados = itemsFIltradosPorTexto.slice(inicio, fim);
   const totalPaginas = Math.ceil(itemsFiltrados.length / qtdRegistros);
   const estaNaPrimeiraPagina = paginaAtual === 1;
   const estaNaUltimaPagina = paginaAtual === totalPaginas;

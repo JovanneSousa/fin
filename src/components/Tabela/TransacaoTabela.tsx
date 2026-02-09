@@ -21,7 +21,6 @@ import Modal from "../ModalContainer";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
-import { useState } from "react";
 import Seletor from "../Seletor";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
@@ -48,13 +47,13 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     paginacao,
     errorPeriodo,
   } = useTransactionTable();
-  const [valorBusca, setValorBusca] = useState("");
 
   const {
     itemsPaginados,
     qtdRegistros,
     isMobile,
     linhas: { alturaLinha, tamanhoPadraoLinha },
+    busca, setBusca
   } = paginacao;
 
   const titulosTabela = isMobile ? (
@@ -226,8 +225,8 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
                 id="busca"
                 type="text"
                 placeholder="Pesquise por descrição, categoria ou valor"
-                value={valorBusca}
-                onChange={(e) => setValorBusca(e.target.value)}
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
               />
               <label htmlFor="busca">
                 <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />

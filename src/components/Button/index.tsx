@@ -10,6 +10,7 @@ import {
   faAngleDoubleRight,
   faClose,
   faPlus,
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 
 type IconTypes =
@@ -20,7 +21,8 @@ type IconTypes =
   | "doubleLeft"
   | "doubleRight"
   | "close"
-  | "plus";
+  | "plus"
+  | "filter";
 
 export interface ButtonProps {
   children?: React.ReactNode;
@@ -42,6 +44,7 @@ const icone = {
   up: <FontAwesomeIcon icon={faChevronUp} />,
   close: <FontAwesomeIcon icon={faClose} />,
   plus: <FontAwesomeIcon icon={faPlus} />,
+  filter: <FontAwesomeIcon icon={faFilter} />,
 };
 
 const Button = ({

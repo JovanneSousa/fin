@@ -11,8 +11,21 @@ import {
   type Transacao,
 } from "../Store/reducers/transactions";
 import useCategory from "./useCategory";
+import { normalizaTexto } from "../Utils/text";
+
+interface Filters {
+  categories: string[];
+  recurring: boolean;
+  sort: string;
+}
 
 const useTransactions = () => {
+  const [busca, setBusca] = useState<string>("");
+  const [filtroModal, setFiltersModal] = useState<Filters>({
+    categories: [],
+    recurring: false,
+    sort: "",
+  });
   const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
   const [mesSelecionado, setMesSelecionado] = useState(new Date());
 
@@ -47,7 +60,58 @@ const useTransactions = () => {
     dispatch(fetchTransactionsPeriod({ startDate, endDate }));
   };
 
-  const itemsFiltrados = filtro.map((item) => {
+  const aplicaFiltroTexto = (items: Transacao[], texto: string) => {
+    if (!texto.trim()) return items;
+
+    const termo = normalizaTexto(texto);
+
+    return items.filter(
+      (item) =>
+        normalizaTexto(item.titulo).includes(termo) ||
+        normalizaTexto(item.categoria?.name).includes(termo) ||
+        normalizaTexto(item.valor.toString()).includes(termo),
+    );
+  };
+
+  const aplicaFiltroModal = (
+    filtro: {
+      categories: string[];
+      recurring: boolean;
+      sort: string;
+    },
+    items: Transacao[],
+  ) => {
+    if (filtro.categories.length > 0) {
+      items = items.filter((i) => filtro.categories.includes(i.categoriaId));
+    }
+    if (filtro.recurring !== false) {
+      items = items.filter((i) => i.isRecurring === filtro.recurring);
+    }
+    if (filtro.sort === "dataAsc") {
+      items.sort(
+        (a, b) =>
+          new Date(a.dataMovimentacao).getTime() -
+          new Date(b.dataMovimentacao).getTime(),
+      );
+    }
+    if (filtro.sort === "dataDesc") {
+      items.sort(
+        (a, b) =>
+          new Date(b.dataMovimentacao).getTime() -
+          new Date(a.dataMovimentacao).getTime(),
+      );
+    }
+    if (filtro.sort === "valorAsc") {
+      items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
+    }
+    if (filtro.sort === "valorDesc") {
+      items.sort((a, b) => b.valor - a.valor);
+    }
+
+    return items;
+  };
+
+  const hydratedItems = filtro.map((item) => {
     if (!item.categoria) {
       const source = item.type === 0 ? categorias.receita : categorias.despesa;
       const categoria = source.find((c) => c.id === item.categoriaId);
@@ -55,6 +119,11 @@ const useTransactions = () => {
     }
     return item;
   });
+  
+  const itemsFiltrados = aplicaFiltroModal(
+    filtroModal,
+    aplicaFiltroTexto(hydratedItems, busca),
+  );
 
   const aplicarMes = (date: Date) => {
     setMesSelecionado(date);
@@ -124,6 +193,10 @@ const useTransactions = () => {
     onSelectMonth,
     aplicarPeriodoComparativo,
     aplicarPeriodo,
+    setFiltersModal,
+    aplicaFiltroTexto,
+    busca,
+    setBusca,
   };
 
   const handle = {

@@ -1,57 +1,16 @@
 import { useState } from "react";
 import useIsMobile from "./useIsMobile";
-import type { Transacao } from "../Store/reducers/transactions";
-import type { Category } from "../Store/reducers/categories";
-import { normalizaTexto } from "../Utils/text";
 
 export type QtdRegistros = 5 | 10 | 25 | 50 | 100;
 
-type Item = Transacao | Category;
-
-export const usePaginacao = <T extends Item>(itemsFiltrados: T[]) => {
-  const isCategoria = (item: Item): item is Category => {
-    return "name" in item && "cor" in item && "icone" in item;
-  };
-
-  const isTransacao = (item: Item): item is Transacao => {
-    return "titulo" in item && "valor" in item;
-  };
-
-  const aplicaFiltroTexto = <T extends Item>(
-    items: T[],
-    texto: string,
-  ): T[] => {
-    if (!texto.trim()) return items;
-
-    const termo = normalizaTexto(texto);
-
-    return items.filter((item) => {
-      if (isCategoria(item)) {
-        return normalizaTexto(item.name).includes(termo);
-      }
-
-      if (isTransacao(item)) {
-        return (
-          normalizaTexto(item.titulo).includes(termo) ||
-          normalizaTexto(item.categoria?.name).includes(termo) ||
-          normalizaTexto(item.valor.toString()).includes(termo)
-        );
-      }
-
-      return false;
-    }) as T[];
-  };
-
-  const [busca, setBusca] = useState<string>("");
+export const usePaginacao = <T>(itemsFiltrados: T[]) => {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [qtdRegistros, setQtdRegistros] = useState<QtdRegistros>(5);
 
   const inicio = (paginaAtual - 1) * qtdRegistros;
   const fim = inicio + qtdRegistros;
 
-  const itemsFIltradosPorTexto = aplicaFiltroTexto(itemsFiltrados, busca);
-
-  const itemsPaginados = itemsFIltradosPorTexto.slice(inicio, fim);
+  const itemsPaginados = itemsFiltrados.slice(inicio, fim);
   const totalPaginas = Math.ceil(itemsFiltrados.length / qtdRegistros);
   const estaNaPrimeiraPagina = paginaAtual === 1;
   const estaNaUltimaPagina = paginaAtual === totalPaginas;
@@ -103,8 +62,6 @@ export const usePaginacao = <T extends Item>(itemsFiltrados: T[]) => {
     proximaPagina,
     paginaAnterior,
     changeQtdRegistros,
-    busca,
-    setBusca,
     qtdRegistros,
     linhas,
     itemsPaginados,

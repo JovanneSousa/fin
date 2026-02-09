@@ -12,6 +12,7 @@ export const useTransactionTable = () => {
     itemsPeriodo: { itemsFiltrados, statusPeriodo, errorPeriodo },
     setTipo,
     tipo,
+    filtros,
   } = useTransactions();
 
   const { abreModal } = useFormNew();
@@ -55,6 +56,7 @@ export const useTransactionTable = () => {
     paginacao,
     statusPeriodo,
     errorPeriodo,
+    filtros,
     setValorBusca,
     abrirDetalhes,
     fechaBusca,

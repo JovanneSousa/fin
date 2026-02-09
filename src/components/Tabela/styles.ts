@@ -156,10 +156,14 @@ const PerifericosTabela = styled.div`
 
   button {
     margin: 0;
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
   }
 
   .input-wrapper {
     margin: 0;
+    justify-content: center;
   }
 `;
 

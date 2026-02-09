@@ -30,8 +30,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { TableSkeletonRow } from "../Loader/TableSkeletonLoader";
 import Feedback from "../Feedback";
 import { formataDataExtenso } from "../../Utils/Datas";
+import FilterSection from "../FilterSection";
+import { useState } from "react";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
+  const [isFilterActive, setIsFilterActive] = useState(false);
   const {
     isDeleteModalOpen,
     itemSelecionado,
@@ -46,14 +49,16 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     abrirDetalhes,
     paginacao,
     errorPeriodo,
+    filtros,
   } = useTransactionTable();
+
+  const { busca, setBusca, setFiltersModal } = filtros;
 
   const {
     itemsPaginados,
     qtdRegistros,
     isMobile,
     linhas: { alturaLinha, tamanhoPadraoLinha },
-    busca, setBusca
   } = paginacao;
 
   const titulosTabela = isMobile ? (
@@ -219,7 +224,23 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
           </div>
           <div className="button-container">
             {tipo !== "todos" && !isMobile && button[tipo]}
-            <div className="input-wrapper" onClick={(e) => e.stopPropagation()}>
+            <div
+              className={`input-wrapper seletor ${!(isMobile && isSearching) ? "" : "hidden"}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Button
+                onClick={() => setIsFilterActive(true)}
+                bgColor={colors.lightGray}
+                icon="filter"
+              />
+            </div>
+            <div
+              className="input-wrapper"
+              onClick={(e) => {
+                e.stopPropagation();
+                abreBusca();
+              }}
+            >
               <input
                 className="search"
                 id="busca"
@@ -229,7 +250,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
                 onChange={(e) => setBusca(e.target.value)}
               />
               <label htmlFor="busca">
-                <StyledIcon onClick={abreBusca} icon={faMagnifyingGlass} />
+                <StyledIcon icon={faMagnifyingGlass} />
               </label>
             </div>
           </div>
@@ -254,6 +275,12 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             setItemSelecionado(null);
           }}
           item={itemSelecionado}
+        />
+      </Modal>
+      <Modal isOpen={isFilterActive} onClose={() => setIsFilterActive(false)}>
+        <FilterSection
+          onClose={() => setIsFilterActive(false)}
+          onApplyFilters={(f) => setFiltersModal(f)}
         />
       </Modal>
       <RodapeTabelas paginacao={paginacao} />

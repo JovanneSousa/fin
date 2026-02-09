@@ -1,15 +1,58 @@
 import { useState } from "react";
 import useIsMobile from "./useIsMobile";
+import type { Transacao } from "../Store/reducers/transactions";
+import type { Category } from "../Store/reducers/categories";
+import { normalizaTexto } from "../Utils/text";
 
 export type QtdRegistros = 5 | 10 | 25 | 50 | 100;
 
-export const usePaginacao = <T>(itemsFiltrados: T[]) => {
+type Item = Transacao | Category;
+
+export const usePaginacao = <T extends Item>(itemsFiltrados: T[]) => {
+  const isCategoria = (item: Item): item is Category => {
+    return "name" in item && "cor" in item && "icone" in item;
+  };
+
+  const isTransacao = (item: Item): item is Transacao => {
+    return "titulo" in item && "valor" in item;
+  };
+
+  const aplicaFiltroTexto = <T extends Item>(
+    items: T[],
+    texto: string,
+  ): T[] => {
+    if (!texto.trim()) return items;
+
+    const termo = normalizaTexto(texto);
+
+    return items.filter((item) => {
+      if (isCategoria(item)) {
+        return normalizaTexto(item.name).includes(termo);
+      }
+
+      if (isTransacao(item)) {
+        return (
+          normalizaTexto(item.titulo).includes(termo) ||
+          normalizaTexto(item.categoria?.name).includes(termo) ||
+          normalizaTexto(item.valor.toString()).includes(termo)
+        );
+      }
+
+      return false;
+    }) as T[];
+  };
+
+  const [busca, setBusca] = useState<string>("");
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [qtdRegistros, setQtdRegistros] = useState<QtdRegistros>(5);
 
   const inicio = (paginaAtual - 1) * qtdRegistros;
   const fim = inicio + qtdRegistros;
-  const itemsPaginados = itemsFiltrados.slice(inicio, fim);
+
+  const itemsPaginados = aplicaFiltroTexto(
+    itemsFiltrados.slice(inicio, fim),
+    busca,
+  );
   const totalPaginas = Math.ceil(itemsFiltrados.length / qtdRegistros);
   const estaNaPrimeiraPagina = paginaAtual === 1;
   const estaNaUltimaPagina = paginaAtual === totalPaginas;
@@ -34,6 +77,7 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     setQtdRegistros(qtd);
     setPaginaAtual(1);
   };
+
   const isMobile = useIsMobile();
 
   const tamanhoPadraoLinha = isMobile ? 61 : 56;
@@ -60,6 +104,8 @@ export const usePaginacao = <T>(itemsFiltrados: T[]) => {
     proximaPagina,
     paginaAnterior,
     changeQtdRegistros,
+    busca,
+    setBusca,
     qtdRegistros,
     linhas,
     itemsPaginados,

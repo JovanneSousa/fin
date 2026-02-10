@@ -101,7 +101,7 @@ export const LoginSection = styled.section`
 
   @media (max-width: ${breakpoints.tablet}) {
     width: 100%;
-    padding: 110px 16px 33px;
+    padding: 90px 16px 33px;
 
     .img {
       display: none;

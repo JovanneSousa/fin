@@ -11,10 +11,15 @@ import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
 import { systemName } from "../../Services/systemName";
 import Formulario from "../Formulario";
+import type { PageType } from ".";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
-const FormLogin = () => {
+export interface FormAuthProps {
+  handleForgot: (value: PageType) => void;
+}
+
+const FormLogin = ({ handleForgot }: FormAuthProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { error } = useSelector((state: RootReducer) => state.auth);
@@ -76,6 +81,7 @@ const FormLogin = () => {
           type="submit"
         />
         {error && <span className="error-message-span">{error}</span>}
+        <a onClick={() => handleForgot("Forgot")}>esqueci a senha</a>
       </Formulario>
       <Button
         className="login-visit"

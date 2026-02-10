@@ -31,8 +31,21 @@ export interface LoginResponse {
 const persisted = authStorage.hydrate();
 
 interface AuthState {
-  loading: boolean;
-  error: string | null;
+  login: {
+    loading: boolean;
+    error: string | null;
+  };
+
+  register: {
+    loading: boolean;
+    error: string | null;
+  };
+
+  forgot: {
+    loading: boolean;
+    error: string | null;
+  };
+
   isAuthenticated: boolean;
   user: {
     id: string;
@@ -41,13 +54,46 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  loading: false,
-  error: null,
+  login: {
+    loading: false,
+    error: null,
+  },
+
+  register: {
+    loading: false,
+    error: null,
+  },
+
+  forgot: {
+    loading: false,
+    error: null,
+  },
+
   isAuthenticated: persisted.isAuthenticated,
   user: persisted.user,
 };
 
-export const login = createAsyncThunk<
+export const emitirRecoveryToken = createAsyncThunk<
+  LoginResponse,
+  { email: string },
+  { rejectValue: string }
+>("auth/recoverToken", async (email, { rejectWithValue }) => {
+  try {
+    const response = await apiAuth.post<LoginResponse>(
+      `api/auth/forgot-password`,
+      email,
+    );
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Falha na conexão");
+  }
+});
+
+export const logarUsuario = createAsyncThunk<
   LoginResponse,
   { email: string; password: string },
   { rejectValue: string }
@@ -67,7 +113,7 @@ export const login = createAsyncThunk<
   }
 });
 
-export const register = createAsyncThunk<
+export const registrarUsuario = createAsyncThunk<
   LoginResponse,
   {
     nome: string;
@@ -120,35 +166,29 @@ const authSlice = createSlice({
       state.user = null;
     },
     clearError(state) {
-      state.error = null;
+      state.login.error = null;
+      state.register.error = null;
+      state.forgot.error = null;
     },
     clearState: (state) => {
-      state.loading = false;
-      state.error = null;
+      state.login.loading = false;
+      state.register.loading = false;
+      state.forgot.loading = false;
+      state.login.error = null;
+      state.register.error = null;
+      state.forgot.error = null;
     },
   },
   extraReducers: (builder) => {
-    const setPending = (state: AuthState) => {
-      state.loading = true;
-      state.error = null;
-    };
-
-    const setRejected = (
-      state: AuthState,
-      action:
-        | ReturnType<typeof login.rejected>
-        | ReturnType<typeof register.rejected>,
-    ) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    };
-
     builder
-      .addCase(login.pending, setPending)
+      .addCase(logarUsuario.pending, (state) => {
+        state.login.loading = true;
+        state.login.error = null;
+      })
       .addCase(
-        login.fulfilled,
+        logarUsuario.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
-          state.loading = false;
+          state.login.loading = false;
           state.isAuthenticated = true;
           state.user = {
             id: action.payload.data.token.userToken.id!,
@@ -158,13 +198,19 @@ const authSlice = createSlice({
           authStorage.save(action.payload.data.token);
         },
       )
-      .addCase(login.rejected, setRejected)
-      .addCase(register.pending, setPending)
+      .addCase(logarUsuario.rejected, (state, action) => {
+        state.login.loading = false;
+        state.login.error = action.payload || "Erro ao fazer login";
+      })
+      .addCase(registrarUsuario.pending, (state) => {
+        state.register.loading = true;
+        state.register.error = null;
+      })
       .addCase(
-        register.fulfilled,
+        registrarUsuario.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.isAuthenticated = true;
-          state.loading = false;
+          state.register.loading = false;
           state.user = {
             id: action.payload.data.token.userToken.id!,
             name: action.payload.data.token.userToken.name!,
@@ -173,7 +219,31 @@ const authSlice = createSlice({
           authStorage.save(action.payload.data.token);
         },
       )
-      .addCase(register.rejected, setRejected);
+      .addCase(registrarUsuario.rejected, (state, action) => {
+        state.register.loading = false;
+        state.register.error = action.payload || "Erro ao cadastrar usuário";
+      })
+      .addCase(emitirRecoveryToken.pending, (state) => {
+        state.forgot.loading = true;
+        state.forgot.error = null;
+      })
+      .addCase(
+        emitirRecoveryToken.fulfilled,
+        (state, action: PayloadAction<LoginResponse>) => {
+          state.isAuthenticated = true;
+          state.forgot.loading = false;
+          state.user = {
+            id: action.payload.data.token.userToken.id!,
+            name: action.payload.data.token.userToken.name!,
+          };
+
+          authStorage.save(action.payload.data.token);
+        },
+      )
+      .addCase(emitirRecoveryToken.rejected, (state, action) => {
+        state.forgot.loading = false;
+        state.forgot.error = action.payload || "Erro ao enviar email";
+      });
   },
 });
 

@@ -3,15 +3,13 @@ import { colors } from "../../globalStyles";
 import Button from "../Button";
 import Formulario from "../Formulario";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootReducer } from "../../Store";
 import { authSchema } from "../../validations/BaseAuthSchema";
 import * as yup from "yup";
+import useAuth from "../../Hooks/useAuth";
 
-type ForgotFormData = yup.InferType<typeof authSchema>;
+export type ForgotFormData = yup.InferType<typeof authSchema>;
 
 const FormForgot = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const {
     register: loginInput,
     handleSubmit,
@@ -19,13 +17,10 @@ const FormForgot = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(authSchema) });
 
-  const { error } = useSelector((state: RootReducer) => state.auth);
+  const { error, recoverToken } = useAuth();
 
   const onSubmit = async (data: ForgotFormData) => {
-    const payload = {
-      ...data,
-    };
-    await dispatch(login(payload)).unwrap();
+    await recoverToken(data);
     reset();
   };
 

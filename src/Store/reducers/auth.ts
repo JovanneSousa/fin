@@ -85,12 +85,12 @@ const initialState: AuthState = {
 };
 
 export const emitirRecoveryToken = createAsyncThunk<
-  ResponsePayload<string>,
+  ResponsePayload<boolean>,
   { email: string },
   { rejectValue: string }
 >("auth/recoverToken", async (email, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<ResponsePayload<string>>(
+    const response = await apiAuth.post<ResponsePayload<boolean>>(
       `api/auth/forgot-password`,
       email,
     );
@@ -105,12 +105,12 @@ export const emitirRecoveryToken = createAsyncThunk<
 });
 
 export const resetarSenha = createAsyncThunk<
-  ResponsePayload<string>,
+  ResponsePayload<boolean>,
   ResetPassFormData,
   { rejectValue: string }
 >("auth/reset-pass", async (data, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<ResponsePayload<string>>(
+    const response = await apiAuth.post<ResponsePayload<boolean>>(
       `api/auth/reset-pass`,
       data,
     );
@@ -256,10 +256,10 @@ const authSlice = createSlice({
         state.forgot.loading = true;
         state.forgot.error = null;
       })
-      .addCase(emitirRecoveryToken.fulfilled, (state, action) => {
+      .addCase(emitirRecoveryToken.fulfilled, (state) => {
         state.isAuthenticated = true;
         state.forgot.loading = false;
-        state.forgot.success = action.payload.data;
+        state.forgot.success = "Verifique o email para prosseguir!";
       })
       .addCase(emitirRecoveryToken.rejected, (state, action) => {
         state.forgot.loading = false;
@@ -274,9 +274,9 @@ const authSlice = createSlice({
         state.reset.loading = false;
         state.reset.error = action.payload || "Erro ao resetar senha";
       })
-      .addCase(resetarSenha.fulfilled, (state, action) => {
+      .addCase(resetarSenha.fulfilled, (state) => {
         state.reset.loading = false;
-        state.reset.success = action.payload.data;
+        state.reset.success = "Senha atualizada com sucesso!";
       });
   },
 });

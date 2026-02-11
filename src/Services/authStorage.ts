@@ -1,7 +1,8 @@
 import type { LoginResponse } from "../Store/reducers/auth";
+import type { ResponsePayload } from "../Store/reducers/transactions";
 
 export const authStorage = {
-  save(token: LoginResponse["data"]["token"]) {
+  save(token: ResponsePayload<LoginResponse>["data"]["token"]) {
     localStorage.setItem("token", token.accessToken);
     localStorage.setItem("claims", JSON.stringify(token.userToken));
     localStorage.setItem("user", token.userToken.name);

@@ -5,7 +5,7 @@ import axios from "axios";
 import { authStorage } from "../../Services/authStorage";
 import type { ResponsePayload } from "./transactions";
 
-interface LoginResponse {
+export interface LoginResponse {
   token: {
     accessToken: string;
     expiresIn: number;
@@ -172,7 +172,7 @@ const authSlice = createSlice({
 
       state.register.loading = false;
       state.register.error = null;
-      
+
       state.forgot.loading = false;
       state.forgot.error = null;
       state.forgot.success = null;

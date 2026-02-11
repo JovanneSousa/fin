@@ -6,22 +6,33 @@ import {
   emitirRecoveryToken,
   logarUsuario,
   registrarUsuario,
+  resetarSenha,
 } from "../Store/reducers/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { LoginFormData } from "../components/Auth/FormLogin";
 import type { ForgotFormData } from "../components/Auth/FormForgot";
+import type { ResetPassFormData } from "../components/Auth/FormReset";
 
 const useAuth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { register, login, forgot, isAuthenticated, user } = useSelector(
+  const { register, login, forgot, isAuthenticated, user, reset } = useSelector(
     (state: RootReducer) => state.auth,
   );
 
+  const limparParams = () => {
+    navigate(location.pathname, { replace: true });
+  };
+
   const dispatch = useDispatch<AppDispatch>();
 
-  const loading = register.loading || login.loading || forgot.loading;
-  const error = register.error || login.error || forgot.error;
+  const loading =
+    register.loading || login.loading || forgot.loading || reset.loading;
+
+  const error = register.error || login.error || forgot.error || reset.error;
+
+  const success = forgot.success || reset.success;
 
   const logar = async (data: LoginFormData) => {
     const payload = {
@@ -31,6 +42,9 @@ const useAuth = () => {
     await dispatch(logarUsuario(payload)).unwrap();
     navigate("/dashboard");
   };
+
+  const redefinirSenha = async (data: ResetPassFormData) =>
+    await dispatch(resetarSenha(data)).unwrap();
 
   const registrar = async (data: RegisterFormData) => {
     const payload = {
@@ -60,8 +74,6 @@ const useAuth = () => {
     await dispatch(emitirRecoveryToken(data)).unwrap();
   };
 
-  const success = forgot.success;
-
   return {
     success,
     isAuthenticated,
@@ -72,6 +84,8 @@ const useAuth = () => {
     logar,
     loginTeste,
     recoverToken,
+    redefinirSenha,
+    limparParams,
   };
 };
 

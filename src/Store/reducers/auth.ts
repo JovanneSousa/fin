@@ -4,6 +4,9 @@ import type { ErrorResponse } from "./categories";
 import axios from "axios";
 import { authStorage } from "../../Services/authStorage";
 import type { ResponsePayload } from "./transactions";
+import type { ResetPassFormData } from "../../components/Auth/FormReset";
+import type { RegisterFormData } from "../../components/Auth/FormRegister";
+import type { LoginFormData } from "../../components/Auth/FormLogin";
 
 export interface LoginResponse {
   token: {
@@ -41,6 +44,12 @@ interface AuthState {
     success: string | null;
   };
 
+  reset: {
+    loading: boolean;
+    error: string | null;
+    success: string | null;
+  };
+
   isAuthenticated: boolean;
   user: {
     id: string;
@@ -60,6 +69,12 @@ const initialState: AuthState = {
   },
 
   forgot: {
+    loading: false,
+    error: null,
+    success: null,
+  },
+
+  reset: {
     loading: false,
     error: null,
     success: null,
@@ -89,9 +104,30 @@ export const emitirRecoveryToken = createAsyncThunk<
   }
 });
 
+export const resetarSenha = createAsyncThunk<
+  ResponsePayload<string>,
+  ResetPassFormData,
+  { rejectValue: string }
+>("auth/reset-pass", async (data, { rejectWithValue }) => {
+  try {
+    const response = await apiAuth.post<ResponsePayload<string>>(
+      `api/auth/reset-pass`,
+      data,
+    );
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Falha na conexão");
+  }
+});
+
 export const logarUsuario = createAsyncThunk<
   ResponsePayload<LoginResponse>,
-  { email: string; password: string },
+  LoginFormData,
   { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
@@ -111,14 +147,7 @@ export const logarUsuario = createAsyncThunk<
 
 export const registrarUsuario = createAsyncThunk<
   ResponsePayload<LoginResponse>,
-  {
-    nome: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    system: string;
-    profile: string;
-  },
+  RegisterFormData,
   { rejectValue: string }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
@@ -165,6 +194,7 @@ const authSlice = createSlice({
       state.login.error = null;
       state.register.error = null;
       state.forgot.error = null;
+      state.reset.error = null;
     },
     clearState: (state) => {
       state.login.loading = false;
@@ -176,6 +206,10 @@ const authSlice = createSlice({
       state.forgot.loading = false;
       state.forgot.error = null;
       state.forgot.success = null;
+
+      state.reset.loading = false;
+      state.reset.error = null;
+      state.reset.success = null;
     },
   },
   extraReducers: (builder) => {
@@ -198,6 +232,7 @@ const authSlice = createSlice({
         state.login.loading = false;
         state.login.error = action.payload || "Erro ao fazer login";
       })
+
       .addCase(registrarUsuario.pending, (state) => {
         state.register.loading = true;
         state.register.error = null;
@@ -216,6 +251,7 @@ const authSlice = createSlice({
         state.register.loading = false;
         state.register.error = action.payload || "Erro ao cadastrar usuário";
       })
+
       .addCase(emitirRecoveryToken.pending, (state) => {
         state.forgot.loading = true;
         state.forgot.error = null;
@@ -228,6 +264,19 @@ const authSlice = createSlice({
       .addCase(emitirRecoveryToken.rejected, (state, action) => {
         state.forgot.loading = false;
         state.forgot.error = action.payload || "Erro ao enviar email";
+      })
+
+      .addCase(resetarSenha.pending, (state) => {
+        state.reset.error = null;
+        state.reset.loading = true;
+      })
+      .addCase(resetarSenha.rejected, (state, action) => {
+        state.reset.loading = false;
+        state.reset.error = action.payload || "Erro ao resetar senha";
+      })
+      .addCase(resetarSenha.fulfilled, (state, action) => {
+        state.reset.loading = false;
+        state.reset.success = action.payload.data;
       });
   },
 });

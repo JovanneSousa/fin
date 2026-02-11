@@ -1,7 +1,9 @@
-import { authSchema } from "./baseAuthSchema";
 import * as yup from "yup";
+import { authSchema } from "./baseAuthSchema";
 
-export const ResetPassSchema = authSchema.shape({
+export const resetPassSchema = authSchema.shape({
+  token: yup.string().required("O token é obrigatório!"),
+
   password: yup
     .string()
     .required("O campo Password é obrigatório")

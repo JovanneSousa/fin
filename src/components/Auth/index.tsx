@@ -15,26 +15,26 @@ export type PageType = "Login" | "Registrar" | "Forgot" | "Reset";
 
 export interface AuthPageProps {
   resetPassData: {
-    email: string;
-    token: string;
+    email: string | null;
+    token: string | null;
   };
 }
 
 const Auth = ({ resetPassData }: AuthPageProps) => {
   const [internalPage, setInternalPage] = useState<PageType>("Login");
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, success } = useAuth();
+  const { loading, success, limparParams } = useAuth();
 
   const handleToggle = (newPage: PageType) => {
     dispatch(clearState());
     setInternalPage(newPage);
+    limparParams();
   };
-
   const title = {
     Login: "Login",
     Registrar: "Registrar",
     Forgot: "Recuperar senha",
-    Reset: "Texto",
+    Reset: "Cadastrar nova senha",
   };
 
   const form = {
@@ -48,8 +48,16 @@ const Auth = ({ resetPassData }: AuthPageProps) => {
     Login: "Criar uma conta ",
     Registrar: "Voltar para o login ",
     Forgot: "Voltar para o login ",
-    Reset: "Cancelar",
+    Reset: "Cancelar ",
   };
+
+  const funcButton = {
+    Login: () => handleToggle("Registrar"),
+    Registrar: () => handleToggle("Login"),
+    Forgot: () => handleToggle("Login"),
+    Reset: () => handleToggle("Login"),
+  };
+
   const page: PageType =
     resetPassData.email && resetPassData.token ? "Reset" : internalPage;
 
@@ -68,14 +76,7 @@ const Auth = ({ resetPassData }: AuthPageProps) => {
           ) : (
             form[page]
           )}
-          <a
-            onClick={
-              page == "Login"
-                ? () => handleToggle("Registrar")
-                : () => handleToggle("Login")
-            }
-            className="create"
-          >
+          <a onClick={funcButton[page]} className="create">
             {buttonText[page]}
             <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
           </a>

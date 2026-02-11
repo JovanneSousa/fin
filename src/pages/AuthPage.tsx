@@ -9,7 +9,6 @@ const AuthPage = () => {
 
   useEffect(() => {
     acordaApi();
-    console.log("chamou")
   }, [acordaApi]);
 
   const resetPassData = {

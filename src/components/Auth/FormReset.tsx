@@ -27,9 +27,8 @@ const FormReset = ({ resetPassData }: AuthPageProps) => {
   });
 
   const onSubmit = async (data: ResetPassFormData) => {
-    const result = await redefinirSenha(data);
-    if (result.success) reset();
-    console.log(result.success);
+    await redefinirSenha(data);
+    reset();
   };
 
   return (

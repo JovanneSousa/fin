@@ -78,41 +78,47 @@ const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
         </div>
       </div>
 
-      <p>Categorias</p>
-      <div className="container-cat-filter">
-        {filterType === "receita" &&
-          receitaFiltrada.map((r) => (
-            <ButtonPill
-              className={selectedCategories.includes(r.id) ? "is-active" : ""}
-              key={r.id}
-              onClick={() => handleCategoryToggle(r.id)}
-            >
-              {r.name}
-            </ButtonPill>
-          ))}
+      {filterType != "" && (
+        <>
+          <p>Categorias</p>
+          <div className="container-cat-filter">
+            {filterType === "receita" &&
+              receitaFiltrada.map((r) => (
+                <ButtonPill
+                  className={
+                    selectedCategories.includes(r.id) ? "is-active" : ""
+                  }
+                  key={r.id}
+                  onClick={() => handleCategoryToggle(r.id)}
+                >
+                  {r.name}
+                </ButtonPill>
+              ))}
 
-        {filterType === "despesa" &&
-          despesaFiltrada.map((d) => (
-            <ButtonPill
-              className={selectedCategories.includes(d.id) ? "is-active" : ""}
-              key={d.id}
-              onClick={() => handleCategoryToggle(d.id)}
-            >
-              {d.name}
-            </ButtonPill>
-          ))}
-      </div>
+            {filterType === "despesa" &&
+              despesaFiltrada.map((d) => (
+                <ButtonPill
+                  className={
+                    selectedCategories.includes(d.id) ? "is-active" : ""
+                  }
+                  key={d.id}
+                  onClick={() => handleCategoryToggle(d.id)}
+                >
+                  {d.name}
+                </ButtonPill>
+              ))}
+          </div>
+        </>
+      )}
 
       <div className="container-recorrencia">
         <p>Recorrência</p>
-        <div className="filtros">
-          <ButtonPill
-            className={isRecurring ? "is-active" : ""}
-            onClick={() => setIsRecurring(!isRecurring)}
-          >
-            {filterType === "despesa" ? "Parcelada" : "Recorrente"}
-          </ButtonPill>
-        </div>
+        <ButtonPill
+          className={isRecurring ? "is-active" : ""}
+          onClick={() => setIsRecurring(!isRecurring)}
+        >
+          {filterType === "despesa" ? "Parcelada" : "Recorrente"}
+        </ButtonPill>
       </div>
 
       <div className="container-ord">

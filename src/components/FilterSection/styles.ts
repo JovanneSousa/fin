@@ -54,8 +54,15 @@ export const FilterContainer = styled.div`
 
   .container-recorrencia {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    
+    button {
+      width: 100%;
+      margin: 0;
+    }
   }
 
   .container-ord {
@@ -68,6 +75,7 @@ export const FilterContainer = styled.div`
       width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
   }
 

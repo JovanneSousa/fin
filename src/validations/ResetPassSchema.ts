@@ -1,13 +1,7 @@
-import * as yup from "yup";
 import { authSchema } from "./baseAuthSchema";
+import * as yup from "yup";
 
-export const registerSchema = authSchema.shape({
-  nome: yup
-    .string()
-    .required("O campo Nome é obrigatório")
-    .min(2, "O campo Nome deve ter entre 2 e 50 caracteres")
-    .max(50, "O campo Nome deve ter entre 2 e 50 caracteres"),
-
+export const ResetPassSchema = authSchema.shape({
   password: yup
     .string()
     .required("O campo Password é obrigatório")

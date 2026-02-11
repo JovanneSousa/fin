@@ -3,7 +3,7 @@ import { colors } from "../../globalStyles";
 import Button from "../Button";
 import Formulario from "../Formulario";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { authSchema } from "../../validations/BaseAuthSchema";
+import { authSchema } from "../../validations/baseAuthSchema";
 import * as yup from "yup";
 import useAuth from "../../Hooks/useAuth";
 

@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { authSchema } from "./BaseAuthSchema";
+import { authSchema } from "./baseAuthSchema";
 
 export const loginSchema = authSchema.shape({
   password: yup

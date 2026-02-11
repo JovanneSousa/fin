@@ -9,36 +9,49 @@ import FormRegister from "./FormRegister";
 import FormForgot from "./FormForgot";
 import useAuth from "../../Hooks/useAuth";
 import Feedback from "../Feedback";
+import FormReset from "./FormReset";
 
-export type PageType = "Login" | "Registrar" | "Forgot";
+export type PageType = "Login" | "Registrar" | "Forgot" | "Reset";
 
-const Auth = () => {
-  const [page, setPage] = useState<PageType>("Login");
+export interface AuthPageProps {
+  resetPassData: {
+    email: string;
+    token: string;
+  };
+}
+
+const Auth = ({ resetPassData }: AuthPageProps) => {
+  const [internalPage, setInternalPage] = useState<PageType>("Login");
   const dispatch = useDispatch<AppDispatch>();
   const { loading, success } = useAuth();
 
   const handleToggle = (newPage: PageType) => {
     dispatch(clearState());
-    setPage(newPage);
+    setInternalPage(newPage);
   };
 
   const title = {
     Login: "Login",
     Registrar: "Registrar",
     Forgot: "Recuperar senha",
+    Reset: "Texto",
   };
 
   const form = {
     Login: <FormLogin handleForgot={handleToggle} />,
     Registrar: <FormRegister />,
     Forgot: <FormForgot />,
+    Reset: <FormReset resetPassData={resetPassData} />,
   };
 
   const buttonText = {
     Login: "Criar uma conta ",
     Registrar: "Voltar para o login ",
     Forgot: "Voltar para o login ",
+    Reset: "Cancelar",
   };
+  const page: PageType =
+    resetPassData.email && resetPassData.token ? "Reset" : internalPage;
 
   return (
     <div className="container">

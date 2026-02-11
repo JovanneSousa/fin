@@ -4,7 +4,7 @@ import api from "../Services/api";
 const useHealthApi = () => {
   const apiEmail = import.meta.env.VITE_API_EMAIL_URL;
   const wakeAuth = () =>
-    fetch(apiAuth + "api/auth/heath", {
+    fetch(apiAuth + "api/auth/health", {
       method: "GET",
       mode: "no-cors",
     });

@@ -66,6 +66,8 @@ export const FilterContainer = styled.div`
 
     .buttons {
       width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
   }
 

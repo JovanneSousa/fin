@@ -1,29 +1,23 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  type PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiAuth from "../../Services/apiAuth";
 import type { ErrorResponse } from "./categories";
 import axios from "axios";
 import { authStorage } from "../../Services/authStorage";
+import type { ResponsePayload } from "./transactions";
 
-export interface LoginResponse {
-  sucess: boolean;
-  data: {
-    token: {
-      accessToken: string;
-      expiresIn: number;
-      userToken: {
-        id: string;
-        name: string;
-        claims: [
-          {
-            value: string;
-            type: string;
-          },
-        ];
-      };
+interface LoginResponse {
+  token: {
+    accessToken: string;
+    expiresIn: number;
+    userToken: {
+      id: string;
+      name: string;
+      claims: [
+        {
+          value: string;
+          type: string;
+        },
+      ];
     };
   };
 }
@@ -44,6 +38,7 @@ interface AuthState {
   forgot: {
     loading: boolean;
     error: string | null;
+    success: string | null;
   };
 
   isAuthenticated: boolean;
@@ -67,6 +62,7 @@ const initialState: AuthState = {
   forgot: {
     loading: false,
     error: null,
+    success: null,
   },
 
   isAuthenticated: persisted.isAuthenticated,
@@ -74,12 +70,12 @@ const initialState: AuthState = {
 };
 
 export const emitirRecoveryToken = createAsyncThunk<
-  LoginResponse,
+  ResponsePayload<string>,
   { email: string },
   { rejectValue: string }
 >("auth/recoverToken", async (email, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<LoginResponse>(
+    const response = await apiAuth.post<ResponsePayload<string>>(
       `api/auth/forgot-password`,
       email,
     );
@@ -94,12 +90,12 @@ export const emitirRecoveryToken = createAsyncThunk<
 });
 
 export const logarUsuario = createAsyncThunk<
-  LoginResponse,
+  ResponsePayload<LoginResponse>,
   { email: string; password: string },
   { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<LoginResponse>(
+    const response = await apiAuth.post<ResponsePayload<LoginResponse>>(
       `api/auth/login`,
       credentials,
     );
@@ -114,7 +110,7 @@ export const logarUsuario = createAsyncThunk<
 });
 
 export const registrarUsuario = createAsyncThunk<
-  LoginResponse,
+  ResponsePayload<LoginResponse>,
   {
     nome: string;
     email: string;
@@ -126,7 +122,7 @@ export const registrarUsuario = createAsyncThunk<
   { rejectValue: string }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<LoginResponse>(
+    const response = await apiAuth.post<ResponsePayload<LoginResponse>>(
       `api/auth/registrar`,
       userData,
     );
@@ -172,11 +168,14 @@ const authSlice = createSlice({
     },
     clearState: (state) => {
       state.login.loading = false;
-      state.register.loading = false;
-      state.forgot.loading = false;
       state.login.error = null;
+
+      state.register.loading = false;
       state.register.error = null;
+      
+      state.forgot.loading = false;
       state.forgot.error = null;
+      state.forgot.success = null;
     },
   },
   extraReducers: (builder) => {
@@ -185,19 +184,16 @@ const authSlice = createSlice({
         state.login.loading = true;
         state.login.error = null;
       })
-      .addCase(
-        logarUsuario.fulfilled,
-        (state, action: PayloadAction<LoginResponse>) => {
-          state.login.loading = false;
-          state.isAuthenticated = true;
-          state.user = {
-            id: action.payload.data.token.userToken.id!,
-            name: action.payload.data.token.userToken.name!,
-          };
+      .addCase(logarUsuario.fulfilled, (state, action) => {
+        state.login.loading = false;
+        state.isAuthenticated = true;
+        state.user = {
+          id: action.payload.data.token.userToken.id!,
+          name: action.payload.data.token.userToken.name!,
+        };
 
-          authStorage.save(action.payload.data.token);
-        },
-      )
+        authStorage.save(action.payload.data.token);
+      })
       .addCase(logarUsuario.rejected, (state, action) => {
         state.login.loading = false;
         state.login.error = action.payload || "Erro ao fazer login";
@@ -206,19 +202,16 @@ const authSlice = createSlice({
         state.register.loading = true;
         state.register.error = null;
       })
-      .addCase(
-        registrarUsuario.fulfilled,
-        (state, action: PayloadAction<LoginResponse>) => {
-          state.isAuthenticated = true;
-          state.register.loading = false;
-          state.user = {
-            id: action.payload.data.token.userToken.id!,
-            name: action.payload.data.token.userToken.name!,
-          };
+      .addCase(registrarUsuario.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.register.loading = false;
+        state.user = {
+          id: action.payload.data.token.userToken.id!,
+          name: action.payload.data.token.userToken.name!,
+        };
 
-          authStorage.save(action.payload.data.token);
-        },
-      )
+        authStorage.save(action.payload.data.token);
+      })
       .addCase(registrarUsuario.rejected, (state, action) => {
         state.register.loading = false;
         state.register.error = action.payload || "Erro ao cadastrar usuário";
@@ -227,19 +220,11 @@ const authSlice = createSlice({
         state.forgot.loading = true;
         state.forgot.error = null;
       })
-      .addCase(
-        emitirRecoveryToken.fulfilled,
-        (state, action: PayloadAction<LoginResponse>) => {
-          state.isAuthenticated = true;
-          state.forgot.loading = false;
-          state.user = {
-            id: action.payload.data.token.userToken.id!,
-            name: action.payload.data.token.userToken.name!,
-          };
-
-          authStorage.save(action.payload.data.token);
-        },
-      )
+      .addCase(emitirRecoveryToken.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.forgot.loading = false;
+        state.forgot.success = action.payload.data;
+      })
       .addCase(emitirRecoveryToken.rejected, (state, action) => {
         state.forgot.loading = false;
         state.forgot.error = action.payload || "Erro ao enviar email";

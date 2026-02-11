@@ -60,7 +60,10 @@ const useAuth = () => {
     await dispatch(emitirRecoveryToken(data)).unwrap();
   };
 
+  const success = forgot.success;
+
   return {
+    success,
     isAuthenticated,
     user,
     loading,

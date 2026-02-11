@@ -8,13 +8,14 @@ import FormLogin from "./FormLogin";
 import FormRegister from "./FormRegister";
 import FormForgot from "./FormForgot";
 import useAuth from "../../Hooks/useAuth";
+import Feedback from "../Feedback";
 
 export type PageType = "Login" | "Registrar" | "Forgot";
 
 const Auth = () => {
   const [page, setPage] = useState<PageType>("Login");
   const dispatch = useDispatch<AppDispatch>();
-  const { loading } = useAuth();
+  const { loading, success } = useAuth();
 
   const handleToggle = (newPage: PageType) => {
     dispatch(clearState());
@@ -47,7 +48,13 @@ const Auth = () => {
         </div>
         <div className="form">
           <span className="title">{title[page]}</span>
-          {loading ? <Loader /> : form[page]}
+          {loading ? (
+            <Loader />
+          ) : success ? (
+            <Feedback noButton success={success} />
+          ) : (
+            form[page]
+          )}
           <a
             onClick={
               page == "Login"

@@ -10,6 +10,8 @@ import FormForgot from "./FormForgot";
 import useAuth from "../../Hooks/useAuth";
 import Feedback from "../Feedback";
 import FormReset from "./FormReset";
+import Button from "../Button";
+import { colors } from "../../globalStyles";
 
 export type PageType = "Login" | "Registrar" | "Forgot" | "Reset";
 
@@ -23,7 +25,7 @@ export interface AuthPageProps {
 const Auth = ({ resetPassData }: AuthPageProps) => {
   const [internalPage, setInternalPage] = useState<PageType>("Login");
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, success, limparParams } = useAuth();
+  const { loading, success, limparParams, loginTeste } = useAuth();
 
   const handleToggle = (newPage: PageType) => {
     dispatch(clearState());
@@ -84,6 +86,15 @@ const Auth = ({ resetPassData }: AuthPageProps) => {
             <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
           </a>
         </div>
+        <Button
+          className="login-visit"
+          bgColor={colors.verde}
+          padding="small"
+          type="button"
+          onClick={loginTeste}
+        >
+          Logar como visitante
+        </Button>
       </LoginSection>
     </div>
   );

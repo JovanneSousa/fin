@@ -16,7 +16,7 @@ export interface FormAuthProps {
 }
 
 const FormLogin = ({ handleForgot }: FormAuthProps) => {
-  const { error, logar, loginTeste } = useAuth();
+  const { error, logar } = useAuth();
 
   const {
     register: loginInput,
@@ -57,14 +57,6 @@ const FormLogin = ({ handleForgot }: FormAuthProps) => {
         {error && <span className="error-message-span">{error}</span>}
         <a onClick={() => handleForgot("Forgot")}>esqueci a senha</a>
       </Formulario>
-      <Button
-        className="login-visit"
-        bgColor={colors.verde}
-        padding="small"
-        children="Logar como visitante"
-        type="button"
-        onClick={loginTeste}
-      />
     </>
   );
 };

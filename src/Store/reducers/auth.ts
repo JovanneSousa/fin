@@ -36,6 +36,7 @@ interface AuthState {
   register: {
     loading: boolean;
     error: string | null;
+    success: string | null;
   };
 
   forgot: {
@@ -66,6 +67,7 @@ const initialState: AuthState = {
   register: {
     loading: false,
     error: null,
+    success: null,
   },
 
   forgot: {
@@ -146,12 +148,12 @@ export const logarUsuario = createAsyncThunk<
 });
 
 export const registrarUsuario = createAsyncThunk<
-  ResponsePayload<LoginResponse>,
+  ResponsePayload<boolean>,
   RegisterFormData,
   { rejectValue: string }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
-    const response = await apiAuth.post<ResponsePayload<LoginResponse>>(
+    const response = await apiAuth.post<ResponsePayload<boolean>>(
       `api/auth/registrar`,
       userData,
     );
@@ -202,6 +204,7 @@ const authSlice = createSlice({
 
       state.register.loading = false;
       state.register.error = null;
+      state.register.success = null;
 
       state.forgot.loading = false;
       state.forgot.error = null;
@@ -237,15 +240,10 @@ const authSlice = createSlice({
         state.register.loading = true;
         state.register.error = null;
       })
-      .addCase(registrarUsuario.fulfilled, (state, action) => {
+      .addCase(registrarUsuario.fulfilled, (state) => {
         state.isAuthenticated = true;
         state.register.loading = false;
-        state.user = {
-          id: action.payload.data.token.userToken.id!,
-          name: action.payload.data.token.userToken.name!,
-        };
-
-        authStorage.save(action.payload.data.token);
+        state.register.success = "Usuário cadastrado com sucesso";
       })
       .addCase(registrarUsuario.rejected, (state, action) => {
         state.register.loading = false;

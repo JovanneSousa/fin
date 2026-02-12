@@ -38,6 +38,7 @@ export const NewSection = styled.section`
   transition: height ease 0.3s;
   max-width: 100%;
   width: 450px;
+  position: relative;
 
   span {
     &:hover {

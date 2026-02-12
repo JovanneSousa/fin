@@ -48,6 +48,7 @@ export const LoginSection = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    position: relative;
 
     .title {
       font-size: 32px;

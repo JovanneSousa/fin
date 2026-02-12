@@ -65,7 +65,7 @@ const useAuth = () => {
       system: systemName,
     };
 
-    await dispatch(logarUsuario(payload));
+    await dispatch(logarUsuario(payload)).unwrap();
     navigate("/dashboard");
   };
 

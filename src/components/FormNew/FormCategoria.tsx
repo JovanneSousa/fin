@@ -56,8 +56,7 @@ const FormCategoria = () => {
   const iconeSelecionado = watch("iconId");
 
   const onSubmit = (data: CategoriaFormData) => {
-    criarCategoria(data);
-    reset();
+    criarCategoria(data).then(() => reset());
   };
 
   const iconeIsLoading = icone.status == "loading";

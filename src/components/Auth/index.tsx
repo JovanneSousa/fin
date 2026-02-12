@@ -69,13 +69,16 @@ const Auth = ({ resetPassData }: AuthPageProps) => {
         </div>
         <div className="form">
           <span className="title">{title[page]}</span>
-          {loading ? (
-            <Loader />
-          ) : success ? (
-            <Feedback noButton success={success} />
+
+          {success ? (
+            <Feedback success={success} />
           ) : (
-            form[page]
+            <>
+              {form[page]}
+              {loading && <Loader type="form" />}
+            </>
           )}
+
           <a onClick={funcButton[page]} className="create">
             {buttonText[page]}
             <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>

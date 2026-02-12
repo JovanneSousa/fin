@@ -19,9 +19,8 @@ const FormForgot = () => {
 
   const { error, recoverToken } = useAuth();
 
-  const onSubmit = async (data: ForgotFormData) => {
-    await recoverToken(data);
-    reset();
+  const onSubmit = (data: ForgotFormData) => {
+    recoverToken(data).then(() => reset());
   };
 
   return (

@@ -16,7 +16,6 @@ export interface FormAuthProps {
 }
 
 const FormLogin = ({ handleForgot }: FormAuthProps) => {
-
   const { error, logar, loginTeste } = useAuth();
 
   const {
@@ -28,9 +27,8 @@ const FormLogin = ({ handleForgot }: FormAuthProps) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    await logar(data);
-    reset();
+  const onSubmit = (data: LoginFormData) => {
+    logar(data).then(() => reset());
   };
 
   return (

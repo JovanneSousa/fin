@@ -211,4 +211,15 @@ form, .pag-wrapper {
       font-size: 10px;
     }
   }
+
+  .feedback-container {
+    position: absolute;
+      inset: 0;
+      background-color: ${colors.defaultBackgroundColor};
+      pointer-events: "none";
+      z-index: 2;
+      justify-content: space-between;
+      gap: 16px;
+        border-radius: 16px;
+  }
 `;

@@ -21,9 +21,8 @@ const FormRegister = () => {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    await registrar(data);
-    reset();
+  const onSubmit = (data: RegisterFormData) => {
+    registrar(data).then(() => reset());
   };
 
   return (

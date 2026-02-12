@@ -34,12 +34,15 @@ const useCategory = () => {
     dispatch(getCategorieById(id));
   };
 
-  const criarCategoria = (data: CategoriaFormData) => {
-    dispatch(postCategories(data));
+  const criarCategoria = async (data: CategoriaFormData) => {
+    await dispatch(postCategories(data)).unwrap();
   };
 
-  const atualizarCategoria = (categoria: CategoriaFormData, id: string) => {
-    dispatch(updateCategoria({ categoria, id }));
+  const atualizarCategoria = async (
+    categoria: CategoriaFormData,
+    id: string,
+  ) => {
+    await dispatch(updateCategoria({ categoria, id })).unwrap();
   };
 
   const deletarCategoria = (id: string) => {

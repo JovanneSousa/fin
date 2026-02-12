@@ -3,11 +3,11 @@ import { breakpoints, colors } from "../../globalStyles";
 
 export const LoginSection = styled.section`
   background-color: ${colors.defaultBackgroundColor};
-  padding: 110px 90px 33px;
+  padding: 90px 90px 33px;
   border-radius: 16px;
   display: flex;
   gap: 44px;
-  height: 650px;
+  height: 590px;
 
   button {
     margin-top: 0;
@@ -28,7 +28,7 @@ export const LoginSection = styled.section`
     }
   }
 
-  .create {
+  a {
     text-align: center;
     width: 100%;
     display: block;
@@ -53,7 +53,7 @@ export const LoginSection = styled.section`
       font-size: 32px;
       display: block;
       text-align: center;
-      padding-bottom: 54px;
+      padding-bottom: 48px;
       font-weight: bold;
     }
 
@@ -88,6 +88,10 @@ export const LoginSection = styled.section`
           color: ${colors.verde};
         }
       }
+
+      a {
+        text-align: end;
+      }
     }
 
     @media (min-width: ${breakpoints.tablet}) {
@@ -97,7 +101,7 @@ export const LoginSection = styled.section`
 
   @media (max-width: ${breakpoints.tablet}) {
     width: 100%;
-    padding: 110px 16px 33px;
+    padding: 90px 16px 33px;
 
     .img {
       display: none;

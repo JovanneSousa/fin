@@ -1,22 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
-import type { AppDispatch, RootReducer } from "../../Store";
-import { register } from "../../Store/reducers/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../validations/registerSchema";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
-import { systemName } from "../../Services/systemName";
 import Formulario from "../Formulario";
+import useAuth from "../../Hooks/useAuth";
 
-type RegisterFormData = yup.InferType<typeof registerSchema>;
+export type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 const FormRegister = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { loading, error } = useSelector((state: RootReducer) => state.auth);
+  const { error, loading, registrar } = useAuth();
 
   const {
     register: registerInput,
@@ -28,18 +22,8 @@ const FormRegister = () => {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    const payload = {
-      ...data,
-      system: systemName,
-      profile: "usuario",
-    };
-    try {
-      await dispatch(register(payload)).unwrap();
-      reset();
-      navigate("/dashboard");
-    } catch (err) {
-      console.log(err);
-    }
+    await registrar(data);
+    reset();
   };
 
   return (

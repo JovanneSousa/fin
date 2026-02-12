@@ -1,23 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
 import "font-awesome/css/font-awesome.min.css";
-import { type AppDispatch, type RootReducer } from "../../Store";
-import { login } from "../../Store/reducers/auth";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "../../validations/loginSchema";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
 import { colors } from "../../globalStyles";
-import { systemName } from "../../Services/systemName";
 import Formulario from "../Formulario";
+import type { PageType } from ".";
+import useAuth from "../../Hooks/useAuth";
 
-type LoginFormData = yup.InferType<typeof loginSchema>;
+export type LoginFormData = yup.InferType<typeof loginSchema>;
 
-const FormLogin = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { error } = useSelector((state: RootReducer) => state.auth);
+export interface FormAuthProps {
+  handleForgot: (value: PageType) => void;
+}
+
+const FormLogin = ({ handleForgot }: FormAuthProps) => {
+
+  const { error, logar, loginTeste } = useAuth();
 
   const {
     register: loginInput,
@@ -29,27 +29,8 @@ const FormLogin = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const payload = {
-      ...data,
-      system: systemName,
-    };
-    await dispatch(login(payload)).unwrap();
+    await logar(data);
     reset();
-    navigate("/dashboard");
-  };
-
-  const loginTeste = async () => {
-    const user = import.meta.env.VITE_LOGIN_VISIT;
-    const pass = import.meta.env.VITE_PASS_VISIT;
-
-    const payload = {
-      email: user,
-      password: pass,
-      system: systemName,
-    };
-
-    await dispatch(login(payload));
-    navigate("/dashboard");
   };
 
   return (
@@ -76,6 +57,7 @@ const FormLogin = () => {
           type="submit"
         />
         {error && <span className="error-message-span">{error}</span>}
+        <a onClick={() => handleForgot("Forgot")}>esqueci a senha</a>
       </Formulario>
       <Button
         className="login-visit"

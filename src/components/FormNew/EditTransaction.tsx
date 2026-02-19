@@ -51,11 +51,9 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
   const onSubmit = (data: EditFormTransacao) => {
     const payload = {
       ...data,
-      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       id: selected?.id,
     };
-    transacaoUpdate.atualizarTransacao(payload);
-    reset();
+    transacaoUpdate.atualizarTransacao(payload).then(() => reset());
     setIsEditing(false);
   };
 

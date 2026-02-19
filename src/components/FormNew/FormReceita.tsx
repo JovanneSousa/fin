@@ -41,11 +41,9 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
   const onSubmit = (data: ReceitaFormData) => {
     const payload = {
       ...data,
-      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 0,
     };
-    criaTransacao(payload);
-    reset();
+    criaTransacao(payload).then(() => reset());
   };
 
   return (

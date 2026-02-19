@@ -9,7 +9,7 @@ import { ContainerFeedback, ProgressBar } from "./styles";
 import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   clearError as clearErrorCategories,
   clearSuccess as clearSucessCategories,
@@ -25,14 +25,16 @@ type FeedbackProps = {
   error?: string | null;
   info?: string;
   noButton?: boolean;
+  type?: "form" | "default";
 };
 
-export const Feedback: React.FC<FeedbackProps> = ({
+export const Feedback = ({
   info,
   error,
   success,
   noButton = false,
-}) => {
+  type = "default",
+}: FeedbackProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const duration = success ? 3000 : error ? 5000 : 10000;
   const [progress, setProgress] = useState(100);
@@ -60,7 +62,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
   }, [progress, dispatch]);
 
   return (
-    <ContainerFeedback>
+    <ContainerFeedback className={`${type == "form" && "feedback-container"}`}>
       {noButton === false ? (
         <Button
           children="X"

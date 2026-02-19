@@ -119,7 +119,7 @@ const useTransactions = () => {
     }
     return item;
   });
-  
+
   const itemsFiltrados = aplicaFiltroModal(
     filtroModal,
     aplicaFiltroTexto(hydratedItems, busca),
@@ -225,12 +225,12 @@ const useTransactions = () => {
   //   return criarFiltro(inicio, fim);
   // }, []);
 
-  const criaTransacao = (transacao: Transacao) => {
-    dispatch(createTransaction(transacao));
+  const criaTransacao = async (transacao: Transacao) => {
+    await dispatch(createTransaction(transacao)).unwrap();
   };
 
-  const atualizarTransacao = (transacao: Transacao) => {
-    dispatch(updateTransaction(transacao));
+  const atualizarTransacao = async (transacao: Transacao) => {
+    await dispatch(updateTransaction(transacao)).unwrap();
   };
 
   const transacaoCreate = { ...createTrancacao, criaTransacao };

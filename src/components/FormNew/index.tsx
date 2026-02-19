@@ -36,7 +36,7 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
   };
 
   const { itemById, transacaoCreate, transacaoUpdate } = useTransactions();
-  const { itemById: categoriaPorId } = useCategory();
+  const { itemById: categoriaPorId, atualizaCategoria } = useCategory();
 
   const title = {
     receita: "Nova Receita",
@@ -46,17 +46,25 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     editTransacao: "Editar Transação",
   };
 
-  const statuses = [itemById, transacaoCreate, transacaoUpdate, categoriaPorId];
+  const statuses = [
+    itemById,
+    transacaoCreate,
+    transacaoUpdate,
+    categoriaPorId,
+    atualizaCategoria,
+  ];
 
   const isLoading = statuses.some((s) => s.status == "loading");
   const isError = statuses.some((s) => s.status == "failed");
   const errorMessage = statuses.find((s) => s.error)?.error;
-  const isSuccess = [transacaoCreate, transacaoUpdate].some(
+  const isSuccess = [transacaoCreate, transacaoUpdate, atualizaCategoria].some(
     (s) => s.status == "succeeded",
   );
-  const successMessage = [transacaoCreate, transacaoUpdate].find(
-    (s) => s.success,
-  )?.success;
+  const successMessage = [
+    transacaoCreate,
+    transacaoUpdate,
+    atualizaCategoria,
+  ].find((s) => s.success)?.success;
 
   return (
     <NewSection>
@@ -71,15 +79,15 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
             icon="close"
           />
         </div>
-        {isLoading ? (
-          <Loader />
-        ) : isError ? (
-          <Feedback error={errorMessage} />
+
+        {isError ? (
+          <Feedback type="form" error={errorMessage} />
         ) : isSuccess ? (
-          <Feedback success={successMessage!} />
+          <Feedback type="form" success={successMessage!} />
         ) : (
-          Form[typeForm]
+          <>{isLoading && <Loader type="form" />}</>
         )}
+        {Form[typeForm]}
       </div>
     </NewSection>
   );

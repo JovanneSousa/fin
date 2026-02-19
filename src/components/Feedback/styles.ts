@@ -11,7 +11,6 @@ export const ContainerFeedback = styled.div`
 
   button {
     align-self: flex-end;
-    margin-bottom: auto;
     width: auto;
   }
 

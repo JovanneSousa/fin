@@ -36,12 +36,10 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
   const onSubmit = (data: DespesaFormData) => {
     const payload = {
       ...data,
-      dataMovimentacao: new Date(data.dataMovimentacao).toISOString(),
       type: 1,
       parcelas: data.isRecurring ? data.parcelas : undefined,
     };
-    criaTransacao(payload);
-    reset();
+    criaTransacao(payload).then(() => reset());
   };
 
   const isParcelado = watch("isRecurring");

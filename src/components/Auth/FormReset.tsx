@@ -26,9 +26,8 @@ const FormReset = ({ resetPassData }: AuthPageProps) => {
     resolver: yupResolver(resetPassSchema),
   });
 
-  const onSubmit = async (data: ResetPassFormData) => {
-    await redefinirSenha(data);
-    reset();
+  const onSubmit = (data: ResetPassFormData) => {
+    redefinirSenha(data).then(() => reset());
   };
 
   return (

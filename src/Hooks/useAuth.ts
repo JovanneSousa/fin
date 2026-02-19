@@ -32,7 +32,7 @@ const useAuth = () => {
 
   const error = register.error || login.error || forgot.error || reset.error;
 
-  const success = forgot.success || reset.success;
+  const success = forgot.success || reset.success || register.success;
 
   const logar = async (data: LoginFormData) => {
     const payload = {
@@ -53,7 +53,6 @@ const useAuth = () => {
       profile: "usuario",
     };
     await dispatch(registrarUsuario(payload)).unwrap();
-    navigate("/dashboard");
   };
 
   const loginTeste = async () => {
@@ -66,7 +65,7 @@ const useAuth = () => {
       system: systemName,
     };
 
-    await dispatch(logarUsuario(payload));
+    await dispatch(logarUsuario(payload)).unwrap();
     navigate("/dashboard");
   };
 

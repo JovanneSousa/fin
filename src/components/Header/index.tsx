@@ -7,6 +7,8 @@ import { logout } from "../../Store/reducers/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../Store";
+import useUser from "../../Hooks/useUser";
+import SkeletonCustom from "../SkeletonCustom";
 
 interface HeaderProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -21,6 +23,17 @@ const texto = {
 };
 
 const Header = ({ scrollRef, activeTabs }: HeaderProps) => {
+  const { fetch } = useUser();
+
+  const nome =
+    fetch.status == "loading" ? (
+      <SkeletonCustom />
+    ) : (
+      <p>
+        Olá, <span>{fetch.user?.nome}</span>
+      </p>
+    );
+
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const deslogar = () => {
@@ -52,9 +65,7 @@ const Header = ({ scrollRef, activeTabs }: HeaderProps) => {
       <div className="container">
         <div>
           <p className="title">{texto[activeTabs]}</p>
-          <p>
-            Olá, <span>{localStorage.getItem("user")}</span>
-          </p>
+          {nome}
         </div>
 
         <Button

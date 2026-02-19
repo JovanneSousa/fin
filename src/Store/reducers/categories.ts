@@ -8,7 +8,7 @@ import axios from "axios";
 import type { ResponsePayload } from "./transactions";
 import type { IconType } from "../../components/Icone";
 import type { CategoriaFormData } from "../../validations/categoriaSchema";
-import { logarUsuario, logout } from "./auth";
+import { logarUsuario } from "./auth";
 
 export interface ErrorResponse {
   success: boolean;
@@ -333,7 +333,6 @@ const categoriesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(logout, () => initialState)
       .addCase(logarUsuario.fulfilled, () => initialState)
       .addCase(getCategories.pending, (state) => {
         state.items.status = "loading";

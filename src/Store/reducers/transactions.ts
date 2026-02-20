@@ -277,6 +277,19 @@ const transactionSlice = createSlice({
   name: "transactions",
   initialState,
   reducers: {
+    limpaUpdateError(state) {
+      state.updateTransacao = initialState.updateTransacao;
+      console.log(state.updateTransacao);
+    },
+    limpaCreateError(state) {
+      state.createTrancacao = initialState.createTrancacao;
+    },
+    limpaGetPeriodoSelecionado(state) {
+      state.periodoSelecionado = initialState.periodoSelecionado;
+    },
+    limpaPeriodoComparativo(state) {
+      state.periodoComparativo = initialState.periodoComparativo;
+    },
     clearError(state) {
       state.createTrancacao.error = null;
       state.periodoSelecionado.error = null;
@@ -408,5 +421,12 @@ const transactionSlice = createSlice({
   },
 });
 
-export const { clearError, clearSuccess } = transactionSlice.actions;
+export const {
+  clearError,
+  clearSuccess,
+  limpaCreateError,
+  limpaGetPeriodoSelecionado,
+  limpaPeriodoComparativo,
+  limpaUpdateError,
+} = transactionSlice.actions;
 export default transactionSlice.reducer;

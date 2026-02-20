@@ -9,14 +9,13 @@ import { ContainerFeedback, ProgressBar } from "./styles";
 import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { clearError as clearErrorCategories } from "../../Store/reducers/categories";
 import {
-  clearError as clearErrorCategories,
-  clearSuccess as clearSucessCategories,
-} from "../../Store/reducers/categories";
-import {
-  clearError as clearErrorTransactions,
-  clearSuccess as clearSucessTransactions,
+  limpaCreateError,
+  limpaGetPeriodoSelecionado,
+  limpaPeriodoComparativo,
+  limpaUpdateError,
 } from "../../Store/reducers/transactions";
 import Button from "../Button";
 
@@ -26,6 +25,13 @@ type FeedbackProps = {
   info?: string;
   noButton?: boolean;
   type?: "form" | "default";
+  typeMessage?: FeedbackMessageType;
+  className?: string;
+};
+
+export type FeedbackMessageType = {
+  transactions?: "create" | "fetch" | "fetchComparativo" | "update";
+  categorys?: "create" | "fetch";
 };
 
 export const Feedback = ({
@@ -34,10 +40,44 @@ export const Feedback = ({
   success,
   noButton = false,
   type = "default",
+  typeMessage,
+  className,
 }: FeedbackProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const duration = success ? 3000 : error ? 5000 : 10000;
   const [progress, setProgress] = useState(100);
+
+  const limpaMensagem = useMemo(
+    () => ({
+      transactions: {
+        create: limpaCreateError,
+        update: limpaUpdateError,
+        fetch: limpaGetPeriodoSelecionado,
+        fetchComparativo: limpaPeriodoComparativo,
+      },
+      categorys: {
+        create: clearErrorCategories,
+        fetch: clearErrorCategories,
+      },
+    }),
+    [],
+  );
+
+  const limpaMensagens = () => {
+    console.log("Chamou a função");
+    console.log(typeMessage);
+    if (typeMessage) {
+      if (typeMessage.transactions) {
+        dispatch(limpaMensagem.transactions[typeMessage.transactions]());
+        console.log("chamou transações!");
+      }
+
+      if (typeMessage.categorys) {
+        dispatch(limpaMensagem.categorys[typeMessage.categorys]());
+        console.log("chamou categorias");
+      }
+    }
+  };
 
   useEffect(() => {
     if (success || error) {
@@ -53,28 +93,30 @@ export const Feedback = ({
   }, [success, error, duration]);
 
   useEffect(() => {
-    if (progress === 0) {
-      dispatch(clearErrorCategories());
-      dispatch(clearSucessCategories());
-      dispatch(clearErrorTransactions());
-      dispatch(clearSucessTransactions());
+    if (progress === 0 && typeMessage?.transactions) {
+      if (typeMessage.transactions) {
+        dispatch(limpaMensagem.transactions[typeMessage.transactions]());
+        console.log("chamou transações!");
+      }
+
+      if (typeMessage.categorys) {
+        dispatch(limpaMensagem.categorys[typeMessage.categorys]());
+        console.log("chamou categorias");
+      }
     }
-  }, [progress, dispatch]);
+  }, [progress, dispatch, typeMessage, limpaMensagem]);
 
   return (
-    <ContainerFeedback className={`${type == "form" && "feedback-container"}`}>
+    <ContainerFeedback
+      className={`${type == "form" && "feedback-container"} ${className}`}
+    >
       {noButton === false ? (
         <Button
-          children="X"
           bgColor={colors.lightGray}
           padding="small"
           type="button"
-          onClick={() => {
-            dispatch(clearErrorCategories());
-            dispatch(clearSucessCategories());
-            dispatch(clearErrorTransactions());
-            dispatch(clearSucessTransactions());
-          }}
+          onClick={() => limpaMensagens()}
+          icon="close"
         />
       ) : null}
       {success ? (

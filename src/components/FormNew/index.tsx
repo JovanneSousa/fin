@@ -1,6 +1,6 @@
 import { NewSection } from "./styles";
 import Loader from "../Loader";
-import Feedback from "../Feedback";
+import Feedback, { type FeedbackMessageType } from "../Feedback";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import FormCategoria from "./FormCategoria";
@@ -21,6 +21,15 @@ interface FormNewProps {
   onClose: () => void;
 }
 
+type StateType = {
+  state: {
+    status: "failed" | "succeeded" | "loading" | "idle";
+    error: string | null;
+    success?: string | null;
+  };
+  typeMessage: FeedbackMessageType;
+};
+
 export interface ChildrenFormProps {
   size: "small" | "default";
 }
@@ -34,7 +43,6 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     editCategoria: <EditCategory />,
     editTransacao: <EditTransaction onClose={onClose} />,
   };
-
   const { itemById, transacaoCreate, transacaoUpdate } = useTransactions();
   const { itemById: categoriaPorId, atualizaCategoria } = useCategory();
 
@@ -46,25 +54,37 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     editTransacao: "Editar Transação",
   };
 
-  const statuses = [
-    itemById,
-    transacaoCreate,
-    transacaoUpdate,
-    categoriaPorId,
-    atualizaCategoria,
+  const statusesWhitoutSuccess: StateType[] = [
+    { state: itemById, typeMessage: { transactions: "fetch" } },
+    { state: categoriaPorId, typeMessage: { transactions: "update" } },
   ];
 
-  const isLoading = statuses.some((s) => s.status == "loading");
-  const isError = statuses.some((s) => s.status == "failed");
-  const errorMessage = statuses.find((s) => s.error)?.error;
-  const isSuccess = [transacaoCreate, transacaoUpdate, atualizaCategoria].some(
-    (s) => s.status == "succeeded",
+  const statusesWhithSuccess: StateType[] = [
+    { state: transacaoCreate, typeMessage: { transactions: "create" } },
+    { state: transacaoUpdate, typeMessage: { transactions: "update" } },
+    { state: atualizaCategoria, typeMessage: { categorys: "create" } },
+  ];
+
+  const statuses = [...statusesWhithSuccess, ...statusesWhitoutSuccess];
+
+  // Erros
+  const isError = statuses.some((s) => s.state.status == "failed");
+  const errorStatus = statuses.find((s) => s.state.status == "failed");
+  const errorMessage = statuses.find((s) => s.state.error)?.state.error;
+
+  // Sucessos
+  const isSuccess = statusesWhithSuccess.some(
+    (s) => s.state.status == "succeeded",
   );
-  const successMessage = [
-    transacaoCreate,
-    transacaoUpdate,
-    atualizaCategoria,
-  ].find((s) => s.success)?.success;
+  const successStatus = statuses.find((s) => s.state.status == "succeeded");
+  const successMessage = statusesWhithSuccess.find((s) => s.state.success)
+    ?.state.success;
+
+  // Loading
+  const isLoading = statuses.some((s) => s.state.status == "loading");
+
+  const tipoMensagem: FeedbackMessageType | undefined =
+    errorStatus?.typeMessage ?? successStatus?.typeMessage;
 
   return (
     <NewSection>
@@ -81,12 +101,18 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
         </div>
 
         {isError ? (
-          <Feedback type="form" error={errorMessage} />
+          <Feedback
+            typeMessage={tipoMensagem}
+            type="form"
+            error={errorMessage}
+            className="teste"
+          />
         ) : isSuccess ? (
           <Feedback type="form" success={successMessage!} />
         ) : (
-          <>{isLoading && <Loader type="form" />}</>
+          isLoading && <Loader type="form" />
         )}
+
         {Form[typeForm]}
       </div>
     </NewSection>

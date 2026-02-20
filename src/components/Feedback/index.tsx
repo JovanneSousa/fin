@@ -10,7 +10,11 @@ import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
 import { useEffect, useMemo, useState } from "react";
-import { clearError as clearErrorCategories } from "../../Store/reducers/categories";
+import {
+  clearError as clearErrorCategories,
+  limpaCreate,
+  limpaUpdate,
+} from "../../Store/reducers/categories";
 import {
   limpaCreateError,
   limpaGetPeriodoSelecionado,
@@ -31,7 +35,7 @@ type FeedbackProps = {
 
 export type FeedbackMessageType = {
   transactions?: "create" | "fetch" | "fetchComparativo" | "update";
-  categorys?: "create" | "fetch";
+  categorys?: "create" | "update";
 };
 
 export const Feedback = ({
@@ -56,8 +60,9 @@ export const Feedback = ({
         fetchComparativo: limpaPeriodoComparativo,
       },
       categorys: {
-        create: clearErrorCategories,
+        create: limpaCreate,
         fetch: clearErrorCategories,
+        update: limpaUpdate,
       },
     }),
     [],

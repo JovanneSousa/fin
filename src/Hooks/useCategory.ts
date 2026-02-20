@@ -14,7 +14,7 @@ import type { CategoriaFormData } from "../validations/categoriaSchema";
 
 const useCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, icone, cores, itemById, update } = useSelector(
+  const { items, icone, cores, itemById, update, create } = useSelector(
     (state: RootReducer) => state.categories,
   );
 
@@ -54,6 +54,7 @@ const useCategory = () => {
   const categorias = { ...items, buscaCategorias };
 
   return {
+    create,
     categorias,
     atualizaCategoria,
     deletarCategoria,

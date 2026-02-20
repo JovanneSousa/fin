@@ -60,9 +60,11 @@ interface CategoriesState {
     error: string | null;
   };
 
-  loadingPost: boolean;
-  errorPost: string | null;
-  successPost: string | null;
+  create: {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+    success: string | null;
+  };
 
   loadingDelete: boolean;
   errorDelete: string | null;
@@ -100,9 +102,11 @@ export const initialState: CategoriesState = {
     error: null,
   },
 
-  loadingPost: false,
-  errorPost: null as string | null,
-  successPost: null as string | null,
+  create: {
+    status: "idle",
+    error: null,
+    success: null,
+  },
 
   loadingDelete: false,
   errorDelete: null as string | null,
@@ -295,6 +299,26 @@ const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {
+    limpaCores(state) {
+      state.cores = initialState.cores;
+    },
+    limpaIcone(state) {
+      state.icone = initialState.icone;
+    },
+    limpaUpdate(state) {
+      state.update = initialState.update;
+    },
+    limpaCreate(state) {
+      state.create = initialState.create;
+    },
+    limpaDelete(state) {
+      state.successDelete = initialState.successDelete;
+      state.errorDelete = initialState.errorDelete;
+      state.loadingDelete = initialState.loadingDelete;
+    },
+    limpaFetchId(state) {
+      state.itemById = initialState.itemById;
+    },
     clearError(state) {
       state.items.status = "idle";
       state.items.error = null;
@@ -308,8 +332,8 @@ const categoriesSlice = createSlice({
       state.itemById.status = "idle";
       state.itemById.error = null;
 
-      state.errorPost = null;
-      state.loadingPost = false;
+      state.create.status = "idle";
+      state.create.error = null;
 
       state.errorDelete = null;
       state.loadingDelete = false;
@@ -325,7 +349,7 @@ const categoriesSlice = createSlice({
 
       state.itemById.status = "idle";
       state.successDelete = null;
-      state.successPost = null;
+      state.create.success = null;
 
       state.update.status = "idle";
       state.update.success = null;
@@ -352,27 +376,22 @@ const categoriesSlice = createSlice({
       })
 
       .addCase(postCategories.pending, (state) => {
-        state.loadingPost = true;
-        state.errorPost = null;
+        state.create.status = "loading";
+        state.create.error = null;
       })
-      .addCase(
-        postCategories.fulfilled,
-        (state, action: PayloadAction<ResponsePayload<Category>>) => {
-          state.loadingPost = false;
+      .addCase(postCategories.fulfilled, (state, action) => {
+        state.create.status = "succeeded";
 
-          const categoria = action.payload.data;
-          if (!categoria) return;
+        const categoria = action.payload.data;
+        if (!categoria) return;
 
-          const isReceita = categoria.type === 1;
-          (isReceita ? state.items.receita : state.items.despesa).push(
-            categoria,
-          );
-          state.successPost = "Categoria adicionada com sucesso!";
-        },
-      )
+        const isReceita = categoria.type === 1;
+        (isReceita ? state.items.receita : state.items.despesa).push(categoria);
+        state.create.success = "Categoria adicionada com sucesso!";
+      })
       .addCase(postCategories.rejected, (state, action) => {
-        state.loadingPost = false;
-        state.errorPost = action.payload || "Erro ao adicionar categoria";
+        state.create.status = "failed";
+        state.create.error = action.payload || "Erro ao adicionar categoria";
       })
 
       .addCase(deleteCategories.pending, (state) => {
@@ -459,5 +478,14 @@ const categoriesSlice = createSlice({
   },
 });
 
-export const { clearError, clearSuccess } = categoriesSlice.actions;
+export const {
+  clearError,
+  clearSuccess,
+  limpaCores,
+  limpaCreate,
+  limpaDelete,
+  limpaFetchId,
+  limpaIcone,
+  limpaUpdate,
+} = categoriesSlice.actions;
 export default categoriesSlice.reducer;

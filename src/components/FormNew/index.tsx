@@ -44,7 +44,7 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
     editTransacao: <EditTransaction onClose={onClose} />,
   };
   const { itemById, transacaoCreate, transacaoUpdate } = useTransactions();
-  const { itemById: categoriaPorId, atualizaCategoria } = useCategory();
+  const { itemById: categoriaPorId, atualizaCategoria, create } = useCategory();
 
   const title = {
     receita: "Nova Receita",
@@ -62,7 +62,8 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
   const statusesWhithSuccess: StateType[] = [
     { state: transacaoCreate, typeMessage: { transactions: "create" } },
     { state: transacaoUpdate, typeMessage: { transactions: "update" } },
-    { state: atualizaCategoria, typeMessage: { categorys: "create" } },
+    { state: atualizaCategoria, typeMessage: { categorys: "update" } },
+    { state: create, typeMessage: { categorys: "create" } },
   ];
 
   const statuses = [...statusesWhithSuccess, ...statusesWhitoutSuccess];

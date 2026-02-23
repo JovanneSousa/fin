@@ -9,6 +9,7 @@ import type { ResponsePayload } from "./transactions";
 import type { IconType } from "../../components/Icone";
 import type { CategoriaFormData } from "../../validations/categoriaSchema";
 import { logarUsuario } from "./auth";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 export interface ErrorResponse {
   success: boolean;
@@ -31,7 +32,9 @@ export interface Category {
   name: string;
   type: number;
   cor: Cor;
+  corId: string;
   icone: Icone;
+  iconId: string;
 }
 
 interface CategoriesState {
@@ -365,8 +368,12 @@ const categoriesSlice = createSlice({
       .addCase(
         getCategories.fulfilled,
         (state, action: PayloadAction<ResponsePayload<Category[]>>) => {
-          state.items.receita = action.payload.data.filter((c) => c.type === 1);
-          state.items.despesa = action.payload.data.filter((c) => c.type === 0);
+          state.items.receita = action.payload.data.filter(
+            (c) => c.type === TransactionType.Renda,
+          );
+          state.items.despesa = action.payload.data.filter(
+            (c) => c.type === TransactionType.Despesa,
+          );
           state.items.status = "succeeded";
         },
       )

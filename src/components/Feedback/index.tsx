@@ -69,17 +69,13 @@ export const Feedback = ({
   );
 
   const limpaMensagens = () => {
-    console.log("Chamou a função");
-    console.log(typeMessage);
     if (typeMessage) {
       if (typeMessage.transactions) {
         dispatch(limpaMensagem.transactions[typeMessage.transactions]());
-        console.log("chamou transações!");
       }
 
       if (typeMessage.categorys) {
         dispatch(limpaMensagem.categorys[typeMessage.categorys]());
-        console.log("chamou categorias");
       }
     }
   };
@@ -98,15 +94,13 @@ export const Feedback = ({
   }, [success, error, duration]);
 
   useEffect(() => {
-    if (progress === 0 && typeMessage?.transactions) {
+    if (progress === 0 && typeMessage != null) {
       if (typeMessage.transactions) {
         dispatch(limpaMensagem.transactions[typeMessage.transactions]());
-        console.log("chamou transações!");
       }
 
       if (typeMessage.categorys) {
         dispatch(limpaMensagem.categorys[typeMessage.categorys]());
-        console.log("chamou categorias");
       }
     }
   }, [progress, dispatch, typeMessage, limpaMensagem]);

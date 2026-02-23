@@ -109,7 +109,11 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
             className="teste"
           />
         ) : isSuccess ? (
-          <Feedback type="form" success={successMessage!} />
+          <Feedback
+            typeMessage={tipoMensagem}
+            type="form"
+            success={successMessage!}
+          />
         ) : (
           isLoading && <Loader type="form" />
         )}

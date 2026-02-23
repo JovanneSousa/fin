@@ -13,6 +13,7 @@ import { StyledIconForm } from "../Formulario/styles";
 import type { ChildrenFormProps } from ".";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 const FormDespesa = ({ size }: ChildrenFormProps) => {
   const {
@@ -36,7 +37,7 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
   const onSubmit = (data: DespesaFormData) => {
     const payload = {
       ...data,
-      type: 1,
+      type: TransactionType.Despesa,
       parcelas: data.isRecurring ? data.parcelas : undefined,
     };
     criaTransacao(payload).then(() => reset());

@@ -10,6 +10,7 @@ import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import { StyledIconForm } from "../Formulario/styles";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 interface TransacaoDetailsProps {
   onClose: () => void;
@@ -34,7 +35,8 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
 
   const selected = itemById.item;
 
-  const schema = selected?.type === 0 ? receitaSchema : despesaSchema;
+  const schema =
+    selected?.type === TransactionType.Renda ? receitaSchema : despesaSchema;
 
   const {
     register,
@@ -50,6 +52,7 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
     const payload = {
       ...data,
       id: selected?.id,
+      type: selected?.type,
     };
     transacaoUpdate.atualizarTransacao(payload).then(() => reset());
     setIsEditing(false);

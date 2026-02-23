@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootReducer } from "../Store";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   deleteCategories,
   getCategorieById,
@@ -9,6 +9,7 @@ import {
   getIcones,
   postCategories,
   updateCategoria,
+  type Category,
 } from "../Store/reducers/categories";
 import type { CategoriaFormData } from "../validations/categoriaSchema";
 
@@ -16,6 +17,24 @@ const useCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, icone, cores, itemById, update, create } = useSelector(
     (state: RootReducer) => state.categories,
+  );
+
+  const hydrateItems = useCallback(
+    (categoria: Category[]): Category[] => {
+      const iconMap = new Map(icone.item.map((i) => [i.id, i]));
+      const corMap = new Map(cores.item.map((c) => [c.id, c]));
+
+      return categoria.map((c) => {
+        if (c.icone && c.cor) return c;
+
+        return {
+          ...c,
+          icone: c.icone ?? iconMap.get(c.iconId),
+          cor: c.cor ?? corMap.get(c.corId),
+        };
+      });
+    },
+    [icone.item, cores.item],
   );
 
   const buscarIcones = useCallback(() => {
@@ -51,7 +70,19 @@ const useCategory = () => {
 
   const atualizaCategoria = { ...update, atualizarCategoria };
 
-  const categorias = { ...items, buscaCategorias };
+  const categorias = {
+    receita: useMemo(
+      () => hydrateItems(items.receita),
+      [items.receita, hydrateItems],
+    ),
+    despesa: useMemo(
+      () => hydrateItems(items.despesa),
+      [items.despesa, hydrateItems],
+    ),
+    status: items.status,
+    error: items.error,
+    buscaCategorias,
+  };
 
   return {
     create,

@@ -10,10 +10,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useCategory from "../../Hooks/useCategory";
 import SkeletonCustom from "../SkeletonCustom";
 import useClickOutside from "../../Hooks/useClickOutside";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 type CategoriaFormData = {
   name: string;
-  type: number;
+  type: TransactionType;
   iconId: string;
   corId: string;
 };
@@ -105,8 +106,8 @@ const FormCategoria = () => {
         <div className="input-wrapper">
           <label htmlFor="categoria-desp">Tipo</label>
           <select id="categoria-desp" {...register("type")}>
-            <option value={1}>Receita</option>
-            <option value={0}>Despesa</option>
+            <option value={TransactionType.Renda}>Receita</option>
+            <option value={TransactionType.Despesa}>Despesa</option>
           </select>
           <span>{errors.type?.message}</span>
         </div>

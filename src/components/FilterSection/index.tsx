@@ -5,6 +5,7 @@ import ButtonPill from "../ButtonPill";
 import useTransactions from "../../Hooks/useTransactions";
 import useCategory from "../../Hooks/useCategory";
 import { FilterContainer } from "./styles";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 interface FilterSectionProps {
   onClose: () => void;
@@ -30,11 +31,15 @@ const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
   } = useTransactions();
 
   const receitaFiltrada = receita.filter((c) => {
-    return items.some((i) => i.type === 0 && i.categoriaId === c.id);
+    return items.some(
+      (i) => i.type === TransactionType.Renda && i.categoriaId === c.id,
+    );
   });
 
   const despesaFiltrada = despesa.filter((d) => {
-    return items.some((i) => i.type === 1 && i.categoria?.id === d.id);
+    return items.some(
+      (i) => i.type === TransactionType.Despesa && i.categoria?.id === d.id,
+    );
   });
 
   const handleCategoryToggle = (id: string) => {

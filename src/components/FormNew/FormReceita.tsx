@@ -10,6 +10,7 @@ import { StyledIconForm } from "../Formulario/styles";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 type ReceitaFormData = {
   titulo: string;
@@ -41,7 +42,7 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
   const onSubmit = (data: ReceitaFormData) => {
     const payload = {
       ...data,
-      type: 0,
+      type: TransactionType.Renda,
     };
     criaTransacao(payload).then(() => reset());
   };

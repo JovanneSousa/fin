@@ -4,6 +4,7 @@ import type { Category, ErrorResponse } from "./categories";
 import axios from "axios";
 import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
 import { logarUsuario } from "./auth";
+import type { TransactionType } from "../../Utils/Enums/Transacao";
 
 export interface TransactionFilter {
   startDate: string;
@@ -22,7 +23,7 @@ export type Transacao = {
   categoriaId: string;
   dataMovimentacao: string;
   isRecurring: boolean;
-  type?: number;
+  type?: TransactionType;
   categoria?: Category;
   parcelas?: number | undefined;
 };

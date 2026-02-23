@@ -32,6 +32,7 @@ import Feedback from "../Feedback";
 import { formataDataExtenso } from "../../Utils/Datas";
 import FilterSection from "../FilterSection";
 import { useState } from "react";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -78,6 +79,8 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     </tr>
   );
 
+  console.log(itemsPaginados);
+
   const conteudoTabela = () => {
     if (statusPeriodo == "failed")
       return <Feedback error={errorPeriodo} noButton={true} />;
@@ -110,7 +113,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
               <p className="cat">{item.categoria?.name || "Sem categoria"}</p>
             </td>
             <td
-              className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}
+              className={`${item.type == TransactionType.Renda ? "receita" : "despesa"}`}
             >
               {formatCurrency(item.valor)}
             </td>
@@ -150,7 +153,9 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
             <p>"Sem categoria"</p>
           )}
         </td>
-        <td className={`${item.categoria?.type == 0 ? "despesa" : "receita"}`}>
+        <td
+          className={`${item.type == TransactionType.Despesa ? "despesa" : "receita"}`}
+        >
           {formatCurrency(item.valor)}
         </td>
         <td>

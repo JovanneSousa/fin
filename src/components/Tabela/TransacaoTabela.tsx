@@ -232,6 +232,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Button
+                className="transacao"
                 onClick={() => setIsFilterActive(true)}
                 bgColor={colors.lightGray}
                 icon="filter"

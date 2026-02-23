@@ -107,7 +107,8 @@ export const StyledTable = styled.table.withConfig({
       }
     }
 
-    td, tr {
+    td,
+    tr {
       border: none;
     }
   }
@@ -156,9 +157,12 @@ const PerifericosTabela = styled.div`
 
   button {
     margin: 0;
-    height: 44px;
-    width: 44px;
-    border-radius: 50%;
+
+    &.transacao {
+      height: 44px;
+      width: 44px;
+      border-radius: 50%;
+    }
   }
 
   .input-wrapper {

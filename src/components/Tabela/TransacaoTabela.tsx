@@ -79,8 +79,6 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     </tr>
   );
 
-  console.log(itemsPaginados);
-
   const conteudoTabela = () => {
     if (statusPeriodo == "failed")
       return <Feedback error={errorPeriodo} noButton={true} />;

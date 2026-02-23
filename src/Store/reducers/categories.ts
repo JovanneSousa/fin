@@ -31,7 +31,9 @@ export interface Category {
   name: string;
   type: number;
   cor: Cor;
+  corId: string;
   icone: Icone;
+  iconId: string;
 }
 
 interface CategoriesState {

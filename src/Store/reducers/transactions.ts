@@ -279,7 +279,6 @@ const transactionSlice = createSlice({
   reducers: {
     limpaUpdateError(state) {
       state.updateTransacao = initialState.updateTransacao;
-      console.log(state.updateTransacao);
     },
     limpaCreateError(state) {
       state.createTrancacao = initialState.createTrancacao;

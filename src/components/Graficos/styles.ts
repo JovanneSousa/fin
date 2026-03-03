@@ -11,7 +11,7 @@ export const Title = styled.div.withConfig({
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  color: ${colors.rosa};
+  color: ${colors.gray};
   font-size: 24px;
   font-weight: bold;
   align-self: flex-start;

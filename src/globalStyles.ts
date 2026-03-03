@@ -24,7 +24,7 @@ const COLORS_WHITE = {
   gray: "#666666",
   lightGray: "#e6e6e6",
   lighterGray: "#f5f5f5",
-  shiningGray: "#f9f9f9",
+  shiningGray: "#e6e6e6",
   darkGray: "#333333",
 };
 const COLORS_BLACK = {

@@ -52,12 +52,7 @@ export const StyledTable = styled.table.withConfig({
 
   tr {
     height: ${({ rowHeight }) => `${rowHeight}px`};
-
-    transition: background-color ease .3s;
-
-    &:hover {
-      background-color: ${colors.shiningGray};
-    }
+    transition: background-color ease 0.3s;
   }
 
   thead,
@@ -108,6 +103,14 @@ export const StyledTable = styled.table.withConfig({
     font-size: 12px;
   }
 
+  @media (min-width: ${breakpoints.desktop}) {
+    tr {
+      &:hover {
+        background-color: ${colors.shiningGray};
+      }
+    }
+  }
+
   @media (max-width: ${breakpoints.tablet}) {
     thead {
       background-color: ${colors.lightGray};
@@ -118,7 +121,7 @@ export const StyledTable = styled.table.withConfig({
       }
     }
 
-    td,
+    tr td,
     tr {
       border: none;
     }

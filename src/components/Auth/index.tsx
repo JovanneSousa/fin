@@ -65,7 +65,7 @@ const Auth = ({ resetPassData }: AuthPageProps) => {
 
   return (
     <div className="container">
-      <LoginSection>
+      <LoginSection className="shadow">
         <div className="img">
           <img src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" />
         </div>

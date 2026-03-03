@@ -69,6 +69,7 @@ const GraficoRosca = () => {
         <p>{titulo[typeCategoria]}</p>
         <div className="button-container">
           <Button
+          className="shadow"
             bgColor={
               typeCategoria == "despesa" ? colors.vermelho : colors.lightGray
             }
@@ -78,6 +79,7 @@ const GraficoRosca = () => {
             Despesa
           </Button>
           <Button
+          className="shadow"
             bgColor={
               typeCategoria == "receita" ? colors.verde : colors.lightGray
             }
@@ -88,7 +90,7 @@ const GraficoRosca = () => {
           </Button>
         </div>
       </Title>
-      <div className="infos-container">
+      <div className="infos-container shadow">
         {isLoading && <Loader legenda={false} />}
         {isEmpty && <Feedback info="Nenhum dado encontrado" noButton={true} />}
         {isError && <Feedback error={errorPeriodo} noButton={true} />}

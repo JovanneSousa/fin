@@ -55,7 +55,7 @@ const GraficoBarras = () => {
       <Title graph="bar">
         <p>Visão Geral</p>
       </Title>
-      <div className="infos-container">
+      <div className="infos-container shadow">
         {isLoading && <Loader legenda={false} />}
 
         {isError && <Feedback error={errorPeriodo} noButton={true} />}

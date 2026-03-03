@@ -22,7 +22,11 @@ export const ComparativoSeletor = ({ filtros }: BaseSeletorProps) => {
   };
 
   return (
-    <SeletorSection page="comparativo" positionTitle="space-between">
+    <SeletorSection
+      className="shadow"
+      page="comparativo"
+      positionTitle="space-between"
+    >
       <div className="container-title">
         <div className="title-mes">
           <p>

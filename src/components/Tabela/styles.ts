@@ -9,6 +9,11 @@ interface TableProps {
   tableHeight: string;
 }
 
+export const TableWrapper = styled.div`
+  border-radius: 16px;
+  overflow: hidden;
+`;
+
 export const StyledTable = styled.table.withConfig({
   shouldForwardProp: (props) =>
     !["rowHeight", "isMobile", "tableHeight"].includes(props),
@@ -172,7 +177,6 @@ const PerifericosTabela = styled.div`
 `;
 
 export const RodapeTabela = styled(PerifericosTabela)`
-  border-radius: 0 0 16px 16px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -213,7 +217,6 @@ interface Props {
 export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
   shouldForwardProp: (prop) => !["isSearching", "isMobile"].includes(prop),
 })<Props>`
-  border-radius: 16px 16px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

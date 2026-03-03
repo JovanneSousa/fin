@@ -69,7 +69,7 @@ const GraficoLinha = () => {
         <Seletor page="comparativo" />
       </TitleLinha>
 
-      <div className="infos-container">
+      <div className="infos-container shadow">
         {isLoading && <Loader />}
 
         {isError && <Feedback error={errorComparativo} noButton={true} />}

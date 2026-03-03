@@ -40,6 +40,7 @@ export const SideBarSection = styled.aside.withConfig({
     align-items: center;
     align-self: flex-end;
     cursor: pointer;
+    z-index: 1;
 
     opacity: 0;
     pointer-events: none;

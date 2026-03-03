@@ -8,6 +8,7 @@ export const BarContainer = styled.section`
   align-items: center;
   height: 100%;
   grid-area: a;
+  padding: 8px;
 
   .infos-container,
   .legenda-container {

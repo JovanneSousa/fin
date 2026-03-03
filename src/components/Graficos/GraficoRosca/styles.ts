@@ -8,6 +8,8 @@ interface ContainerCorProps {
 export const GraficoRoscaContainer = styled.section`
   grid-area: b;
 
+  padding: 8px;
+
   .infos-container,
   .legenda-container,
   .legenda-item {

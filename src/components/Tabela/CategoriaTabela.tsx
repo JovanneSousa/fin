@@ -6,6 +6,7 @@ import {
   StyledIcon,
   StyledTable,
   StyledTopoTabela,
+  TableWrapper,
 } from "./styles";
 import {
   faCircleInfo,
@@ -120,7 +121,7 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
   };
 
   return (
-    <>
+    <TableWrapper className="shadow">
       <StyledTopoTabela
         isMobile
         onClick={fechaBusca}
@@ -200,6 +201,6 @@ export const CategoriaTabela = ({ type }: TabelaProps) => {
             : categorias.receitaPaginada
         }
       />
-    </>
+    </TableWrapper>
   );
 };

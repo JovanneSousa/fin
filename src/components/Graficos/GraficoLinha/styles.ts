@@ -6,6 +6,8 @@ import { Title } from "../styles";
 export const GraficoLinhaContainer = styled.section`
   grid-area: c;
 
+  padding: 8px;
+
   .infos-container,
   .legenda-container,
   .legenda-item {
@@ -61,6 +63,10 @@ export const StyledLineChart = styled(LineChart)`
 `;
 
 export const TitleLinha = styled(Title)`
+  section {
+    max-width: 70%;
+  }
+
   @media (max-width: ${breakpoints.tablet}) {
     flex-direction: column;
 

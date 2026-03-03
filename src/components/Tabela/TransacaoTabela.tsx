@@ -10,6 +10,7 @@ import {
   StyledIcon,
   StyledTable,
   StyledTopoTabela,
+  TableWrapper,
 } from "./styles";
 import {
   faCircleInfo,
@@ -202,7 +203,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
   };
 
   return (
-    <>
+    <TableWrapper className="shadow">
       <StyledTopoTabela
         isMobile={isMobile}
         isSearching={isSearching}
@@ -288,7 +289,7 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
         />
       </Modal>
       <RodapeTabelas paginacao={paginacao} />
-    </>
+    </TableWrapper>
   );
 };
 

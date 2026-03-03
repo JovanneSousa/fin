@@ -110,7 +110,7 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 body {
-    background: ${colors.gradient};
+    background: ${colors.shiningGray};
     background-repeat: no-repeat;
     min-height: 100vh;
     position: relative;

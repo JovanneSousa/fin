@@ -66,13 +66,14 @@ export const TitleLinha = styled(Title)`
   section {
     max-width: 70%;
   }
-
+  
   @media (max-width: ${breakpoints.tablet}) {
     flex-direction: column;
 
     section {
       display: block;
       padding: 8px 16px;
+      max-width: 100%;
 
       .container-pill {
         justify-content: space-between;

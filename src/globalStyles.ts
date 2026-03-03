@@ -24,7 +24,7 @@ const COLORS_WHITE = {
   gray: "#666666",
   lightGray: "#e6e6e6",
   lighterGray: "#f5f5f5",
-  shiningGray: "#e6e6e6",
+  shiningGray: "#f9f9f9",
   darkGray: "#333333",
 };
 const COLORS_BLACK = {
@@ -37,7 +37,7 @@ const COLORS_BLACK = {
   darkGray: "#eaeaea",
 };
 export const colors =
-  tema === "dark"
+  tema == "dark"
     ? { ...BASE_COLORS, ...COLORS_BLACK }
     : { ...BASE_COLORS, ...COLORS_WHITE };
 

@@ -41,46 +41,6 @@ export const colors =
     ? { ...BASE_COLORS, ...COLORS_BLACK }
     : { ...BASE_COLORS, ...COLORS_WHITE };
 
-export const darkColors = {
-  /* Base */
-  background: "#121212", // fundo principal
-  surface: "#1e1e1e", // cards, modais
-  surfaceAlt: "#252525", // hover, áreas elevadas
-
-  /* Texto */
-  textPrimary: "#eaeaea", // texto principal
-  textSecondary: "#b3b3b3", // texto secundário
-  textDisabled: "#7a7a7a",
-
-  /* Cinzas */
-  gray: "#9e9e9e",
-  darkGray: "#2c2c2c",
-  darkerGray: "#1a1a1a",
-
-  /* Brand / Destaque */
-  rosa: "#d16cc8", // rosa suavizado
-  roxo: "#5c6ee5", // roxo menos agressivo
-  gradient: "linear-gradient(-135deg, #d16cc8, #5c6ee5)",
-
-  /* Feedback */
-  verde: "#6fcf97",
-  vermelho: "#eb5757",
-  azul: "#56ccf2",
-  laranja: "#f2c94c",
-
-  /* Backgrounds de feedback */
-  verdeClaro: "rgba(111, 207, 151, 0.15)",
-  vermelhoClaro: "rgba(235, 87, 87, 0.15)",
-
-  /* Outros */
-  branco: "#ffffff",
-  preto: "#000000",
-  transparent: "transparent",
-
-  /* Sombra */
-  shadow: "0 4px 12px rgba(0, 0, 0, 0.6)",
-};
-
 export const IconBox = styled.div<{ color: string }>`
   width: 40px;
   height: 40px;

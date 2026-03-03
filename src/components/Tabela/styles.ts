@@ -52,6 +52,12 @@ export const StyledTable = styled.table.withConfig({
 
   tr {
     height: ${({ rowHeight }) => `${rowHeight}px`};
+
+    transition: background-color ease .3s;
+
+    &:hover {
+      background-color: ${colors.shiningGray};
+    }
   }
 
   thead,

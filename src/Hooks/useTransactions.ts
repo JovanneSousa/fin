@@ -12,6 +12,7 @@ import {
 } from "../Store/reducers/transactions";
 import useCategory from "./useCategory";
 import { normalizaTexto } from "../Utils/text";
+import { TransactionType } from "../Utils/Enums/Transacao";
 
 interface Filters {
   categories: string[];
@@ -113,7 +114,10 @@ const useTransactions = () => {
 
   const hydratedItems = filtro.map((item) => {
     if (!item.categoria) {
-      const source = item.type === 0 ? categorias.receita : categorias.despesa;
+      const source =
+        item.type === TransactionType.Renda
+          ? categorias.receita
+          : categorias.despesa;
       const categoria = source.find((c) => c.id === item.categoriaId);
       return { ...item, categoria };
     }

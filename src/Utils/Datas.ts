@@ -19,6 +19,6 @@ export const formataDataExtenso = (dataPuro: Date | string) => {
     month: "short",
     timeZone: "UTC",
   });
-  const dia = data.getDate();
+  const dia = data.getUTCDate();
   return `${dia} de ${mes}`;
 };

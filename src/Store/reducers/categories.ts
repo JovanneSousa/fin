@@ -373,7 +373,7 @@ const categoriesSlice = createSlice({
           );
           state.items.despesa = action.payload.data.filter(
             (c) => c.type === TransactionType.Despesa,
-          );
+            );
           state.items.status = "succeeded";
         },
       )

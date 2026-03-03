@@ -62,16 +62,18 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
               {isOpen && <p className="text-container">Categorias</p>}
             </S.StyledLink>
           </li>
-          <li className={activeTab == "planejamento" ? "is-active" : ""}>
-            <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
-              <S.StyledIcon padding="default" size="lg" icon={faFlag} />
-              {isOpen && <p className="text-container">Planejamento</p>}
-            </S.StyledLink>
-          </li>
+          {!isMobile && (
+            <li className={activeTab == "planejamento" ? "is-active" : ""}>
+              <S.StyledLink isOpen={isOpen} to={"/dashboard"}>
+                <S.StyledIcon padding="default" size="lg" icon={faFlag} />
+                {isOpen && <p className="text-container">Planejamento</p>}
+              </S.StyledLink>
+            </li>
+          )}
           <li>
             <InputToggle
               background={colors.defaultBackgroundColor}
-              label="Modo Escuro"
+              label={!isMobile ? "Modo Escuro" : ""}
             />
           </li>
         </ul>

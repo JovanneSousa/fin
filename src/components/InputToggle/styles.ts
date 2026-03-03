@@ -1,13 +1,12 @@
-import styled from 'styled-components'
-import { colors } from '../../globalStyles'
-
+import styled from "styled-components";
+import { breakpoints, colors } from "../../globalStyles";
 
 interface InputProps {
-  color: string
+  color: string;
 }
 
 export const Input = styled.div.withConfig({
-  shouldForwardProp: (props) => props !== 'color'
+  shouldForwardProp: (props) => props !== "color",
 })<InputProps>`
   display: flex;
   justify-content: space-between;
@@ -17,7 +16,6 @@ export const Input = styled.div.withConfig({
   padding: 12px 24px;
   font-size: 16px;
   width: 100%;
-    
 
   .switch {
     position: relative;
@@ -44,7 +42,7 @@ export const Input = styled.div.withConfig({
 
     .slider::before {
       position: absolute;
-      content: '';
+      content: "";
       height: 14px;
       width: 14px;
       left: 3px;
@@ -62,4 +60,8 @@ export const Input = styled.div.withConfig({
       transform: translateX(25px);
     }
   }
-`
+
+  @media (max-width: ${breakpoints.tablet}) {
+    padding-left: 0;
+  }
+`;

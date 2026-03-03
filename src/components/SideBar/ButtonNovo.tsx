@@ -40,6 +40,7 @@ const ButtonNovo = ({ isOpen }: ButtonNovoProps) => {
     <S.ButtonContainer>
       {!isMobile && isOpen ? (
         <Button
+          className="shadow"
           onClick={() => setIsNewOpen(true)}
           padding="small"
           type="button"
@@ -50,6 +51,7 @@ const ButtonNovo = ({ isOpen }: ButtonNovoProps) => {
         </Button>
       ) : (
         <Button
+          className="shadow"
           onClick={() => setIsNewOpen(true)}
           padding="small"
           type="button"

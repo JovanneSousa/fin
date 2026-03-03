@@ -26,7 +26,7 @@ const InputToggle = ({ label, background }: InputToggleProps) => {
     <Input color={background}>
       {label && <span className="label">{label}</span>}
       <label className="switch" htmlFor="switch">
-        <input
+        <input 
           onChange={
             isDark == "dark" ? () => switchToLight() : () => switchToDark()
           }
@@ -34,7 +34,7 @@ const InputToggle = ({ label, background }: InputToggleProps) => {
           type="checkbox"
           id="switch"
         />
-        <span className="slider"></span>
+        <span  className="slider shadow"></span>
       </label>
     </Input>
   );

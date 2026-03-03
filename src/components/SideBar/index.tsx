@@ -10,6 +10,8 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ButtonNovo from "./ButtonNovo";
 import useIsMobile from "../../Hooks/useIsMobile";
+import InputToggle from "../InputToggle";
+import { colors } from "../../globalStyles";
 interface SideBarProps {
   activeTab: Tabs;
 }
@@ -66,9 +68,12 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
               {isOpen && <p className="text-container">Planejamento</p>}
             </S.StyledLink>
           </li>
-          {/* <li>
-            <InputToggle background={colors.defaultBackgroundColor} label="Modo Escuro"/>
-          </li> */}
+          <li>
+            <InputToggle
+              background={colors.defaultBackgroundColor}
+              label="Modo Escuro"
+            />
+          </li>
         </ul>
       </nav>
     </S.SideBarSection>

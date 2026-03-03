@@ -18,6 +18,7 @@ const BASE_COLORS = {
   verdeClaro: "#e6f4ea",
   vermelhoClaro: "#fde8ea",
 };
+
 const COLORS_WHITE = {
   textColor: "#000",
   defaultBackgroundColor: "#fff",
@@ -27,6 +28,7 @@ const COLORS_WHITE = {
   shiningGray: "#f9f9f9",
   darkGray: "#333333",
 };
+
 const COLORS_BLACK = {
   textColor: "#eaeaea",
   defaultBackgroundColor: "#141414",
@@ -36,6 +38,7 @@ const COLORS_BLACK = {
   shiningGray: "#0A0A0A",
   darkGray: "#eaeaea",
 };
+
 export const colors =
   tema == "dark"
     ? { ...BASE_COLORS, ...COLORS_BLACK }

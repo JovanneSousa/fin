@@ -14,8 +14,9 @@ export const Input = styled.div.withConfig({
   align-items: center;
   font-weight: bold;
   background-color: ${({ color }) => color};
-  padding: 8px;
+  padding: 12px 24px;
   font-size: 16px;
+  width: 100%;
     
 
   .switch {

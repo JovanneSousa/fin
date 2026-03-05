@@ -7,12 +7,14 @@ import {
 import {
   CloseBox,
   DetailBox,
+  StyledArrowFilter,
   StyledIcon,
   StyledTable,
   StyledTopoTabela,
   TableWrapper,
 } from "./styles";
 import {
+  faArrowDown,
   faCircleInfo,
   faCircleXmark,
   faMagnifyingGlass,
@@ -34,6 +36,12 @@ import { formataDataExtenso } from "../../Utils/Datas";
 import FilterSection from "../FilterSection";
 import { useState } from "react";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import type { TiposColuna } from "../../Hooks/useTransactions";
+
+interface ColunaTabela {
+  key: TiposColuna;
+  label: string;
+}
 
 const TransacaoTabela = ({ type }: TabelaProps) => {
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -54,7 +62,8 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     filtros,
   } = useTransactionTable();
 
-  const { busca, setBusca, setFiltersModal } = filtros;
+  const { busca, setBusca, setFiltersModal, filtroTabela, toggleFiltroTabela } =
+    filtros;
 
   const {
     itemsPaginados,
@@ -62,6 +71,13 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     isMobile,
     linhas: { alturaLinha, tamanhoPadraoLinha },
   } = paginacao;
+
+  const valoresTituloTabela: ColunaTabela[] = [
+    { key: "data", label: "Data" },
+    { key: "descricao", label: "Descrição" },
+    { key: "categoria", label: "Categoria" },
+    { key: "valor", label: "Valor" },
+  ];
 
   const titulosTabela = isMobile ? (
     <tr>
@@ -72,10 +88,17 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
     </tr>
   ) : (
     <tr>
-      <th>Data</th>
-      <th>Descrição</th>
-      <th>Categoria</th>
-      <th>Valor</th>
+      {valoresTituloTabela.map((t) => (
+        <th key={t.key}>
+          {t.label}{" "}
+          <StyledArrowFilter
+            isActive={filtroTabela.isActive == t.key}
+            icon={faArrowDown}
+            className={filtroTabela.type == "desc" ? "" : "rotate"}
+            onClick={() => toggleFiltroTabela(t.key)}
+          />
+        </th>
+      ))}
       <th>Ações</th>
     </tr>
   );

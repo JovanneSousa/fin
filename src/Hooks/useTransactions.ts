@@ -20,6 +20,13 @@ interface Filters {
   sort: string;
 }
 
+export type TiposColuna = "data" | "descricao" | "categoria" | "valor";
+
+export interface filtroTabelaTransacao {
+  isActive: TiposColuna;
+  type: "asc" | "desc";
+}
+
 const useTransactions = () => {
   const [busca, setBusca] = useState<string>("");
   const [filtroModal, setFiltersModal] = useState<Filters>({
@@ -29,6 +36,11 @@ const useTransactions = () => {
   });
   const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
   const [mesSelecionado, setMesSelecionado] = useState(new Date());
+
+  const [filtroTabela, setFiltroTabela] = useState<filtroTabelaTransacao>({
+    isActive: "data",
+    type: "asc",
+  });
 
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -51,6 +63,18 @@ const useTransactions = () => {
     if (tipo === "despesa") return items.filter((t) => t.type === 1);
     return items;
   }, [items, tipo]);
+
+  const toggleFiltroTabela = (coluna: TiposColuna) => {
+    setFiltroTabela((prev) => ({
+      isActive: coluna,
+      type:
+        prev.isActive === coluna
+          ? prev.type === "asc"
+            ? "desc"
+            : "asc"
+          : "desc",
+    }));
+  };
 
   const {
     getSaldoTotal: saldoTotal,
@@ -201,6 +225,8 @@ const useTransactions = () => {
     aplicaFiltroTexto,
     busca,
     setBusca,
+    filtroTabela,
+    toggleFiltroTabela,
   };
 
   const handle = {

@@ -306,3 +306,25 @@ export const StyledIcon = styled(FontAwesomeIcon)`
     color: ${colors.verde};
   }
 `;
+
+interface StyledArrowFilterProps {
+  isActive: boolean;
+}
+
+export const StyledArrowFilter = styled(FontAwesomeIcon).withConfig({
+  shouldForwardProp: (props) => !["isActive"].includes(props),
+})<StyledArrowFilterProps>`
+  opacity: ${({ isActive }) => Number(isActive)};
+  cursor: pointer;
+  transition:
+    opacity ease 0.3s,
+    transform ease 0.5s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &.rotate {
+    transform: rotate(-180deg);
+  }
+`;

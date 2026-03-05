@@ -39,7 +39,7 @@ const useTransactions = () => {
 
   const [filtroTabela, setFiltroTabela] = useState<filtroTabelaTransacao>({
     isActive: "data",
-    type: "asc",
+    type: "desc",
   });
 
   const dispatch = useDispatch<AppDispatch>();
@@ -55,12 +55,19 @@ const useTransactions = () => {
     updateTransacao,
   } = useSelector((state: RootReducer) => state.transactions);
 
+  const {
+    getSaldoTotal: saldoTotal,
+    periodoSelecionado: { loading },
+  } = useSelector((state: RootReducer) => state.transactions);
+
   const { categorias } = useCategory();
 
   const filtro = useMemo(() => {
     if (tipo === "todos") return items;
-    if (tipo === "receita") return items.filter((t) => t.type === 0);
-    if (tipo === "despesa") return items.filter((t) => t.type === 1);
+    if (tipo === "receita")
+      return items.filter((t) => t.type === TransactionType.Renda);
+    if (tipo === "despesa")
+      return items.filter((t) => t.type === TransactionType.Despesa);
     return items;
   }, [items, tipo]);
 
@@ -74,15 +81,9 @@ const useTransactions = () => {
             : "asc"
           : "desc",
     }));
-  };
 
-  const {
-    getSaldoTotal: saldoTotal,
-    periodoSelecionado: { loading },
-  } = useSelector((state: RootReducer) => state.transactions);
-
-  const fetchPeriodo = (startDate: string, endDate: string) => {
-    dispatch(fetchTransactionsPeriod({ startDate, endDate }));
+    console.log("chamou: " + filtroTabela);
+    aplicaFiltroTopoTabela(filtroTabela, items);
   };
 
   const aplicaFiltroTexto = (items: Transacao[], texto: string) => {
@@ -96,6 +97,65 @@ const useTransactions = () => {
         normalizaTexto(item.categoria?.name).includes(termo) ||
         normalizaTexto(item.valor.toString()).includes(termo),
     );
+  };
+
+  const aplicaFiltroTopoTabela = (
+    filtros: filtroTabelaTransacao,
+    items: Transacao[],
+  ) => {
+    if (filtros.isActive == "data") {
+      if (filtros.type == "asc") {
+        items.sort(
+          (a, b) =>
+            new Date(a.dataMovimentacao).getTime() -
+            new Date(b.dataMovimentacao).getTime(),
+        );
+      } else {
+        items.sort(
+          (a, b) =>
+            new Date(b.dataMovimentacao).getTime() -
+            new Date(a.dataMovimentacao).getTime(),
+        );
+      }
+    }
+
+    if (filtros.isActive == "valor") {
+      if (filtros.type == "asc") {
+        items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
+      } else {
+        items.sort((a, b) => b.valor - a.valor);
+      }
+    }
+
+    if (filtros.isActive == "descricao") {
+      if (filtros.type == "asc") {
+        items.sort((a, b) =>
+          a.titulo.localeCompare(b.titulo, "pt-BR", { sensitivity: "base" }),
+        );
+      } else {
+        items.sort((a, b) =>
+          b.titulo.localeCompare(a.titulo, "pt-BR", { sensitivity: "base" }),
+        );
+      }
+    }
+
+    if (filtros.isActive == "categoria") {
+      if (filtros.type == "asc") {
+        items.sort((a, b) => {
+          const nomeA = a.categoria?.name ?? "";
+          const nomeB = b.categoria?.name ?? "";
+          return nomeA.localeCompare(nomeB);
+        });
+      } else {
+        items.sort((a, b) => {
+          const nomeA = a.categoria?.name ?? "";
+          const nomeB = b.categoria?.name ?? "";
+          return nomeB.localeCompare(nomeA);
+        });
+      }
+    }
+
+    return items;
   };
 
   const aplicaFiltroModal = (
@@ -182,6 +242,10 @@ const useTransactions = () => {
     },
     [dispatch],
   );
+
+  const fetchPeriodo = (startDate: string, endDate: string) => {
+    dispatch(fetchTransactionsPeriod({ startDate, endDate }));
+  };
 
   const buscaSaldoTotal = () => {
     dispatch(fetchSaldoTotal());

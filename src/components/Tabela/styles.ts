@@ -238,7 +238,7 @@ export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
     justify-content: space-between;
   }
 
-  form.tipo {
+  div.tipo {
     display: flex;
     width: 100%;
     justify-content: ${({ isMobile, isSearching }) =>
@@ -247,7 +247,6 @@ export const StyledTopoTabela = styled(PerifericosTabela).withConfig({
 
   .seletor {
     max-width: 200px;
-    overflow: hidden;
 
     opacity: ${({ isMobile, isSearching }) =>
       !isMobile || (isMobile && !isSearching) ? "1" : "0"};

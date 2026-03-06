@@ -152,7 +152,7 @@ body {
     0 0 6px rgba(0, 0, 0, 0.08);
 }
 
-form, .pag-wrapper {
+form, .pag-wrapper, div {
     .input-wrapper {
       display: flex;
       flex-direction: column;

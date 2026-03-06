@@ -55,7 +55,7 @@ const TopoTabelaTransacao = ({
       onClick={fechaBusca}
       page={tipo}
     >
-      <form className="tipo">
+      <div className="tipo">
         <div
           className={`input-wrapper seletor ${!isMobile || (isMobile && !isSearching) ? "" : "hidden"}`}
         >
@@ -104,7 +104,7 @@ const TopoTabelaTransacao = ({
             </label>
           </div>
         </div>
-      </form>
+      </div>
       <Seletor page={tipo} />
     </StyledTopoTabela>
   );

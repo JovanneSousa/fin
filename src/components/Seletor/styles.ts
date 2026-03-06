@@ -11,6 +11,7 @@ const styles = {
   comparativo: css`
     flex-direction: row;
     padding: 8px 24px;
+    margin-bottom: 0;
 
     .container-title p {
       color: ${colors.darkGray};
@@ -19,6 +20,7 @@ const styles = {
   transacoes: css`
     flex-direction: column;
     padding: 16px 24px;
+    margin-bottom: 0;
 
     .container-pill {
       gap: 8px;
@@ -29,6 +31,7 @@ const styles = {
   default: css`
     flex-direction: column;
     padding: 24px;
+    margin-bottom: 16px;
     .container-pill {
       padding-bottom: 16px;
       border-bottom: 1px solid ${colors.lightGray};
@@ -44,10 +47,8 @@ export const SeletorSection = styled.section.withConfig({
   background-color: ${colors.defaultBackgroundColor};
   border-radius: 16px;
   display: flex;
-  flex-direction: ${({ page }) => (page == "comparativo" ? "row" : "column")};
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: ${({ page }) => (page == "default" ? "16px" : "0")};
   ${({ page, isSelecting }) =>
     page === "transacoes" &&
     css`

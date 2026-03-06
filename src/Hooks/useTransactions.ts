@@ -81,9 +81,6 @@ const useTransactions = () => {
             : "asc"
           : "desc",
     }));
-
-    console.log("chamou: " + filtroTabela);
-    aplicaFiltroTopoTabela(filtroTabela, items);
   };
 
   const aplicaFiltroTexto = (items: Transacao[], texto: string) => {
@@ -208,9 +205,14 @@ const useTransactions = () => {
     return item;
   });
 
-  const itemsFiltrados = aplicaFiltroModal(
+  const itemsFiltradosPelaModal = aplicaFiltroModal(
     filtroModal,
     aplicaFiltroTexto(hydratedItems, busca),
+  );
+
+  const itemsFiltrados = aplicaFiltroTopoTabela(
+    filtroTabela,
+    itemsFiltradosPelaModal,
   );
 
   const aplicarMes = (date: Date) => {

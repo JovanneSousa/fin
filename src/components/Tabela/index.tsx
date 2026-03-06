@@ -7,9 +7,9 @@ export type TabelaProps = {
 
 const Tabela = ({ type }: TabelaProps) => {
   return type == "categorias" ? (
-    <CategoriaTabela type={type} />
+    <CategoriaTabela />
   ) : (
-    <TransacaoTabela type={type} />
+    <TransacaoTabela />
   );
 };
 

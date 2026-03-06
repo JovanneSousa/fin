@@ -8,26 +8,18 @@ import {
   CloseBox,
   DetailBox,
   StyledArrowFilter,
-  StyledIcon,
   StyledTable,
-  StyledTopoTabela,
   TableWrapper,
 } from "./styles";
 import {
   faArrowDown,
   faCircleInfo,
   faCircleXmark,
-  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import type { TabelaProps } from ".";
 import Modal from "../ModalContainer";
 import { useTransactionTable } from "../../Hooks/useTransactionTable";
 import Delete from "../Delete";
 import RodapeTabelas from "./RodapeTabelas";
-import Seletor from "../Seletor";
-import Button from "../Button";
-import { colors } from "../../globalStyles";
-import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import Icone from "../Icone";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TableSkeletonRow } from "../Loader/TableSkeletonLoader";
@@ -37,13 +29,14 @@ import FilterSection from "../FilterSection";
 import { useState } from "react";
 import { TransactionType } from "../../Utils/Enums/Transacao";
 import type { TiposColuna } from "../../Hooks/useTransactions";
+import TopoTabela from "./TopoTabela";
 
 interface ColunaTabela {
   key: TiposColuna;
   label: string;
 }
 
-const TransacaoTabela = ({ type }: TabelaProps) => {
+const TransacaoTabela = () => {
   const [isFilterActive, setIsFilterActive] = useState(false);
   const {
     isDeleteModalOpen,
@@ -198,93 +191,24 @@ const TransacaoTabela = ({ type }: TabelaProps) => {
       </tr>
     ));
   };
-  const { abreModal } = useFormNew();
-
-  const button = {
-    receita: (
-      <Button
-        bgColor={colors.verde}
-        padding="small"
-        type="button"
-        icon="plus"
-        onClick={() => abreModal("receita")}
-      >
-        Nova Receita
-      </Button>
-    ),
-    despesa: (
-      <Button
-        bgColor={colors.vermelho}
-        padding="small"
-        type="button"
-        icon="plus"
-        onClick={() => abreModal("despesa")}
-      >
-        Nova Despesa
-      </Button>
-    ),
-  };
 
   return (
     <TableWrapper className="shadow">
-      <StyledTopoTabela
-        isMobile={isMobile}
-        isSearching={isSearching}
-        onClick={fechaBusca}
-        page={type}
-      >
-        <form className="tipo">
-          <div
-            className={`input-wrapper seletor ${!isMobile || (isMobile && !isSearching) ? "" : "hidden"}`}
-          >
-            <select
-              className={tipo}
-              onChange={(e) =>
-                changeType(e.target.value as "todos" | "despesa" | "receita")
-              }
-              id="tipo"
-            >
-              <option value="todos">Todos</option>
-              <option value="despesa">Despesas</option>
-              <option value="receita">Receitas</option>
-            </select>
-          </div>
-          <div className="button-container">
-            {tipo !== "todos" && !isMobile && button[tipo]}
-            <div
-              className={`input-wrapper seletor ${!(isMobile && isSearching) ? "" : "hidden"}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Button
-                className="transacao"
-                onClick={() => setIsFilterActive(true)}
-                bgColor={colors.lightGray}
-                icon="filter"
-              />
-            </div>
-            <div
-              className="input-wrapper"
-              onClick={(e) => {
-                e.stopPropagation();
-                abreBusca();
-              }}
-            >
-              <input
-                className="search"
-                id="busca"
-                type="text"
-                placeholder="Pesquise por descrição, categoria ou valor"
-                value={busca}
-                onChange={(e) => setBusca(e.target.value)}
-              />
-              <label htmlFor="busca">
-                <StyledIcon icon={faMagnifyingGlass} />
-              </label>
-            </div>
-          </div>
-        </form>
-        <Seletor page={type} />
-      </StyledTopoTabela>
+      <TopoTabela
+        tipo="transacoes"
+        props={{
+          changeType,
+          fechaBusca,
+          isMobile,
+          isSearching,
+          tipoFiltro: tipo,
+          abreBusca,
+
+          busca,
+          setIsFilterActive,
+          setBusca,
+        }}
+      />
       <StyledTable
         rowHeight={tamanhoPadraoLinha.toString()}
         isMobile={isMobile}

@@ -13,6 +13,7 @@ export const useTransactionTable = () => {
     setTipo,
     tipo,
     filtros,
+    categorias: { receita, despesa },
   } = useTransactions();
 
   const { abreModal } = useFormNew();
@@ -48,6 +49,8 @@ export const useTransactionTable = () => {
   };
 
   return {
+    receita,
+    despesa,
     isDeleteModalOpen,
     itemSelecionado,
     valorBusca,
@@ -66,5 +69,3 @@ export const useTransactionTable = () => {
     changeType,
   };
 };
-
-export type UseTableTransactionReturn = ReturnType<typeof useTransactionTable>;

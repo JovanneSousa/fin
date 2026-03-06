@@ -58,24 +58,10 @@ export const FilterContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 8px;
-    
+
     button {
       width: 100%;
       margin: 0;
-    }
-  }
-
-  .container-ord {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-
-    .buttons {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
     }
   }
 

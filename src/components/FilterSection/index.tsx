@@ -2,29 +2,27 @@ import { useState } from "react";
 import Button from "../Button";
 import { colors } from "../../globalStyles";
 import ButtonPill from "../ButtonPill";
-import useTransactions from "../../Hooks/useTransactions";
-import useCategory from "../../Hooks/useCategory";
+import useTransactions, { type Filters } from "../../Hooks/useTransactions";
 import { FilterContainer } from "./styles";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import type { Category } from "../../Store/reducers/categories";
 
 interface FilterSectionProps {
   onClose: () => void;
-  onApplyFilters: (filters: {
-    type: string;
-    categories: string[];
-    recurring: boolean;
-    sort: string;
-  }) => void;
+  onApplyFilters: (filters: Filters) => void;
+  receita: Category[];
+  despesa: Category[];
 }
 
-const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
+const FilterSection = ({
+  onClose,
+  onApplyFilters,
+  despesa,
+  receita,
+}: FilterSectionProps) => {
   const [filterType, setFilterType] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isRecurring, setIsRecurring] = useState(false);
-  const [sort, setSort] = useState<string>("");
-  const {
-    categorias: { receita, despesa },
-  } = useCategory();
 
   const {
     itemsPeriodo: { itemsFiltrados: items },
@@ -126,36 +124,6 @@ const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
         </ButtonPill>
       </div>
 
-      <div className="container-ord">
-        <p>Ordenar por</p>
-        <div className="buttons">
-          <ButtonPill
-            className={sort === "dataAsc" ? "is-active" : ""}
-            onClick={() => setSort(sort === "dataAsc" ? "" : "dataAsc")}
-          >
-            Data (Asc)
-          </ButtonPill>
-          <ButtonPill
-            className={sort === "dataDesc" ? "is-active" : ""}
-            onClick={() => setSort(sort === "dataDesc" ? "" : "dataDesc")}
-          >
-            Data (Desc)
-          </ButtonPill>
-          <ButtonPill
-            className={sort === "valorAsc" ? "is-active" : ""}
-            onClick={() => setSort(sort === "valorAsc" ? "" : "valorAsc")}
-          >
-            Valor (Asc)
-          </ButtonPill>
-          <ButtonPill
-            className={sort === "valorDesc" ? "is-active" : ""}
-            onClick={() => setSort(sort === "valorDesc" ? "" : "valorDesc")}
-          >
-            Valor (Desc)
-          </ButtonPill>
-        </div>
-      </div>
-
       <div className="buttons-container">
         <Button
           padding="small"
@@ -164,7 +132,6 @@ const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
           onClick={() => {
             setFilterType("");
             setSelectedCategories([]);
-            setSort("");
             setIsRecurring(false);
           }}
         >
@@ -176,10 +143,9 @@ const FilterSection = ({ onClose, onApplyFilters }: FilterSectionProps) => {
           bgColor={colors.verde}
           onClick={() => {
             onApplyFilters({
-              type: filterType,
+              // type: filterType,
               categories: selectedCategories,
               recurring: isRecurring,
-              sort: sort,
             });
             onClose();
           }}

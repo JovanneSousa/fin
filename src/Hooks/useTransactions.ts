@@ -14,17 +14,18 @@ import useCategory from "./useCategory";
 import { normalizaTexto } from "../Utils/text";
 import { TransactionType } from "../Utils/Enums/Transacao";
 
-interface Filters {
+export interface Filters {
   categories: string[];
   recurring: boolean;
-  sort: string;
 }
 
 export type TiposColuna = "data" | "descricao" | "categoria" | "valor";
 
-export interface filtroTabelaTransacao {
+type TipoOrdenacao = "asc" | "desc";
+
+export interface OrdenacaoTabelaTransacao {
   isActive: TiposColuna;
-  type: "asc" | "desc";
+  type: TipoOrdenacao;
 }
 
 const useTransactions = () => {
@@ -32,15 +33,15 @@ const useTransactions = () => {
   const [filtroModal, setFiltersModal] = useState<Filters>({
     categories: [],
     recurring: false,
-    sort: "",
   });
   const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
   const [mesSelecionado, setMesSelecionado] = useState(new Date());
 
-  const [filtroTabela, setFiltroTabela] = useState<filtroTabelaTransacao>({
-    isActive: "data",
-    type: "desc",
-  });
+  const [ordenacaoTabela, setOrdenacaoTabela] =
+    useState<OrdenacaoTabelaTransacao>({
+      isActive: "data",
+      type: "desc",
+    });
 
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -71,8 +72,8 @@ const useTransactions = () => {
     return items;
   }, [items, tipo]);
 
-  const toggleFiltroTabela = (coluna: TiposColuna) => {
-    setFiltroTabela((prev) => ({
+  const toggleOrdenacaoTabela = (coluna: TiposColuna) => {
+    setOrdenacaoTabela((prev) => ({
       isActive: coluna,
       type:
         prev.isActive === coluna
@@ -96,124 +97,123 @@ const useTransactions = () => {
     );
   };
 
-  const aplicaFiltroTopoTabela = (
-    filtros: filtroTabelaTransacao,
+  const AplicaOrdenacaoPorValor = (
+    filtros: OrdenacaoTabelaTransacao,
     items: Transacao[],
   ) => {
-    if (filtros.isActive == "data") {
-      if (filtros.type == "asc") {
-        items.sort(
-          (a, b) =>
-            new Date(a.dataMovimentacao).getTime() -
-            new Date(b.dataMovimentacao).getTime(),
-        );
-      } else {
-        items.sort(
-          (a, b) =>
-            new Date(b.dataMovimentacao).getTime() -
-            new Date(a.dataMovimentacao).getTime(),
-        );
-      }
+    console.log("ordenou por valor");
+    if (filtros.type == "asc") {
+      items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
+    } else {
+      items.sort((a, b) => b.valor - a.valor);
     }
-
-    if (filtros.isActive == "valor") {
-      if (filtros.type == "asc") {
-        items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
-      } else {
-        items.sort((a, b) => b.valor - a.valor);
-      }
-    }
-
-    if (filtros.isActive == "descricao") {
-      if (filtros.type == "asc") {
-        items.sort((a, b) =>
-          a.titulo.localeCompare(b.titulo, "pt-BR", { sensitivity: "base" }),
-        );
-      } else {
-        items.sort((a, b) =>
-          b.titulo.localeCompare(a.titulo, "pt-BR", { sensitivity: "base" }),
-        );
-      }
-    }
-
-    if (filtros.isActive == "categoria") {
-      if (filtros.type == "asc") {
-        items.sort((a, b) => {
-          const nomeA = a.categoria?.name ?? "";
-          const nomeB = b.categoria?.name ?? "";
-          return nomeA.localeCompare(nomeB);
-        });
-      } else {
-        items.sort((a, b) => {
-          const nomeA = a.categoria?.name ?? "";
-          const nomeB = b.categoria?.name ?? "";
-          return nomeB.localeCompare(nomeA);
-        });
-      }
-    }
-
-    return items;
   };
 
-  const aplicaFiltroModal = (
-    filtro: {
-      categories: string[];
-      recurring: boolean;
-      sort: string;
-    },
+  const AplicaOrdenacaoPorDescricao = (
+    filtros: OrdenacaoTabelaTransacao,
     items: Transacao[],
   ) => {
-    if (filtro.categories.length > 0) {
-      items = items.filter((i) => filtro.categories.includes(i.categoriaId));
+    if (filtros.type == "asc") {
+      items.sort((a, b) =>
+        a.titulo.localeCompare(b.titulo, "pt-BR", { sensitivity: "base" }),
+      );
+    } else {
+      items.sort((a, b) =>
+        b.titulo.localeCompare(a.titulo, "pt-BR", { sensitivity: "base" }),
+      );
     }
-    if (filtro.recurring !== false) {
-      items = items.filter((i) => i.isRecurring === filtro.recurring);
+  };
+
+  const AplicaFiltroOrdenadoPorCategoria = (
+    filtros: OrdenacaoTabelaTransacao,
+    items: Transacao[],
+  ) => {
+    if (filtros.type == "asc") {
+      items.sort((a, b) => {
+        const nomeA = a.categoria?.name ?? "";
+        const nomeB = b.categoria?.name ?? "";
+        return nomeA.localeCompare(nomeB);
+      });
+    } else {
+      items.sort((a, b) => {
+        const nomeA = a.categoria?.name ?? "";
+        const nomeB = b.categoria?.name ?? "";
+        return nomeB.localeCompare(nomeA);
+      });
     }
-    if (filtro.sort === "dataAsc") {
+  };
+
+  const AplicaOrdenacaoPorData = (
+    filtros: OrdenacaoTabelaTransacao,
+    items: Transacao[],
+  ) => {
+    console.log("ordenou por data");
+    if (filtros.type == "asc") {
       items.sort(
         (a, b) =>
           new Date(a.dataMovimentacao).getTime() -
           new Date(b.dataMovimentacao).getTime(),
       );
-    }
-    if (filtro.sort === "dataDesc") {
+    } else {
       items.sort(
         (a, b) =>
           new Date(b.dataMovimentacao).getTime() -
           new Date(a.dataMovimentacao).getTime(),
       );
     }
-    if (filtro.sort === "valorAsc") {
-      items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
-    }
-    if (filtro.sort === "valorDesc") {
-      items.sort((a, b) => b.valor - a.valor);
-    }
-
-    return items;
   };
 
-  const hydratedItems = filtro.map((item) => {
-    if (!item.categoria) {
-      const source =
-        item.type === TransactionType.Renda
-          ? categorias.receita
-          : categorias.despesa;
-      const categoria = source.find((c) => c.id === item.categoriaId);
-      return { ...item, categoria };
+  const aplicaFiltroModal = (filtro: Filters, items: Transacao[]) => {
+    let list = [...items];
+    if (filtro.categories.length > 0) {
+      list = list.filter((i) => filtro.categories.includes(i.categoriaId));
     }
-    return item;
-  });
+    if (filtro.recurring !== false) {
+      list = list.filter((i) => i.isRecurring === filtro.recurring);
+    }
 
-  const itemsFiltradosPelaModal = aplicaFiltroModal(
-    filtroModal,
-    aplicaFiltroTexto(hydratedItems, busca),
+    return list;
+  };
+
+  const hydratedItems = useMemo(() => {
+    return filtro.map((item) => {
+      if (!item.categoria) {
+        const source =
+          item.type === TransactionType.Renda
+            ? categorias.receita
+            : categorias.despesa;
+        const categoria = source.find((c) => c.id === item.categoriaId);
+        return { ...item, categoria };
+      }
+      return item;
+    });
+  }, [filtro, categorias.receita, categorias.despesa]);
+
+  const itemsFiltradosPelaModal = useMemo(
+    () =>
+      aplicaFiltroModal(filtroModal, aplicaFiltroTexto(hydratedItems, busca)),
+    [hydratedItems, busca, filtroModal],
   );
 
-  const itemsFiltrados = aplicaFiltroTopoTabela(
-    filtroTabela,
-    itemsFiltradosPelaModal,
-  );
+  const itemsFiltrados = useMemo(() => {
+    const AplicaOrdenacao = (
+      filtros: OrdenacaoTabelaTransacao,
+      items: Transacao[],
+    ) => {
+      const list = [...items];
+
+      if (filtros.isActive === "data") AplicaOrdenacaoPorData(filtros, list);
+      if (filtros.isActive === "valor") AplicaOrdenacaoPorValor(filtros, list);
+      if (filtros.isActive === "descricao")
+        AplicaOrdenacaoPorDescricao(filtros, list);
+      if (filtros.isActive === "categoria")
+        AplicaFiltroOrdenadoPorCategoria(filtros, list);
+
+      return list;
+    };
+
+    return AplicaOrdenacao(ordenacaoTabela, itemsFiltradosPelaModal);
+  }, [ordenacaoTabela, itemsFiltradosPelaModal]);
 
   const aplicarMes = (date: Date) => {
     setMesSelecionado(date);
@@ -291,8 +291,9 @@ const useTransactions = () => {
     aplicaFiltroTexto,
     busca,
     setBusca,
-    filtroTabela,
-    toggleFiltroTabela,
+    ordenacaoTabela,
+    toggleOrdenacaoTabela,
+    filtroModal,
   };
 
   const handle = {

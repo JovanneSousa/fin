@@ -53,10 +53,17 @@ const TransacaoTabela = () => {
     paginacao,
     errorPeriodo,
     filtros,
+    despesa,
+    receita,
   } = useTransactionTable();
 
-  const { busca, setBusca, setFiltersModal, filtroTabela, toggleFiltroTabela } =
-    filtros;
+  const {
+    busca,
+    setBusca,
+    setFiltersModal,
+    ordenacaoTabela,
+    toggleOrdenacaoTabela,
+  } = filtros;
 
   const {
     itemsPaginados,
@@ -65,30 +72,38 @@ const TransacaoTabela = () => {
     linhas: { alturaLinha, tamanhoPadraoLinha },
   } = paginacao;
 
-  const valoresTituloTabela: ColunaTabela[] = [
-    { key: "data", label: "Data" },
-    { key: "descricao", label: "Descrição" },
-    { key: "categoria", label: "Categoria" },
-    { key: "valor", label: "Valor" },
-  ];
+  const valoresTituloTabela: ColunaTabela[] = !isMobile
+    ? [
+        { key: "data", label: "Data" },
+        { key: "descricao", label: "Descrição" },
+        { key: "categoria", label: "Categoria" },
+        { key: "valor", label: "Valor" },
+      ]
+    : [
+        { key: "descricao", label: "Descrição" },
+        { key: "valor", label: "Valor" },
+      ];
 
-  const titulosTabela = isMobile ? (
+  const ComponenteHeaderTabela = (
     <tr>
-      <th className="icone"></th>
-      <th>Descrição</th>
-      <th>Valor</th>
-      <th>Ações</th>
-    </tr>
-  ) : (
-    <tr>
+      {isMobile && (
+        <th className="icone">
+          <StyledArrowFilter
+            isActive={ordenacaoTabela.isActive == "data"}
+            icon={faArrowDown}
+            className={ordenacaoTabela.type == "desc" ? "" : "rotate"}
+            onClick={() => toggleOrdenacaoTabela("data")}
+          />
+        </th>
+      )}
       {valoresTituloTabela.map((t) => (
         <th key={t.key}>
           {t.label}{" "}
           <StyledArrowFilter
-            isActive={filtroTabela.isActive == t.key}
+            isActive={ordenacaoTabela.isActive == t.key}
             icon={faArrowDown}
-            className={filtroTabela.type == "desc" ? "" : "rotate"}
-            onClick={() => toggleFiltroTabela(t.key)}
+            className={ordenacaoTabela.type == "desc" ? "" : "rotate"}
+            onClick={() => toggleOrdenacaoTabela(t.key)}
           />
         </th>
       ))}
@@ -214,7 +229,7 @@ const TransacaoTabela = () => {
         isMobile={isMobile}
         tableHeight={alturaLinha}
       >
-        <thead>{titulosTabela}</thead>
+        <thead>{ComponenteHeaderTabela}</thead>
         <tbody>{conteudoTabela()}</tbody>
       </StyledTable>
       <Modal
@@ -231,6 +246,8 @@ const TransacaoTabela = () => {
       </Modal>
       <Modal isOpen={isFilterActive} onClose={() => setIsFilterActive(false)}>
         <FilterSection
+          despesa={despesa}
+          receita={receita}
           onClose={() => setIsFilterActive(false)}
           onApplyFilters={(f) => setFiltersModal(f)}
         />

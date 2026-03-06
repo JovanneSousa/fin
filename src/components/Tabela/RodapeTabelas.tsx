@@ -92,6 +92,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           onClick={ultimaPagina}
         />
       </div>
+      
     </RodapeTabela>
   );
 };

@@ -48,6 +48,7 @@ export const StyledTable = styled.table.withConfig({
 
   .icone {
     width: 50px;
+    text-align: center;
   }
 
   tr {

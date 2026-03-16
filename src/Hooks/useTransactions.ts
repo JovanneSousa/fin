@@ -202,6 +202,8 @@ const useTransactions = () => {
     ) => {
       const list = [...items];
 
+      if (statusPeriodo != "succeeded") return list;
+
       if (filtros.isActive === "data") AplicaOrdenacaoPorData(filtros, list);
       if (filtros.isActive === "valor") AplicaOrdenacaoPorValor(filtros, list);
       if (filtros.isActive === "descricao")
@@ -213,7 +215,7 @@ const useTransactions = () => {
     };
 
     return AplicaOrdenacao(ordenacaoTabela, itemsFiltradosPelaModal);
-  }, [ordenacaoTabela, itemsFiltradosPelaModal]);
+  }, [ordenacaoTabela, itemsFiltradosPelaModal, statusPeriodo]);
 
   const aplicarMes = (date: Date) => {
     setMesSelecionado(date);

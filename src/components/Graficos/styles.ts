@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { breakpoints } from "../../styles/utilStyles";
 
 interface TitleProps {
   graph: "line" | "bar" | "rosca";
@@ -11,7 +11,7 @@ export const Title = styled.div.withConfig({
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  color: ${colors.gray};
+  color: ${({ theme }) => theme.gray};
   font-size: 24px;
   font-weight: bold;
   align-self: flex-start;

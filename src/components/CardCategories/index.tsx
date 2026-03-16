@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { CardStyled } from "./styles";
 import { formatCurrency, tiposCard } from "../../Utils";
-import { IconBox } from "../../globalStyles";
 import { cardConfig } from "./CardConfig";
 import useTransactions from "../../Hooks/useTransactions";
 import SkeletonCustom from "../SkeletonCustom";
+import { IconBox } from "../../styles/utilStyles";
 
 interface CardProps {
   type: number;
 }
 
-const CardCategories: React.FC<CardProps> = ({ type }) => {
+const CardCategories = ({ type }: CardProps) => {
   const {
     itemsPeriodo: { itemsFiltrados: items, statusPeriodo },
     saldoTotal,

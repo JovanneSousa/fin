@@ -3,6 +3,7 @@ import authReducer from "./reducers/auth";
 import categoriesReducer from "./reducers/categories";
 import transactionsReducer from "./reducers/transactions";
 import usuariosReducer from "./reducers/user";
+import themeReducer from "./reducers/theme";
 import { authMiddleware } from "./middleware/authMiddleware";
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     transactions: transactionsReducer,
     usuarios: usuariosReducer,
+    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(authMiddleware),

@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import { colors } from "../../globalStyles";
 import {
   deleteTransactions,
   type Transacao,
@@ -7,13 +6,16 @@ import {
 import Button from "../Button";
 import { type AppDispatch } from "../../Store";
 import { DeleteSection } from "./styles";
+import { useTheme } from "styled-components";
+import { colors } from "../../styles/cores";
 
 interface DeleteProps {
   item: Transacao | null;
   onClose: () => void;
 }
 
-const Delete: React.FC<DeleteProps> = ({ item, onClose }) => {
+const Delete = ({ item, onClose }: DeleteProps) => {
+  const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -26,7 +28,7 @@ const Delete: React.FC<DeleteProps> = ({ item, onClose }) => {
             <Button
               type="button"
               onClick={onClose}
-              bgColor={colors.lightGray}
+              bgColor={theme.lightGray}
               children="Cancelar"
               padding="small"
             />

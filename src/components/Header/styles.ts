@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 
 export const HeaderSection = styled.header`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   padding: 8px;
   position: sticky;
   top: 0;

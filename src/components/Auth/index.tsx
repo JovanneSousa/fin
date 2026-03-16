@@ -11,7 +11,7 @@ import useAuth from "../../Hooks/useAuth";
 import Feedback from "../Feedback";
 import FormReset from "./FormReset";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 
 export type PageType = "Login" | "Registrar" | "Forgot" | "Reset";
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 
 export const ContainerFeedback = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ export const ProgressBar = styled.div<{
   width: 100%;
   height: 6px;
   border-radius: 4px;
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   margin-top: 30px;
 
   &::after {

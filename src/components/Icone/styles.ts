@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 
 export const StyledIconAwesome = styled(FontAwesomeIcon)`
   background-color: red;
@@ -13,8 +13,9 @@ interface BackgroundIconProps {
 export const BackgroundIcon = styled.span.withConfig({
   shouldForwardProp: (props) => !["background"].includes(props),
 })<BackgroundIconProps>`
-  background-color: ${({ background }) => background ?? colors.lightGray};
-  color: ${({ background }) => (background ? colors.branco : colors.gray)};
+  background-color: ${({ background, theme }) => background ?? theme.lightGray};
+  color: ${({ background, theme }) =>
+    background ? colors.branco : theme.gray};
   padding: 8px;
   border-radius: 50%;
   margin: 0;
@@ -24,7 +25,7 @@ export const BackgroundIcon = styled.span.withConfig({
     color ease 0.3s;
 
   &.is-active {
-    background-color: ${colors.gray};
-    color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.gray};
+    color: ${({ theme }) => theme.defaultBackgroundColor};
   }
 `;

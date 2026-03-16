@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { colors } from "../../globalStyles";
 import Button from "../Button";
 import {
   categoriaSchema,
@@ -13,8 +12,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useCategory from "../../Hooks/useCategory";
 import SkeletonCustom from "../SkeletonCustom";
 import useClickOutside from "../../Hooks/useClickOutside";
+import { colors } from "../../styles/cores";
+import { useTheme } from "styled-components";
 
 const EditCategory = () => {
+  const theme = useTheme();
+
   const colorRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
 
@@ -178,7 +181,7 @@ const EditCategory = () => {
                     setIsColorSelectorVisible(true);
                     setIsIconSelectorVisible(false);
                   }}
-                  bgColor={colors.lightGray}
+                  bgColor={theme.lightGray}
                   icon="plus"
                 />
               </div>
@@ -231,7 +234,7 @@ const EditCategory = () => {
                     setIsIconSelectorVisible(true);
                     setIsColorSelectorVisible(false);
                   }}
-                  bgColor={colors.lightGray}
+                  bgColor={theme.lightGray}
                   icon="plus"
                 />
               </div>

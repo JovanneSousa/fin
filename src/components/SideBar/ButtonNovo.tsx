@@ -3,7 +3,7 @@ import {
   faArrowTrendUp,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 import Button from "../Button";
 import * as S from "./styles";
 import useIsMobile from "../../Hooks/useIsMobile";

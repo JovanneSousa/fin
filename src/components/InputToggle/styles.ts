@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 interface InputProps {
   color: string;

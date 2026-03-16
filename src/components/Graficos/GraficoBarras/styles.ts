@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../../globalStyles";
+import { colors } from "../../../styles/cores";
 
 export const BarContainer = styled.section`
   display: flex;
@@ -21,7 +21,7 @@ export const BarContainer = styled.section`
     gap: 16px;
     padding: 16px 24px;
     border-radius: 16px;
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
   }
 
   .legenda-container {
@@ -39,7 +39,7 @@ export const LegendItemStyled = styled.div`
 
   &:last-child {
     padding-top: 16px;
-    border-top: 1px solid ${colors.lightGray};
+    border-top: 1px solid ${({ theme }) => theme.lightGray};
   }
 
   .receita {

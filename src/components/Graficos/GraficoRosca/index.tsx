@@ -5,13 +5,15 @@ import Feedback from "../../Feedback";
 import useTransactions from "../../../Hooks/useTransactions";
 import { ContainerCor, GraficoRoscaContainer } from "./styles";
 import Button from "../../Button";
-import { colors } from "../../../globalStyles";
 import { Title } from "../styles";
 import Loader from "../../Loader";
+import { useTheme } from "styled-components";
+import { colors } from "../../../styles/cores";
 
 type TipoGrafico = "receita" | "despesa";
 
 const GraficoRosca = () => {
+  const theme = useTheme();
   const [typeCategoria, setTypeCategoria] = useState<TipoGrafico>("despesa");
   const {
     itemsPeriodo: { itemsFiltrados, statusPeriodo, errorPeriodo },
@@ -32,7 +34,7 @@ const GraficoRosca = () => {
     const mapa = new Map<string, { value: number; color: string }>();
     transacoesFiltradasPorTipo.forEach((t) => {
       const nomeCategoria = t.categoria?.name || "Sem categoria";
-      const cor = t.categoria?.cor.url || colors.gray;
+      const cor = t.categoria?.cor.url || theme.gray;
 
       const atual = mapa.get(nomeCategoria);
 
@@ -56,7 +58,7 @@ const GraficoRosca = () => {
         value,
         color,
       }));
-  }, [itemsFiltrados, tipo]);
+  }, [itemsFiltrados, tipo, theme]);
 
   const isLoading = statusPeriodo == "loading";
   const isError = statusPeriodo == "failed";
@@ -69,9 +71,9 @@ const GraficoRosca = () => {
         <p>{titulo[typeCategoria]}</p>
         <div className="button-container">
           <Button
-          className="shadow"
+            className="shadow"
             bgColor={
-              typeCategoria == "despesa" ? colors.vermelho : colors.lightGray
+              typeCategoria == "despesa" ? colors.vermelho : theme.lightGray
             }
             padding="small"
             onClick={() => setTypeCategoria("despesa")}
@@ -79,9 +81,9 @@ const GraficoRosca = () => {
             Despesa
           </Button>
           <Button
-          className="shadow"
+            className="shadow"
             bgColor={
-              typeCategoria == "receita" ? colors.verde : colors.lightGray
+              typeCategoria == "receita" ? colors.verde : theme.lightGray
             }
             padding="small"
             onClick={() => setTypeCategoria("receita")}

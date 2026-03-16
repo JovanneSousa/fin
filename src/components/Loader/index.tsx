@@ -1,5 +1,5 @@
 import { OrbitProgress } from "react-loading-indicators";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 import { ContainerLoader } from "./styles";
 
 interface LoaderProps {

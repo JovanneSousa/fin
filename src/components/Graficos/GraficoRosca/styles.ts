@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../../globalStyles";
+import { colors } from "../../../styles/cores";
 
 interface ContainerCorProps {
   bg: string;
@@ -22,7 +22,7 @@ export const GraficoRoscaContainer = styled.section`
     gap: 16px;
     padding: 16px 24px;
     border-radius: 16px;
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
   }
 
   .legenda-container {

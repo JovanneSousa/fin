@@ -1,67 +1,7 @@
-import styled, { createGlobalStyle } from "styled-components";
-import { hexToRgb } from "./Utils";
+import { createGlobalStyle } from "styled-components";
+import { breakpoints } from "./utilStyles";
+import { colors } from "./cores";
 
-const tema = localStorage.getItem("theme");
-
-const BASE_COLORS = {
-  rosa: "#c850c0",
-  roxo: "#4158d0",
-  gradient: "linear-gradient(-135deg, #c850c0, #4158d0)",
-  preto: "#000",
-  shadow: "0 1px 3px 0 rgba(0, 0, 0, 0.3)",
-  branco: "#fff",
-  verde: "#57b846",
-  vermelho: "#e63946",
-  azul: "#3498db",
-  laranja: "#f39c12",
-  transparent: "transparent",
-  verdeClaro: "#e6f4ea",
-  vermelhoClaro: "#fde8ea",
-};
-
-const COLORS_WHITE = {
-  textColor: "#000",
-  defaultBackgroundColor: "#fff",
-  gray: "#666666",
-  lightGray: "#e6e6e6",
-  lighterGray: "#f5f5f5",
-  shiningGray: "#f9f9f9",
-  darkGray: "#333333",
-};
-
-const COLORS_BLACK = {
-  textColor: "#eaeaea",
-  defaultBackgroundColor: "#141414",
-  gray: "#b3b3b3",
-  lightGray: "#1F1F1F",
-  lighterGray: "#1F1F1F",
-  shiningGray: "#0A0A0A",
-  darkGray: "#eaeaea",
-};
-
-export const colors =
-  tema == "dark"
-    ? { ...BASE_COLORS, ...COLORS_BLACK }
-    : { ...BASE_COLORS, ...COLORS_WHITE };
-
-export const IconBox = styled.div<{ color: string }>`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.875rem;
-  background-color: ${({ color }) => `rgba(${hexToRgb(color)}, 0.2)`};
-  color: ${({ color }) => color || colors.verde};
-`;
-
-export const breakpoints = {
-  desktop: "1024px",
-  tablet: "768px",
-  containerMaxWidth: "1472px",
-};
 export const GlobalStyle = createGlobalStyle`
 * {
     box-sizing: border-box;
@@ -89,12 +29,12 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 body {
-    background: ${colors.shiningGray};
+    background: ${({ theme }) => theme.shiningGray};
     background-repeat: no-repeat;
     min-height: 100vh;
     position: relative;
     background-size: cover;
-    color: ${colors.textColor};
+    color: ${({ theme }) => theme.textColor};
 }
 
 .flex {
@@ -168,8 +108,8 @@ form, .pag-wrapper, div {
       border: none;
       outline: none;
       border-radius: 32px;
-      background-color: ${colors.lightGray};
-      color: ${colors.gray};
+      background-color: ${({ theme }) => theme.lightGray};
+      color: ${({ theme }) => theme.gray};
       font-weight: 500;
       width: 100%;
       transition: box-shadow 0.5s ease;
@@ -194,7 +134,7 @@ form, .pag-wrapper, div {
   .feedback-container {
     position: absolute;
       inset: 0;
-      background-color: ${colors.defaultBackgroundColor};
+      background-color: ${({ theme }) => theme.defaultBackgroundColor};
       pointer-events: "none";
       z-index: 2;
       justify-content: space-between;

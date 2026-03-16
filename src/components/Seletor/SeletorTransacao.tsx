@@ -2,8 +2,8 @@ import { useState } from "react";
 import type { BaseSeletorProps } from ".";
 import { SeletorSection } from "./styles";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
 import ButtonPill from "../ButtonPill";
+import { useTheme } from "styled-components";
 
 const MESES = [
   "Jan",
@@ -25,6 +25,7 @@ const SeletorTransacao = ({
   handle,
   filtros,
 }: BaseSeletorProps) => {
+  const theme = useTheme();
   const [isSelecting, setIsSelecting] = useState(false);
 
   const { onNextMonth, onNextYear, onPrevMonth, onPrevYear } = handle;
@@ -42,7 +43,7 @@ const SeletorTransacao = ({
           padding="small"
           type="button"
           icon="left"
-          bgColor={colors.lightGray}
+          bgColor={theme.lightGray}
           onClick={isSelecting ? onPrevYear : onPrevMonth}
         />
 
@@ -64,7 +65,7 @@ const SeletorTransacao = ({
           padding="small"
           type="button"
           icon="right"
-          bgColor={colors.lightGray}
+          bgColor={theme.lightGray}
           onClick={isSelecting ? onNextYear : onNextMonth}
         />
       </div>

@@ -1,9 +1,10 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { colors } from "../../../globalStyles";
 import Button from "../../Button";
 import { StyledIcon, StyledTopoTabela } from "../styles";
 import { useFormNew } from "../../../contexts/FormNew/useFormNew";
 import type { TopoTabelaCategoriaProps } from ".";
+import { useTheme } from "styled-components";
+import { colors } from "../../../styles/cores";
 
 const TopoTabelaCategoria = ({
   props: {
@@ -20,6 +21,7 @@ const TopoTabelaCategoria = ({
   tipo,
 }: TopoTabelaCategoriaProps) => {
   const { abreModal } = useFormNew();
+  const theme = useTheme();
 
   return (
     <StyledTopoTabela
@@ -32,7 +34,7 @@ const TopoTabelaCategoria = ({
         className={`button-container seletor ${!isMobile || (isMobile && !isSearching) ? "" : "hidden"}`}
       >
         <Button
-          bgColor={filter == "despesa" ? colors.vermelho : colors.lightGray}
+          bgColor={filter == "despesa" ? colors.vermelho : theme.lightGray}
           padding="small"
           type="button"
           onClick={() => setFilter("despesa")}
@@ -40,7 +42,7 @@ const TopoTabelaCategoria = ({
           Despesa
         </Button>
         <Button
-          bgColor={filter == "receita" ? colors.verde : colors.lightGray}
+          bgColor={filter == "receita" ? colors.verde : theme.lightGray}
           padding="small"
           type="button"
           onClick={() => setFilter("receita")}
@@ -52,7 +54,7 @@ const TopoTabelaCategoria = ({
         <div className="button-container">
           {!isMobile && (
             <Button
-              bgColor={colors.lightGray}
+              bgColor={theme.lightGray}
               padding="small"
               type="button"
               icon="plus"

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { categoriaSchema } from "../../validations/categoriaSchema";
 import Formulario from "../Formulario";
@@ -11,6 +10,8 @@ import useCategory from "../../Hooks/useCategory";
 import SkeletonCustom from "../SkeletonCustom";
 import useClickOutside from "../../Hooks/useClickOutside";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import { colors } from "../../styles/cores";
+import { useTheme } from "styled-components";
 
 type CategoriaFormData = {
   name: string;
@@ -20,6 +21,8 @@ type CategoriaFormData = {
 };
 
 const FormCategoria = () => {
+  const theme = useTheme();
+
   const colorRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
 
@@ -156,7 +159,7 @@ const FormCategoria = () => {
                     setIsColorSelectorVisible(true);
                     setIsIconSelectorVisible(false);
                   }}
-                  bgColor={colors.lightGray}
+                  bgColor={theme.lightGray}
                   icon="plus"
                 />
               </div>
@@ -209,7 +212,7 @@ const FormCategoria = () => {
                     setIsIconSelectorVisible(true);
                     setIsColorSelectorVisible(false);
                   }}
-                  bgColor={colors.lightGray}
+                  bgColor={theme.lightGray}
                   icon="plus"
                 />
               </div>

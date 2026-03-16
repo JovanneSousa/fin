@@ -4,9 +4,9 @@ import Formulario from "../Formulario";
 import { resetPassSchema } from "../../validations/ResetPassSchema";
 import * as yup from "yup";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
 import useAuth from "../../Hooks/useAuth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { colors } from "../../styles/cores";
 
 export type ResetPassFormData = yup.InferType<typeof resetPassSchema>;
 

@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 export const SideBarSection = styled.aside.withConfig({
   shouldForwardProp: (prop) => !["isOpen"].includes(prop),
 })<PropsOpen>`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   padding: 8px 0;
   position: relative;
   z-index: 2;
@@ -33,9 +34,9 @@ export const SideBarSection = styled.aside.withConfig({
     position: absolute;
     right: -16px;
     top: 68px;
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
     padding: 4px;
-    border: 1px solid ${colors.lightGray};
+    border: 1px solid ${({ theme }) => theme.lightGray};
     border-radius: 16px;
     align-items: center;
     align-self: flex-end;
@@ -61,7 +62,7 @@ export const SideBarSection = styled.aside.withConfig({
     li {
       display: flex;
       cursor: pointer;
-      border-left: 5px solid ${colors.defaultBackgroundColor};
+      border-left: 5px solid ${({ theme }) => theme.defaultBackgroundColor};
       transition: all ease 0.3s;
 
       &.is-active {
@@ -69,7 +70,7 @@ export const SideBarSection = styled.aside.withConfig({
         color: ${colors.verde};
       }
       &:hover {
-        background-color: ${colors.lightGray};
+        background-color: ${({ theme }) => theme.lightGray};
       }
     }
   }
@@ -93,7 +94,7 @@ export const SideBarSection = styled.aside.withConfig({
 
       li {
         border-left: none !important;
-        border-bottom: 5px solid ${colors.defaultBackgroundColor};
+        border-bottom: 5px solid ${({ theme }) => theme.defaultBackgroundColor};
         transition: all ease 0.3s;
 
         &.is-active {
@@ -156,7 +157,7 @@ export const ButtonContainer = styled.div`
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
     width: 266px;
     z-index: 1;
     border-radius: 16px;
@@ -182,7 +183,7 @@ export const ButtonContainer = styled.div`
         align-items: center;
 
         &:hover {
-          background-color: ${colors.lightGray};
+          background-color: ${({ theme }) => theme.lightGray};
         }
       }
     }
@@ -218,7 +219,7 @@ export const Logo = styled.div`
   }
 
   p {
-    color: ${colors.gray};
+    color: ${({ theme }) => theme.gray};
   }
   @media (max-width: ${breakpoints.tablet}) {
     display: none;

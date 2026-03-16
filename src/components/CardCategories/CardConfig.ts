@@ -1,4 +1,4 @@
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 import { tiposCard } from "../../Utils";
 
 export const cardConfig = {

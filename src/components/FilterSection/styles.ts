@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 export const FilterContainer = styled.div`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   padding: 24px;
   border-radius: 8px;
   display: flex;
@@ -13,7 +14,7 @@ export const FilterContainer = styled.div`
   p {
     font-size: 18px;
     font-weight: bold;
-    color: ${colors.darkGray};
+    color: ${({ theme }) => theme.darkGray};
   }
 
   button {
@@ -42,7 +43,7 @@ export const FilterContainer = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     scrollbar-width: thin;
-    scrollbar-color: ${colors.verde} ${colors.lighterGray};
+    scrollbar-color: ${colors.verde} ${({ theme }) => theme.lighterGray};
 
     @media (max-width: ${breakpoints.tablet}) {
       grid-template-columns: 1fr 1fr;

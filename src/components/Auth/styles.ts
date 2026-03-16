@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 export const LoginSection = styled.section`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   padding: 90px 90px 33px;
   border-radius: 16px;
   display: flex;
@@ -32,10 +33,10 @@ export const LoginSection = styled.section`
     text-align: center;
     width: 100%;
     display: block;
-    color: ${colors.gray};
+    color: ${({ theme }) => theme.gray};
     cursor: pointer;
     border: none;
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
     margin-top: 8px;
 
     &:hover {
@@ -75,8 +76,8 @@ export const LoginSection = styled.section`
         border: none;
         outline: none;
         border-radius: 32px;
-        background-color: ${colors.lightGray};
-        color: ${colors.gray};
+        background-color: ${({ theme }) => theme.lightGray};
+        color: ${({ theme }) => theme.gray};
         font-weight: 500;
         width: 100%;
         transition: box-shadow 0.5s ease;

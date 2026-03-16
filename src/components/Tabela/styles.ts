@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { hexToRgb } from "../../Utils";
-import { breakpoints, colors } from "../../globalStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 interface TableProps {
   rowHeight: string;
@@ -18,12 +19,12 @@ export const StyledTable = styled.table.withConfig({
   shouldForwardProp: (props) =>
     !["rowHeight", "isMobile", "tableHeight"].includes(props),
 })<TableProps>`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   font-size: 14px;
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
-  color: ${colors.gray};
+  color: ${({ theme }) => theme.gray};
 
   .button-container {
     display: flex;
@@ -36,7 +37,7 @@ export const StyledTable = styled.table.withConfig({
   }
 
   tbody tr td {
-    border-bottom: 2px solid ${colors.lightGray};
+    border-bottom: 2px solid ${({ theme }) => theme.lightGray};
   }
 
   tbody {
@@ -64,11 +65,11 @@ export const StyledTable = styled.table.withConfig({
   }
 
   thead th {
-    background-color: ${colors.lighterGray};
+    background-color: ${({ theme }) => theme.lighterGray};
   }
 
   .data-wrapper {
-    background-color: ${colors.shiningGray};
+    background-color: ${({ theme }) => theme.shiningGray};
     font-size: 12px;
     height: 16px;
 
@@ -107,18 +108,18 @@ export const StyledTable = styled.table.withConfig({
   @media (min-width: ${breakpoints.desktop}) {
     tr {
       &:hover {
-        background-color: ${colors.shiningGray};
+        background-color: ${({ theme }) => theme.shiningGray};
       }
     }
   }
 
   @media (max-width: ${breakpoints.tablet}) {
     thead {
-      background-color: ${colors.lightGray};
+      background-color: ${({ theme }) => theme.lightGray};
 
       tr,
       th {
-        background-color: ${colors.lightGray};
+        background-color: ${({ theme }) => theme.lightGray};
       }
     }
 
@@ -166,7 +167,7 @@ export const DetailBox = styled.div`
 `;
 
 const PerifericosTabela = styled.div`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   width: 100%;
   padding: 16px;
 

@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { loginSchema } from "../../validations/loginSchema";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { colors } from "../../globalStyles";
 import Formulario from "../Formulario";
 import type { PageType } from ".";
 import useAuth from "../../Hooks/useAuth";
+import { colors } from "../../styles/cores";
 
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 

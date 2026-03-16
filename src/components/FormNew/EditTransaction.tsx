@@ -1,4 +1,3 @@
-import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { useEffect, useState } from "react";
 import { receitaSchema } from "../../validations/receitaSchema";
@@ -11,6 +10,7 @@ import { StyledIconForm } from "../Formulario/styles";
 import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import { colors } from "../../styles/cores";
 
 interface TransacaoDetailsProps {
   onClose: () => void;

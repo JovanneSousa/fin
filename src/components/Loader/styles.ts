@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
 
 export const ContainerLoader = styled.div`
   display: flex;
@@ -12,6 +11,6 @@ export const ContainerLoader = styled.div`
 
   p {
     margin-top: 40px;
-    color: ${colors.gray};
+    color: ${({ theme }) => theme.gray};
   }
 `;

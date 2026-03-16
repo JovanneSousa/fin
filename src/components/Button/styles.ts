@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
 import type { ButtonProps } from ".";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 export const ButtonStyled = styled.button.withConfig({
   shouldForwardProp: (prop) => !["bgColor", "padding"].includes(prop),
@@ -10,12 +11,12 @@ export const ButtonStyled = styled.button.withConfig({
   border: none;
   outline: none;
   background-color: ${({ bgColor }) => bgColor};
-  color: ${({ bgColor }) =>
-    bgColor === colors.lightGray
-      ? colors.gray
+  color: ${({ bgColor, theme }) =>
+    bgColor === theme.lightGray
+      ? theme.gray
       : bgColor === colors.transparent
-      ? colors.gray
-      : colors.branco};
+        ? theme.gray
+        : colors.branco};
   padding: ${({ padding }) =>
     padding === "big" ? "16px 32px" : padding === "medium" ? "" : "8px 12px"};
   border-radius: ${({ padding }) =>
@@ -26,13 +27,15 @@ export const ButtonStyled = styled.button.withConfig({
   cursor: pointer;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
 
   &:hover {
     @media (min-width: ${breakpoints.tablet}) {
-      background-color: ${({ bgColor }) =>
-        bgColor == colors.defaultBackgroundColor ? colors.lightGray : colors.darkGray};
-      color: ${colors.defaultBackgroundColor};
+      background-color: ${({ bgColor, theme }) =>
+        bgColor == theme.defaultBackgroundColor
+          ? theme.lightGray
+          : theme.darkGray};
+      color: ${({ theme }) => theme.defaultBackgroundColor};
     }
   }
 
@@ -47,7 +50,7 @@ export const ButtonStyled = styled.button.withConfig({
     border-radius: 45%;
 
     &:hover {
-      background-color: ${colors.lighterGray};
+      background-color: ${({ theme }) => theme.lighterGray};
     }
   }
 

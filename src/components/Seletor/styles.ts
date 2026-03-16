@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 interface SeletorSectionProps {
   positionTitle: "center" | "space-between";
@@ -14,7 +15,7 @@ const styles = {
     margin-bottom: 0;
 
     .container-title p {
-      color: ${colors.darkGray};
+      color: ${({ theme }) => theme.darkGray};
     }
   `,
   transacoes: css`
@@ -25,7 +26,7 @@ const styles = {
     .container-pill {
       gap: 8px;
       padding-bottom: 16px;
-      border-bottom: 1px solid ${colors.lightGray};
+      border-bottom: 1px solid ${({ theme }) => theme.lightGray};
     }
   `,
   default: css`
@@ -34,7 +35,7 @@ const styles = {
     margin-bottom: 16px;
     .container-pill {
       padding-bottom: 16px;
-      border-bottom: 1px solid ${colors.lightGray};
+      border-bottom: 1px solid ${({ theme }) => theme.lightGray};
     }
   `,
 };
@@ -44,7 +45,7 @@ export const SeletorSection = styled.section.withConfig({
     !["positionTitle", "page", "isSelecting"].includes(prop),
 })<SeletorSectionProps>`
   width: 100%;
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
@@ -132,7 +133,7 @@ export const SeletorSection = styled.section.withConfig({
     display: inline-block;
 
     label {
-      color: ${colors.gray};
+      color: ${({ theme }) => theme.gray};
       padding-bottom: 8px;
 
       @media (max-width: ${breakpoints.tablet}) {
@@ -146,12 +147,12 @@ export const SeletorSection = styled.section.withConfig({
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: ${colors.gray};
+      color: ${({ theme }) => theme.gray};
     }
 
     select {
-      background-color: ${colors.defaultBackgroundColor};
-      border: 1px solid ${colors.lightGray};
+      background-color: ${({ theme }) => theme.defaultBackgroundColor};
+      border: 1px solid ${({ theme }) => theme.lightGray};
       padding: 8px 0;
       padding-left: 32px;
       border-radius: 8px;

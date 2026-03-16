@@ -1,4 +1,3 @@
-import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +13,7 @@ import type { ChildrenFormProps } from ".";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import { colors } from "../../styles/cores";
 
 const FormDespesa = ({ size }: ChildrenFormProps) => {
   const {

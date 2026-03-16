@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { colors } from "../../globalStyles";
 import type { FormularioProps } from ".";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { colors } from "../../styles/cores";
 
 interface IconProps {
   size: "small" | "default";
@@ -42,7 +42,7 @@ export const StyledIconForm = styled(FontAwesomeIcon).withConfig({
 })<IconProps>`
   position: absolute;
   transform: translateY(-50%);
-  color: ${colors.gray};
+  color: ${({ theme }) => theme.gray};
   font-size: 16px;
   transition: color 0.5s ease;
 
@@ -66,7 +66,7 @@ export const StyledForm = styled.form.withConfig({
       left: 24px;
       top: 40%;
       transform: translateY(-50%);
-      color: ${colors.gray};
+      color: ${({ theme }) => theme.gray};
       font-size: 16px;
       transition: color 0.5s ease;
     }
@@ -95,8 +95,8 @@ export const StyledForm = styled.form.withConfig({
     font-size: 16px;
     border: none;
     outline: none;
-    background-color: ${colors.lightGray};
-    color: ${colors.gray};
+    background-color: ${({ theme }) => theme.lightGray};
+    color: ${({ theme }) => theme.gray};
     font-weight: 500;
     width: 100%;
     transition: box-shadow 0.5s ease;
@@ -130,8 +130,8 @@ export const StyledForm = styled.form.withConfig({
     padding: 8px 12px;
     font-size: 16px;
     border-radius: 8px;
-    background-color: ${colors.lightGray};
-    color: ${colors.gray};
+    background-color: ${({ theme }) => theme.lightGray};
+    color: ${({ theme }) => theme.gray};
     font-weight: 500;
     cursor: pointer;
     gap: 8px;
@@ -168,7 +168,7 @@ export const StyledForm = styled.form.withConfig({
         padding: 8px 0;
       }
       input {
-        background-color: ${colors.lighterGray};
+        background-color: ${({ theme }) => theme.lighterGray};
       }
     }
   }

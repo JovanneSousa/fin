@@ -1,5 +1,7 @@
-import { useState } from "react";
 import { Input } from "./styles";
+import { useDispatch, useSelector } from "react-redux";
+import { type AppDispatch, type RootReducer } from "../../Store";
+import { toggleTheme } from "../../Store/reducers/theme";
 
 interface InputToggleProps {
   label: string;
@@ -7,34 +9,20 @@ interface InputToggleProps {
 }
 
 const InputToggle = ({ label, background }: InputToggleProps) => {
-  const [isDark, setIsDark] =
-    useState(() => localStorage.getItem("theme")) ?? "light";
-
-  const switchToLight = () => {
-    setIsDark("light");
-    localStorage.setItem("theme", "light");
-    window.location.reload();
-  };
-
-  const switchToDark = () => {
-    setIsDark("dark");
-    localStorage.setItem("theme", "dark");
-    window.location.reload();
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const { dark } = useSelector((state: RootReducer) => state.theme);
 
   return (
     <Input color={background}>
       {label && <span className="label">{label}</span>}
       <label className="switch" htmlFor="switch">
-        <input 
-          onChange={
-            isDark == "dark" ? () => switchToLight() : () => switchToDark()
-          }
-          checked={isDark == "dark"}
+        <input
+          onChange={() => dispatch(toggleTheme())}
+          checked={dark}
           type="checkbox"
           id="switch"
         />
-        <span  className="slider shadow"></span>
+        <span className="slider shadow"></span>
       </label>
     </Input>
   );

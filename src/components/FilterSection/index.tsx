@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
 import ButtonPill from "../ButtonPill";
 import useTransactions, { type Filters } from "../../Hooks/useTransactions";
 import { FilterContainer } from "./styles";
 import { TransactionType } from "../../Utils/Enums/Transacao";
 import type { Category } from "../../Store/reducers/categories";
+import { colors } from "../../styles/cores";
+import { useTheme } from "styled-components";
 
 interface FilterSectionProps {
   onClose: () => void;
@@ -20,6 +21,8 @@ const FilterSection = ({
   despesa,
   receita,
 }: FilterSectionProps) => {
+  const theme = useTheme();
+
   const [filterType, setFilterType] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isRecurring, setIsRecurring] = useState(false);
@@ -128,7 +131,7 @@ const FilterSection = ({
         <Button
           padding="small"
           type="button"
-          bgColor={colors.lightGray}
+          bgColor={theme.lightGray}
           onClick={() => {
             setFilterType("");
             setSelectedCategories([]);

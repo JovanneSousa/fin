@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import { colors } from "../../../globalStyles";
 import Seletor from "../../Seletor";
 import { GraficoLinhaContainer, StyledLineChart, TitleLinha } from "./styles";
 import useTransactions from "../../../Hooks/useTransactions";
 import Loader from "../../Loader";
 import Feedback from "../../Feedback";
 import useIsMobile from "../../../Hooks/useIsMobile";
+import { colors } from "../../../styles/cores";
 
 const GraficoLinha = () => {
   const {

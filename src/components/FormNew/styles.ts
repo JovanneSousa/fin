@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { breakpoints } from "../../styles/utilStyles";
+import { colors } from "../../styles/cores";
 
 export const ContainerDetails = styled.div`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   width: 450px;
 
   p {
@@ -16,8 +17,8 @@ export const ContainerDetails = styled.div`
 
     &.is-editing {
       input {
-        background-color: ${colors.lighterGray};
-        border: 1px solid ${colors.lightGray};
+        background-color: ${({ theme }) => theme.lighterGray};
+        border: 1px solid ${({ theme }) => theme.lightGray};
       }
     }
   }
@@ -33,7 +34,7 @@ export const ContainerDetails = styled.div`
 `;
 
 export const NewSection = styled.section`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   border-radius: 16px;
   transition: height ease 0.3s;
   max-width: 100%;
@@ -70,7 +71,7 @@ export const NewSection = styled.section`
       padding: 16px;
       border-radius: 16px;
       z-index: 1;
-      background-color: ${colors.lighterGray};
+      background-color: ${({ theme }) => theme.lighterGray};
 
       opacity: 0;
       pointer-events: none;

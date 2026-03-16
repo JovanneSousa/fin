@@ -7,13 +7,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { BarContainer } from "./styles";
-import { colors } from "../../../globalStyles";
 import { Title } from "../styles";
 import { useMemo } from "react";
 import useTransactions from "../../../Hooks/useTransactions";
 import Feedback from "../../Feedback";
 import Loader from "../../Loader";
 import LegendaItem from "./LegendaItem";
+import { colors } from "../../../styles/cores";
 
 const GraficoBarras = () => {
   const {

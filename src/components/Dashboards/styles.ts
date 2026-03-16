@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { breakpoints } from "../../styles/utilStyles";
 
 type DashboardsProp = {
   isComparison?: boolean;
@@ -38,7 +38,7 @@ export const DashboardsSection = styled.div.withConfig({
   }
 
   .conteudo {
-    background-color: ${colors.defaultBackgroundColor};
+    background-color: ${({ theme }) => theme.defaultBackgroundColor};
     border-radius: 16px;
     padding: 24px;
     display: flex;

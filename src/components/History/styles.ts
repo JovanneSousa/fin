@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
 import { hexToRgb } from "../../Utils";
+import { breakpoints } from "../../styles/utilStyles";
+import { colors } from "../../styles/cores";
 
 export const HistorySection = styled.section`
-  background-color: ${colors.defaultBackgroundColor};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
   width: 100%;
   padding: 24px;
   border-radius: 16px;
@@ -20,8 +21,8 @@ export const HistorySection = styled.section`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border-top: 1px solid ${colors.lightGray};
-    border-bottom: 1px solid ${colors.lightGray};
+    border-top: 1px solid ${({ theme }) => theme.lightGray};
+    border-bottom: 1px solid ${({ theme }) => theme.lightGray};
     scrollbar-width: thin;
   }
 
@@ -48,8 +49,8 @@ export const HistorySection = styled.section`
     }
 
     select {
-      background-color: ${colors.lighterGray};
-      border: 1px solid ${colors.lightGray};
+      background-color: ${({ theme }) => theme.lighterGray};
+      border: 1px solid ${({ theme }) => theme.lightGray};
       padding: 8px 32px;
       border-radius: 8px;
       font-size: 14px;
@@ -67,13 +68,13 @@ export const HistorySection = styled.section`
 
   .container-transacao {
     border-radius: 16px;
-    border: 1px solid ${colors.lightGray};
+    border: 1px solid ${({ theme }) => theme.lightGray};
     padding: 16px;
     display: flex;
     justify-content: space-between;
 
     &:hover {
-      background-color: ${colors.lighterGray};
+      background-color: ${({ theme }) => theme.lighterGray};
     }
 
     .icon-hist,
@@ -94,7 +95,7 @@ export const HistorySection = styled.section`
     .icon-hist {
       @media (max-width: ${breakpoints.tablet}) {
         padding-bottom: 10px;
-        border-bottom: 1px solid ${colors.lightGray};
+        border-bottom: 1px solid ${({ theme }) => theme.lightGray};
       }
     }
 
@@ -123,7 +124,7 @@ export const HistorySection = styled.section`
   }
 
   p.data {
-    color: ${colors.gray};
+    color: ${({ theme }) => theme.gray};
     font-weight: 300;
     font-size: 14px;
 
@@ -133,7 +134,7 @@ export const HistorySection = styled.section`
   }
 
   p.cat {
-    color: ${colors.gray};
+    color: ${({ theme }) => theme.gray};
     font-weight: 300;
     font-size: 12px;
   }

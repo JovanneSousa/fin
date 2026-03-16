@@ -1,4 +1,3 @@
-import { colors } from "../../globalStyles";
 import Button from "../Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,6 +10,7 @@ import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
+import { colors } from "../../styles/cores";
 
 type ReceitaFormData = {
   titulo: string;

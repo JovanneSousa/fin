@@ -1,7 +1,7 @@
 import { RodapeTabela } from "./styles";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
 import type { QtdRegistros } from "../../Hooks/usePaginacao";
+import { useTheme } from "styled-components";
 
 interface RodapeProps {
   paginacao: {
@@ -23,6 +23,7 @@ interface RodapeProps {
 }
 
 const RodapeTabelas = ({ paginacao }: RodapeProps) => {
+  const theme = useTheme();
   const {
     changeQtdRegistros,
     paginaAnterior,
@@ -60,7 +61,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.defaultBackgroundColor}
+          bgColor={theme.defaultBackgroundColor}
           icon={"doubleLeft"}
           onClick={primeiraPagina}
         />
@@ -69,7 +70,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="next"
           type="button"
           padding="small"
-          bgColor={colors.defaultBackgroundColor}
+          bgColor={theme.defaultBackgroundColor}
           icon={"left"}
           onClick={paginaAnterior}
         />
@@ -78,7 +79,7 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.defaultBackgroundColor}
+          bgColor={theme.defaultBackgroundColor}
           icon={"right"}
           onClick={proximaPagina}
         />
@@ -87,12 +88,11 @@ const RodapeTabelas = ({ paginacao }: RodapeProps) => {
           className="prev"
           type="button"
           padding="small"
-          bgColor={colors.defaultBackgroundColor}
+          bgColor={theme.defaultBackgroundColor}
           icon={"doubleRight"}
           onClick={ultimaPagina}
         />
       </div>
-      
     </RodapeTabela>
   );
 };

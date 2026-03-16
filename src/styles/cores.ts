@@ -1,0 +1,15 @@
+export const colors = {
+  rosa: "#c850c0",
+  roxo: "#4158d0",
+  gradient: "linear-gradient(-135deg, #c850c0, #4158d0)",
+  preto: "#000",
+  shadow: "0 1px 3px 0 rgba(0, 0, 0, 0.3)",
+  branco: "#fff",
+  verde: "#57b846",
+  vermelho: "#e63946",
+  azul: "#3498db",
+  laranja: "#f39c12",
+  transparent: "transparent",
+  verdeClaro: "#e6f4ea",
+  vermelhoClaro: "#fde8ea",
+};

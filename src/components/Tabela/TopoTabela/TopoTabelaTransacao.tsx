@@ -1,10 +1,11 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { colors } from "../../../globalStyles";
 import Button from "../../Button";
 import Seletor from "../../Seletor";
 import { StyledIcon, StyledTopoTabela } from "../styles";
 import { useFormNew } from "../../../contexts/FormNew/useFormNew";
 import type { TopoTabelaTransacaoProps } from ".";
+import { useTheme } from "styled-components";
+import { colors } from "../../../styles/cores";
 
 const TopoTabelaTransacao = ({
   props: {
@@ -22,6 +23,7 @@ const TopoTabelaTransacao = ({
   tipo,
 }: TopoTabelaTransacaoProps) => {
   const { abreModal } = useFormNew();
+  const theme = useTheme();
 
   const button = {
     receita: (
@@ -80,7 +82,7 @@ const TopoTabelaTransacao = ({
             <Button
               className="transacao"
               onClick={() => setIsFilterActive(true)}
-              bgColor={colors.lightGray}
+              bgColor={theme.lightGray}
               icon="filter"
             />
           </div>

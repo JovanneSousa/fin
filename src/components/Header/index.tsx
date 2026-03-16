@@ -1,7 +1,7 @@
 import { HeaderSection } from "./styles";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
 import type { Tabs } from "../../Layouts/DefaultLayout";
 import { logout } from "../../Store/reducers/auth";
 import { useDispatch } from "react-redux";

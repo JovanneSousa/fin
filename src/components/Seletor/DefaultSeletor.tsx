@@ -1,5 +1,5 @@
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { colors } from "../../globalStyles";
+// import { colors } from "../../../styles/cores";
 // import Button from "../Button";
 // import { SeletorSection } from "./styles";
 // import ButtonPill from "../ButtonPill";
@@ -84,7 +84,7 @@
 //           <Button
 //             className="prev"
 //             padding="small"
-//             bgColor={colors.lightGray}
+//             bgColor={({ theme }) => theme.lightGray}
 //             type="button"
 //             icon="left"
 //             onClick={onPrevMonth}
@@ -104,7 +104,7 @@
 //           <Button
 //             className="next"
 //             padding="small"
-//             bgColor={colors.lightGray}
+//             bgColor={({ theme }) => theme.lightGray}
 //             type="button"
 //             icon="right"
 //             onClick={onNextMonth}
@@ -151,7 +151,7 @@
 //       </div>
 //       {!isFilterPeriodoActive ? (
 //         <Button
-//           bgColor={colors.lightGray}
+//           bgColor={({ theme }) => theme.lightGray}
 //           padding="small"
 //           type="button"
 //           onClick={() => setIsFilterPeriodoActive(true)}
@@ -161,7 +161,7 @@
 //       ) : (
 //         <Button
 //           onClick={() => setIsFilterPeriodoActive(false)}
-//           bgColor={colors.lightGray}
+//           bgColor={({ theme }) => theme.lightGray}
 //           padding="small"
 //           type="button"
 //           icon="up"

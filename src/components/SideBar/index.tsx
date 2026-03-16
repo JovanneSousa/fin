@@ -11,12 +11,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ButtonNovo from "./ButtonNovo";
 import useIsMobile from "../../Hooks/useIsMobile";
 import InputToggle from "../InputToggle";
-import { colors } from "../../globalStyles";
+import { useTheme } from "styled-components";
 interface SideBarProps {
   activeTab: Tabs;
 }
 
 const Sidebar = ({ activeTab }: SideBarProps) => {
+  const theme = useTheme();
   const [isOpen, setIsOpen] = useState(true);
   const isMobile = useIsMobile();
 
@@ -72,7 +73,7 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
           )}
           <li>
             <InputToggle
-              background={colors.defaultBackgroundColor}
+              background={theme.defaultBackgroundColor}
               label={!isMobile ? "Modo Escuro" : ""}
             />
           </li>

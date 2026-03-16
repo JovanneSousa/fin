@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../validations/registerSchema";
 import * as yup from "yup";
-import { colors } from "../../globalStyles";
 import Formulario from "../Formulario";
 import useAuth from "../../Hooks/useAuth";
+import { colors } from "../../styles/cores";
 
 export type RegisterFormData = yup.InferType<typeof registerSchema>;
 

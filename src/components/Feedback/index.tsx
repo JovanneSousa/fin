@@ -6,7 +6,6 @@ import { faCircleCheck, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon as FontAwesomeIconError } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { ContainerFeedback, ProgressBar } from "./styles";
-import { colors } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../Store";
 import { useEffect, useMemo, useState } from "react";
@@ -22,6 +21,8 @@ import {
   limpaUpdateError,
 } from "../../Store/reducers/transactions";
 import Button from "../Button";
+import { colors } from "../../styles/cores";
+import { useTheme } from "styled-components";
 
 type FeedbackProps = {
   success?: string;
@@ -47,6 +48,8 @@ export const Feedback = ({
   typeMessage,
   className,
 }: FeedbackProps) => {
+  const theme = useTheme();
+
   const dispatch = useDispatch<AppDispatch>();
   const duration = success ? 3000 : error ? 5000 : 10000;
   const [progress, setProgress] = useState(100);
@@ -111,7 +114,7 @@ export const Feedback = ({
     >
       {noButton === false ? (
         <Button
-          bgColor={colors.lightGray}
+          bgColor={theme.lightGray}
           padding="small"
           type="button"
           onClick={() => limpaMensagens()}

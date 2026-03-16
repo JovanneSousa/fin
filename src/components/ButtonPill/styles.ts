@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
-import { breakpoints, colors } from "../../globalStyles";
+import { colors } from "../../styles/cores";
+import { breakpoints } from "../../styles/utilStyles";
 
 interface PillProps {
   radius: boolean;
@@ -8,8 +9,8 @@ interface PillProps {
 export const PillStyled = styled.button.withConfig({
   shouldForwardProp: (prop) => !["radius"].includes(prop),
 })<PillProps>`
-  background-color: ${colors.defaultBackgroundColor};
-  color: ${colors.darkGray};
+  background-color: ${({ theme }) => theme.defaultBackgroundColor};
+  color: ${({ theme }) => theme.darkGray};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,7 @@ export const PillStyled = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  border-bottom: 2px solid ${colors.defaultBackgroundColor};
+  border-bottom: 2px solid ${({ theme }) => theme.defaultBackgroundColor};
 
   &:hover,
   &.is-active {
@@ -29,25 +30,25 @@ export const PillStyled = styled.button.withConfig({
 
   &.is-active {
     background-color: ${colors.verde};
-    color: ${colors.lighterGray};
+    color: ${({ theme }) => theme.lighterGray};
   }
 
   ${({ radius }: PillProps) =>
     radius &&
     css`
       border-radius: 10px;
-      border: 1px solid ${colors.lightGray};
+      border: 1px solid ${({ theme }) => theme.lightGray};
       &:hover {
         @media (max-width: ${breakpoints.tablet}) {
           background-color: ${colors.verde};
-          color: ${colors.lighterGray};
+          color: ${({ theme }) => theme.lighterGray};
           border-color: ${colors.verde};
         }
       }
 
       &.is-active {
         background-color: ${colors.verde};
-        color: ${colors.lighterGray};
+        color: ${({ theme }) => theme.lighterGray};
       }
     `}
 
@@ -56,7 +57,7 @@ export const PillStyled = styled.button.withConfig({
     color: ${colors.verde};
     &:hover {
       background-color: ${colors.verde};
-      color: ${colors.defaultBackgroundColor};
+      color: ${({ theme }) => theme.defaultBackgroundColor};
     }
   }
 `;

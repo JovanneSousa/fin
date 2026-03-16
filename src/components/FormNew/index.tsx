@@ -2,7 +2,6 @@ import { NewSection } from "./styles";
 import Loader from "../Loader";
 import Feedback, { type FeedbackMessageType } from "../Feedback";
 import Button from "../Button";
-import { colors } from "../../globalStyles";
 import FormCategoria from "./FormCategoria";
 import FormDespesa from "./FormDespesa";
 import FormReceita from "./FormReceita";
@@ -10,6 +9,7 @@ import EditCategory from "./EditCategory";
 import EditTransaction from "./EditTransaction";
 import useTransactions from "../../Hooks/useTransactions";
 import useCategory from "../../Hooks/useCategory";
+import { useTheme } from "styled-components";
 
 interface FormNewProps {
   typeForm:
@@ -35,6 +35,7 @@ export interface ChildrenFormProps {
 }
 
 const FormNew = ({ typeForm, onClose }: FormNewProps) => {
+  const theme = useTheme();
   const tamanhoForm = "small";
   const Form = {
     categoria: <FormCategoria />,
@@ -94,7 +95,7 @@ const FormNew = ({ typeForm, onClose }: FormNewProps) => {
           <p className="new-title">{title[typeForm]}</p>
           <Button
             onClick={onClose}
-            bgColor={colors.defaultBackgroundColor}
+            bgColor={theme.defaultBackgroundColor}
             padding="small"
             type="button"
             icon="close"

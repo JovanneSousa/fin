@@ -4,7 +4,7 @@ import type { Category, ErrorResponse } from "./categories";
 import axios from "axios";
 import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
 import { logarUsuario } from "./auth";
-import type { TransactionType } from "../../Utils/Enums/Transacao";
+import { TransactionType } from "../../Utils/Enums/Transacao";
 
 export interface TransactionFilter {
   startDate: string;
@@ -315,6 +315,12 @@ const transactionSlice = createSlice({
         state.periodoSelecionado.items.push(action.payload.data);
         state.periodoComparativo.items.push(action.payload.data);
         state.createTrancacao.success = "Transação criada com sucesso";
+        if (state.getSaldoTotal != null) {
+          state.getSaldoTotal +=
+            action.payload.data.type === TransactionType.Renda
+              ? action.payload.data.valor
+              : -action.payload.data.valor;
+        }
       })
       .addCase(createTransaction.rejected, (state, action) => {
         state.createTrancacao.status = "failed";
@@ -405,14 +411,23 @@ const transactionSlice = createSlice({
         state.errorDelete = null;
       })
       .addCase(deleteTransactions.fulfilled, (state, action) => {
+        const transacao = state.periodoSelecionado.items.find(
+          (item) => item.id == action.payload,
+        );
         state.loadingDelete = false;
         state.periodoSelecionado.items = state.periodoSelecionado.items.filter(
-          (item) => item.id !== action.payload,
+          (item) => item.id !== transacao?.id,
         );
         state.periodoComparativo.items = state.periodoComparativo.items.filter(
-          (item) => item.id !== action.payload,
+          (item) => item.id !== transacao?.id,
         );
         state.successDelete = "Transação excluida com sucesso";
+        if (state.getSaldoTotal != null && transacao) {
+          state.getSaldoTotal +=
+            transacao.type === TransactionType.Renda
+              ? -transacao.valor
+              : transacao.valor;
+        }
       })
       .addCase(deleteTransactions.rejected, (state, action) => {
         state.loadingDelete = false;

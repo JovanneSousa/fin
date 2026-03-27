@@ -101,7 +101,6 @@ const useTransactions = () => {
     filtros: OrdenacaoTabelaTransacao,
     items: Transacao[],
   ) => {
-    console.log("ordenou por valor");
     if (filtros.type == "asc") {
       items.sort((a, b) => Math.abs(a.valor) - Math.abs(b.valor));
     } else {
@@ -147,7 +146,6 @@ const useTransactions = () => {
     filtros: OrdenacaoTabelaTransacao,
     items: Transacao[],
   ) => {
-    console.log("ordenou por data");
     if (filtros.type == "asc") {
       items.sort(
         (a, b) =>

@@ -19,46 +19,27 @@ const GraficoLinha = () => {
   const isMobile = useIsMobile();
 
   const data = useMemo(() => {
-    const mapa = new Map<string, { receita: number; despesa: number }>();
+    return items.map((item) => {
+      const d = new Date(item.mes);
 
-    const itensOrdenados = [...items].sort((a, b) => {
-      return (
-        new Date(a.dataMovimentacao).getTime() -
-        new Date(b.dataMovimentacao).getTime()
-      );
-    });
-
-    itensOrdenados.forEach((item) => {
-      const d = new Date(item.dataMovimentacao);
       const mes = d.toLocaleString("pt-BR", {
         month: "short",
         timeZone: "UTC",
       });
+
       const ano = String(d.getUTCFullYear()).slice(-2);
-      const chave = `${mes}/${ano}`;
 
-      const atual = mapa.get(chave) ?? { receita: 0, despesa: 0 };
-
-      if (item.type === 0) {
-        atual.receita += item.valor;
-      } else if (item.type === 1) {
-        atual.despesa += item.valor;
-      }
-
-      mapa.set(chave, atual);
+      return {
+        ...item,
+        mes: `${mes}/${ano}`,
+      };
     });
-
-    return Array.from(mapa.entries()).map(([mes, { receita, despesa }]) => ({
-      mes,
-      receita,
-      despesa,
-    }));
   }, [items]);
 
   const isLoading = statusComparativo == "loading";
   const isError = statusComparativo == "failed";
-  const isEmpty = statusComparativo == "succeeded" && data.length == 0;
-  const hasData = statusComparativo == "succeeded" && data.length > 0;
+  const isEmpty = statusComparativo == "succeeded" && items.length == 0;
+  const hasData = statusComparativo == "succeeded" && items.length > 0;
 
   const heigth = !isMobile ? "350px" : "250px";
 

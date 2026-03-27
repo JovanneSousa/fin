@@ -28,6 +28,12 @@ export type Transacao = {
   parcelas?: number | undefined;
 };
 
+export type SaldoMes = {
+  mes: string;
+  receita: number;
+  despesa: number;
+};
+
 interface TransactionState {
   periodoSelecionado: {
     items: Transacao[];
@@ -37,7 +43,7 @@ interface TransactionState {
   };
 
   periodoComparativo: {
-    items: Transacao[];
+    items: SaldoMes[];
     loading: boolean;
     error: string | null;
     status: "idle" | "loading" | "succeeded" | "failed";
@@ -210,7 +216,7 @@ export const fetchTransactionsPeriod = createAsyncThunk<
 );
 
 export const fetchTransactionsPeriodoComparativo = createAsyncThunk<
-  ResponsePayload<Transacao[]>,
+  ResponsePayload<SaldoMes[]>,
   number,
   { rejectValue: string }
 >("transactions/periodoComparativo", async (params, { rejectWithValue }) => {
@@ -221,7 +227,7 @@ export const fetchTransactionsPeriodoComparativo = createAsyncThunk<
     const startDate = subtraiMeses(ultimoDiaMesAtual(), params).toISOString();
 
     const response = await api.get(
-      `api/transacoes/periodo?startDate=${startDate}&endDate=${endDate}`,
+      `api/transacoes/saldo-mes?startDate=${startDate}&endDate=${endDate}`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
 
@@ -313,7 +319,7 @@ const transactionSlice = createSlice({
       .addCase(createTransaction.fulfilled, (state, action) => {
         state.createTrancacao.status = "succeeded";
         state.periodoSelecionado.items.push(action.payload.data);
-        state.periodoComparativo.items.push(action.payload.data);
+        // todo recalcular valor do periodo comparativo
         state.createTrancacao.success = "Transação criada com sucesso";
         if (state.getSaldoTotal != null) {
           state.getSaldoTotal +=
@@ -337,9 +343,7 @@ const transactionSlice = createSlice({
         state.periodoSelecionado.items = state.periodoSelecionado.items.map(
           (t) => (t.id === action.payload.data.id ? action.payload.data : t),
         );
-        state.periodoComparativo.items = state.periodoComparativo.items.map(
-          (t) => (t.id === action.payload.data.id ? action.payload.data : t),
-        );
+        // todo recalcular valor do periodo comparativo
         state.updateTransacao.success = "Transação atualizada com sucesso";
       })
       .addCase(updateTransaction.rejected, (state, action) => {
@@ -418,9 +422,7 @@ const transactionSlice = createSlice({
         state.periodoSelecionado.items = state.periodoSelecionado.items.filter(
           (item) => item.id !== transacao?.id,
         );
-        state.periodoComparativo.items = state.periodoComparativo.items.filter(
-          (item) => item.id !== transacao?.id,
-        );
+        // todo recalcular valor do periodo comparativo
         state.successDelete = "Transação excluida com sucesso";
         if (state.getSaldoTotal != null && transacao) {
           state.getSaldoTotal +=

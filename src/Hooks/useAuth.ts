@@ -50,7 +50,7 @@ const useAuth = () => {
     const payload = {
       ...data,
       system: systemName,
-      profile: "usuario",
+      profile: "fin_usuario",
     };
     await dispatch(registrarUsuario(payload)).unwrap();
   };

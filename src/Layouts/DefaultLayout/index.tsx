@@ -7,8 +7,7 @@ import FormNew from "../../components/FormNew";
 import { useFormNew } from "../../contexts/FormNew/useFormNew";
 import useTransactions from "../../Hooks/useTransactions";
 import { subtraiMeses, ultimoDiaMesAtual } from "../../Utils/Datas";
-
-export type Tabs = "dashboard" | "transacoes" | "categorias" | "planejamento";
+import { Tabs } from "../../Utils/Enums/Tabs";
 
 const DefaultLayout = () => {
   const mainRef = useRef<HTMLDivElement | null>(null);
@@ -19,15 +18,16 @@ const DefaultLayout = () => {
   const path = location.pathname;
 
   const activeTabMap: Record<string, Tabs> = {
-    "/transacoes": "transacoes",
-    "/dashboard": "dashboard",
-    "/categorias": "categorias",
+    "/transacoes": Tabs.TRANSACOES,
+    "/dashboard": Tabs.DASHBOARD,
+    "/categorias": Tabs.CATEGORIAS,
+    "/relatorios": Tabs.RELATORIOS,
   };
 
   const activeTab =
     Object.entries(activeTabMap).find(([route]) =>
       path.startsWith(route),
-    )?.[1] ?? "dashboard";
+    )?.[1] ?? Tabs.DASHBOARD;
 
   const {
     itemsPeriodo: { statusPeriodo },

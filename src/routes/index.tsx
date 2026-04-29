@@ -8,6 +8,7 @@ const AuthPage = lazy(() => import("../pages/AuthPage"));
 const MainPage = lazy(() => import("../pages/MainPage"));
 const TransacaoPage = lazy(() => import("../pages/TransacaoPage"));
 const CategoriaPage = lazy(() => import("../pages/CategoriaPage"));
+const ReportsPage = lazy(() => import("../pages/ReportsPage"));
 
 const Rotas = () => {
   return (
@@ -20,6 +21,7 @@ const Rotas = () => {
             <Route path="/dashboard" element={<MainPage />}></Route>
             <Route path="/transacoes" element={<TransacaoPage />} />
             <Route path="/categorias" element={<CategoriaPage />} />
+            <Route path="/relatorios" element={<ReportsPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/auth" replace />} />

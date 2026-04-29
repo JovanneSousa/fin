@@ -2,13 +2,13 @@ import { HeaderSection } from "./styles";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { colors } from "../../styles/cores";
-import type { Tabs } from "../../Layouts/DefaultLayout";
 import { logout } from "../../Store/reducers/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../Store";
 import useUser from "../../Hooks/useUser";
 import SkeletonCustom from "../SkeletonCustom";
+import type { Tabs } from "../../Utils/Enums/Tabs";
 
 interface HeaderProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -20,6 +20,7 @@ const texto = {
   planejamento: "Planejamento",
   categorias: "Categorias",
   transacoes: "Transações",
+  relatorios: "Relatórios",
 };
 
 const Header = ({ scrollRef, activeTabs }: HeaderProps) => {

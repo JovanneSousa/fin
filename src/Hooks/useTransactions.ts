@@ -35,7 +35,6 @@ const useTransactions = () => {
     recurring: false,
   });
   const [tipo, setTipo] = useState<"todos" | "receita" | "despesa">("todos");
-  const [mesSelecionado, setMesSelecionado] = useState(new Date());
 
   const [ordenacaoTabela, setOrdenacaoTabela] =
     useState<OrdenacaoTabelaTransacao>({
@@ -55,6 +54,10 @@ const useTransactions = () => {
     createTrancacao,
     updateTransacao,
   } = useSelector((state: RootReducer) => state.transactions);
+
+  const [mesSelecionado, setMesSelecionado] = useState(
+    items.length != 0 ? new Date(items[0].dataMovimentacao) : new Date(),
+  );
 
   const {
     getSaldoTotal: saldoTotal,

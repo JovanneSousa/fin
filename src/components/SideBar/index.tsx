@@ -73,8 +73,9 @@ const Sidebar = ({ activeTab }: SideBarProps) => {
           )}
           <li>
             <InputToggle
+              isOpen={isOpen}
               background={theme.defaultBackgroundColor}
-              label={!isMobile ? "Modo Escuro" : ""}
+              label={!isMobile && isOpen ? "Modo Escuro" : ""}
             />
           </li>
         </ul>

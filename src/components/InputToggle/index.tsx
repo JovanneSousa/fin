@@ -6,14 +6,19 @@ import { toggleTheme } from "../../Store/reducers/theme";
 interface InputToggleProps {
   label: string;
   background: string;
+  isOpen?: boolean;
 }
 
-const InputToggle = ({ label, background }: InputToggleProps) => {
+const InputToggle = ({
+  label,
+  background,
+  isOpen = true,
+}: InputToggleProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { dark } = useSelector((state: RootReducer) => state.theme);
 
   return (
-    <Input color={background}>
+    <Input isOpen={isOpen} color={background}>
       {label && <span className="label">{label}</span>}
       <label className="switch" htmlFor="switch">
         <input

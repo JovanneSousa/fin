@@ -4,6 +4,7 @@ import { breakpoints } from "../../styles/utilStyles";
 
 interface InputProps {
   color: string;
+  isOpen: boolean;
 }
 
 export const Input = styled.div.withConfig({
@@ -58,7 +59,8 @@ export const Input = styled.div.withConfig({
     }
 
     input:checked + .slider::before {
-      transform: translateX(25px);
+      transform: ${({ isOpen }) =>
+        isOpen ? "translateX(25px)" : "translateX(15px)"};
     }
   }
 

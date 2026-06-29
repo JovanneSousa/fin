@@ -11,6 +11,7 @@ import type { LoginFormData } from "../../components/Auth/FormLogin";
 export interface LoginResponse {
   token: {
     accessToken: string;
+    refreshToken: string;
     expiresIn: number;
     userToken: {
       id: string;
@@ -115,6 +116,27 @@ export const resetarSenha = createAsyncThunk<
     const response = await apiAuth.post<ResponsePayload<boolean>>(
       `api/auth/reset-pass`,
       data,
+    );
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError<ErrorResponse>(err)) {
+      const data = err.response?.data.errors[0];
+      if (data) return rejectWithValue(data);
+    }
+    return rejectWithValue("Falha na conexão");
+  }
+});
+
+export const refreshUsuario = createAsyncThunk<
+ResponsePayload<string>,
+{refreshToken: string, system: string},
+{rejectValue: string}>
+("auth/refresh", async (data, {rejectWithValue}) => {
+  try {
+    const response = await apiAuth.post<ResponsePayload<string>>(
+      `api/auth/refresh`,
+      data
     );
 
     return response.data;
@@ -234,6 +256,11 @@ const authSlice = createSlice({
       .addCase(logarUsuario.rejected, (state, action) => {
         state.login.loading = false;
         state.login.error = action.payload || "Erro ao fazer login";
+      })
+      
+      .addCase(refreshUsuario.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        authStorage.saveToken(action.payload.data)
       })
 
       .addCase(registrarUsuario.pending, (state) => {

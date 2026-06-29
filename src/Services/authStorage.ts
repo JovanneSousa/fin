@@ -3,7 +3,8 @@ import type { ResponsePayload } from "../Store/reducers/transactions";
 
 export const authStorage = {
   save(token: ResponsePayload<LoginResponse>["data"]["token"]) {
-    localStorage.setItem("token", token.accessToken);
+    localStorage.setItem("refreshToken", token.refreshToken)
+    this.saveToken(token.accessToken)
     localStorage.setItem("claims", JSON.stringify(token.userToken));
     localStorage.setItem("user", token.userToken.name);
     localStorage.setItem("userId", token.userToken.id);
@@ -11,6 +12,14 @@ export const authStorage = {
       "expiresIn",
       (Date.now() + token.expiresIn * 1000).toString(),
     );
+  },
+
+  saveToken(token: string) {
+    localStorage.setItem("token", token);
+  },
+  
+  clearRefresh() {
+    localStorage.removeItem("refreshToken")
   },
 
   clear() {
@@ -27,6 +36,10 @@ export const authStorage = {
   getUser() {
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
+  },
+
+  getRefresh() {
+    return localStorage.getItem("refreshToken");
   },
 
   hydrate() {

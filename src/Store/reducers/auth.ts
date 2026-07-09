@@ -132,10 +132,10 @@ export const refreshUsuario = createAsyncThunk<
 ResponsePayload<string>,
 {refreshToken: string, system: string},
 {rejectValue: string}>
-("auth/refresh", async (data, {rejectWithValue}) => {
+("auth/refresh-token", async (data, {rejectWithValue}) => {
   try {
     const response = await apiAuth.post<ResponsePayload<string>>(
-      `api/auth/refresh`,
+      `api/auth/refresh-token`,
       data
     );
 

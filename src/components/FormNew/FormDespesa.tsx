@@ -14,6 +14,7 @@ import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
 import { colors } from "../../styles/cores";
+import type { CreateTransactionRequest } from "../../Store/reducers/transactions";
 
 const FormDespesa = ({ size }: ChildrenFormProps) => {
   const {
@@ -30,12 +31,12 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
   } = useForm({
     resolver: yupResolver(despesaSchema),
     defaultValues: {
-      dataMovimentacao: hoje,
+      transactionDate: hoje,
     },
   });
 
   const onSubmit = (data: DespesaFormData) => {
-    const payload = {
+    const payload: CreateTransactionRequest = {
       ...data,
       type: TransactionType.Despesa,
       parcelas: data.isRecurring ? data.parcelas : undefined,
@@ -49,19 +50,19 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
     <Formulario size="small" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <label htmlFor="descript">Descrição</label>
-        <input id="descript" type="text" {...register("titulo")} />
+        <input id="descript" type="text" {...register("description")} />
         <StyledIconForm size={size} icon={faNewspaper} />
-        <span>{errors.titulo?.message}</span>
+        <span>{errors.description?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
-        <input id="value" type="text" {...register("valor")} />
+        <input id="value" type="text" {...register("amount")} />
         <StyledIconForm size={size} icon={faCalculator} />
-        <span>{errors.valor?.message}</span>
+        <span>{errors.amount?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="">Categoria</label>
-        <select {...register("categoriaId")}>
+        <select {...register("categoryId")}>
           <option value="">Selecione uma categoria</option>
           {despesa.map((des) => (
             <option key={des.id} value={des.id}>
@@ -70,12 +71,12 @@ const FormDespesa = ({ size }: ChildrenFormProps) => {
           ))}
         </select>
         <StyledIconForm size={size} icon={faTags} />
-        <span>{errors.categoriaId?.message}</span>
+        <span>{errors.categoryId?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="date">Data</label>
-        <input id="date" type="date" {...register("dataMovimentacao")} />
-        <span>{errors.dataMovimentacao?.message}</span>
+        <input id="date" type="date" {...register("transactionDate")} />
+        <span>{errors.transactionDate?.message}</span>
       </div>
       <div className={`container-check ${isParcelado ? "open" : ""}`}>
         <div className="input-check">

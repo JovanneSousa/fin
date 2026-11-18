@@ -3,12 +3,13 @@ import * as yup from "yup";
 export const hoje = new Date().toISOString().split("T")[0];
 
 export const baseTransacaoSchema = yup.object({
-  titulo: yup
+  description: yup
     .string()
     .required("Descrição é obrigatória")
-    .min(3, "Descrição deve ter pelo menos 3 caracteres"),
+    .min(3, "Descrição deve ter pelo menos 3 caracteres")
+    .max(255, "Descrição deve ter no máximo 255 caracteres"),
 
-  valor: yup
+  amount: yup
     .number()
     .transform((value, originalValue) => {
       if (typeof originalValue === "string") {
@@ -21,9 +22,9 @@ export const baseTransacaoSchema = yup.object({
     .positive("Valor deve ser maior que zero")
     .required("Valor é obrigatório"),
 
-  categoriaId: yup.string().required("Categoria é obrigatória"),
+  categoryId: yup.string().required("Categoria é obrigatória"),
 
-  dataMovimentacao: yup
+  transactionDate: yup
     .string()
     .required("Data obrigatória")
     .matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),

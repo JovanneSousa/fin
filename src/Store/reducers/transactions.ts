@@ -28,6 +28,16 @@ export type Transacao = {
   parcelas?: number | undefined;
 };
 
+export type CreateTransactionRequest = {
+  type: TransactionType;
+  description: string;
+  amount: number;
+  categoryId: string;
+  transactionDate: string;
+  isRecurring: boolean;
+  parcelas?: number;
+};
+
 export type SaldoMes = {
   mes: string;
   receita: number;
@@ -118,7 +128,7 @@ export const initialState: TransactionState = {
 
 export const createTransaction = createAsyncThunk<
   ResponsePayload<Transacao>,
-  Transacao,
+  CreateTransactionRequest,
   { rejectValue: string }
 >("transactions/create", async (transaction, { rejectWithValue }) => {
   try {

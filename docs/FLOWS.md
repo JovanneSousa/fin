@@ -4,12 +4,11 @@ Este documento detalha os fluxos reais implementados no **FinControl** (`fin`), 
 
 ---
 
-## 1. Fluxo de Autenticação, Cold Start e Refresh Token
+## 1. Fluxo de Autenticação e Refresh Token
 
-### 1.1 Entrada e Cold Start (`/auth`)
+### 1.1 Entrada (`/auth`)
 1. Ao acessar `/`, o roteador redireciona para `/auth` ([`src/routes/index.tsx`](../src/routes/index.tsx)).
-2. [`AuthPage`](../src/pages/AuthPage.tsx) executa `useHealthApi()` no `useEffect` inicial para acordar as 3 APIs externas (`api/auth/health`, `email/health` com `mode: "no-cors"` e `api/transacoes/health`).
-3. [`AuthPage`](../src/pages/AuthPage.tsx) lê `email` e `token` dos query params (`useSearchParams`). Se ambos existirem, [`Auth`](../src/components/Auth/index.tsx) abre diretamente a tela `"Reset"` (`FormReset`). Caso contrário, exibe `"Login"` com alternância interna para `"Registrar"` e `"Forgot"`.
+2. [`AuthPage`](../src/pages/AuthPage.tsx) lê `email` e `token` dos query params (`useSearchParams`). Se ambos existirem, [`Auth`](../src/components/Auth/index.tsx) abre diretamente a tela `"Reset"` (`FormReset`). Caso contrário, exibe `"Login"` com alternância interna para `"Registrar"` e `"Forgot"`.
 
 ### 1.2 Login, Registro, Visitante e Recuperação
 O hook [`useAuth`](../src/Hooks/useAuth.ts) orquestra os dispatches para [`authSlice`](../src/Store/reducers/auth.ts):
@@ -115,14 +114,11 @@ Gerenciado por [`categoriesSlice`](../src/Store/reducers/categories.ts) + hook [
 
 | Serviço | Método & Rota | Thunk / Hook |
 | :--- | :--- | :--- |
-| `apiAuth` | `GET api/auth/health` | `useHealthApi` |
-| `apiAuth` | `GET api/auth/wake-up` | `wake` (`auth.ts`) |
 | `apiAuth` | `POST api/auth/login` | `logarUsuario` |
 | `apiAuth` | `POST api/auth/registrar` | `registrarUsuario` |
 | `apiAuth` | `POST api/auth/forgot-password` | `emitirRecoveryToken` |
 | `apiAuth` | `POST api/auth/reset-pass` | `resetarSenha` |
 | `apiAuth` | `POST api/auth/refresh-token` | `refreshUsuario` |
-| `api` | `GET api/transacoes/health` | `useHealthApi` |
 | `api` | `GET api/transacoes/periodo` | `fetchTransactionsPeriod` |
 | `api` | `GET api/transacoes/saldo` | `fetchSaldoTotal` |
 | `api` | `GET api/transacoes/saldo-mes` | `fetchTransactionsPeriodoComparativo` |
@@ -138,4 +134,3 @@ Gerenciado por [`categoriesSlice`](../src/Store/reducers/categories.ts) + hook [
 | `api` | `GET api/categories/icones` | `getIcones` |
 | `api` | `GET api/categories/cores` | `getCores` |
 | `api` | `GET api/usuarios` | `getUserData` |
-| `apiEmail` | `GET /email/health` | `useHealthApi` |

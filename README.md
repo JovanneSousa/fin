@@ -75,9 +75,6 @@ VITE_API_URL=http://localhost:5087
 # URL da API de Autenticação (auth.api)
 VITE_API_URL_LOGIN=http://localhost:5071
 
-# URL para integração com Email (email-service)
-VITE_API_EMAIL_URL=http://localhost:8080
-
 # Nome identificador do sistema no Auth.Api
 VITE_SYSTEM_NAME=fin
 ```

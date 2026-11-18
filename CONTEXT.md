@@ -90,6 +90,7 @@ src/
 
 ## 6. Pontos de Atenção e Débitos Conhecidos (Leitura Obrigatória para IA)
 
+- **Contratos híbridos de Transação na `Fin-API`:** `POST api/transacoes/novo` espera `CreateTransactionRequest` em inglês (`type`, `description`, `amount`, `categoryId`, `transactionDate`, `isRecurring`, `parcelas`), enquanto o retorno e os endpoints `GET`/`PUT api/transacoes/*` ainda utilizam `TransacaoDTO` em português (`titulo`, `valor`, `categoriaId`, `dataMovimentacao`).
 - **Token no Axios:** não há interceptor global no `api.ts`; cada thunk em `transactions.ts`, `categories.ts` e `user.ts` lê `localStorage.getItem("token")` manualmente.
 - **`system` hardcoded no middleware:** [`authMiddleware.ts`](src/Store/middleware/authMiddleware.ts) envia `system: "fin"` no refresh token, enquanto [`useAuth.ts`](src/Hooks/useAuth.ts) usa `systemName` (`VITE_SYSTEM_NAME`).
 - **`authStorage.clear()` parcial:** `clear()` remove `token`, `user` e `expiresIn`, mas não remove `refreshToken` (existe `clearRefresh()` separado), `claims` ou `userId`.

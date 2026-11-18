@@ -8,6 +8,7 @@ import {
   fetchTransactionsPeriodoComparativo,
   getTransacao,
   updateTransaction,
+  type CreateTransactionRequest,
   type Transacao,
 } from "../Store/reducers/transactions";
 import useCategory from "./useCategory";
@@ -325,7 +326,7 @@ const useTransactions = () => {
   //   return criarFiltro(inicio, fim);
   // }, []);
 
-  const criaTransacao = async (transacao: Transacao) => {
+  const criaTransacao = async (transacao: CreateTransactionRequest) => {
     await dispatch(createTransaction(transacao)).unwrap();
   };
 

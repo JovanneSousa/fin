@@ -11,16 +11,17 @@ import { faCalculator, faTags } from "@fortawesome/free-solid-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
 import { colors } from "../../styles/cores";
+import type { Transacao } from "../../Store/reducers/transactions";
 
 interface TransacaoDetailsProps {
   onClose: () => void;
 }
 
 type EditFormTransacao = {
-  titulo: string;
-  valor: number;
-  categoriaId: string;
-  dataMovimentacao: string;
+  description: string;
+  amount: number;
+  categoryId: string;
+  transactionDate: string;
   isRecurring: boolean;
   parcelas?: number;
 };
@@ -49,10 +50,15 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
   });
 
   const onSubmit = (data: EditFormTransacao) => {
-    const payload = {
-      ...data,
+    const payload: Transacao = {
       id: selected?.id,
       type: selected?.type,
+      titulo: data.description,
+      valor: data.amount,
+      categoriaId: data.categoryId,
+      dataMovimentacao: data.transactionDate,
+      isRecurring: data.isRecurring,
+      parcelas: data.isRecurring ? data.parcelas : undefined,
     };
     transacaoUpdate.atualizarTransacao(payload).then(() => reset());
     setIsEditing(false);
@@ -63,10 +69,10 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
   useEffect(() => {
     if (selected) {
       reset({
-        titulo: selected.titulo,
-        valor: selected.valor,
-        categoriaId: selected.categoriaId,
-        dataMovimentacao: selected.dataMovimentacao.split("T")[0] ?? "",
+        description: selected.titulo,
+        amount: selected.valor,
+        categoryId: selected.categoriaId,
+        transactionDate: selected.dataMovimentacao.split("T")[0] ?? "",
         isRecurring: selected.isRecurring,
         parcelas: selected.parcelas ?? undefined,
       });
@@ -84,30 +90,30 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
           <label htmlFor="edit-descript">Descrição</label>
 
           {isEditing ? (
-            <input id="descript" type="text" {...register("titulo")} />
+            <input id="descript" type="text" {...register("description")} />
           ) : (
             <div className="input-span">{selected?.titulo}</div>
           )}
           <StyledIconForm size="small" icon={faNewspaper} />
-          <span>{errors.titulo?.message}</span>
+          <span>{errors.description?.message}</span>
         </div>
         <div className="input-wrapper">
           <label htmlFor="edit-value">Valor</label>
           <input
             id="edit-value"
             type="text"
-            {...register("valor")}
+            {...register("amount")}
             disabled={!isEditing}
           />
           <StyledIconForm size="small" icon={faCalculator} />
-          <span>{errors.valor?.message}</span>
+          <span>{errors.amount?.message}</span>
         </div>
         <div className="input-wrapper">
           <label htmlFor="edit-cat-receita">Categoria</label>
           <select
             disabled={!isEditing}
             id="edit-cat-receita"
-            {...register("categoriaId")}
+            {...register("categoryId")}
           >
             {selected?.type === 0
               ? receita.map((cat) => (
@@ -122,17 +128,17 @@ const EditTransaction = ({ onClose }: TransacaoDetailsProps) => {
                 ))}
           </select>
           <StyledIconForm size="small" icon={faTags} />
-          <span>{errors.categoriaId?.message}</span>
+          <span>{errors.categoryId?.message}</span>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="edit-dataMovimentacao">Data</label>
+          <label htmlFor="edit-transactionDate">Data</label>
           <input
             disabled={!isEditing}
-            id="edit-dataMovimentacao"
+            id="edit-transactionDate"
             type="date"
-            {...register("dataMovimentacao")}
+            {...register("transactionDate")}
           />
-          <span>{errors.dataMovimentacao?.message}</span>
+          <span>{errors.transactionDate?.message}</span>
         </div>
 
         {selected?.type === 0 ? (

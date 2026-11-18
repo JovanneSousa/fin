@@ -11,12 +11,13 @@ import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import useTransactions from "../../Hooks/useTransactions";
 import { TransactionType } from "../../Utils/Enums/Transacao";
 import { colors } from "../../styles/cores";
+import type { CreateTransactionRequest } from "../../Store/reducers/transactions";
 
 type ReceitaFormData = {
-  titulo: string;
-  valor: number;
-  categoriaId: string;
-  dataMovimentacao: string;
+  description: string;
+  amount: number;
+  categoryId: string;
+  transactionDate: string;
   isRecurring: boolean;
   type?: number;
 };
@@ -35,12 +36,12 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
   } = useForm<ReceitaFormData>({
     resolver: yupResolver(receitaSchema),
     defaultValues: {
-      dataMovimentacao: hoje,
+      transactionDate: hoje,
     },
   });
 
   const onSubmit = (data: ReceitaFormData) => {
-    const payload = {
+    const payload: CreateTransactionRequest = {
       ...data,
       type: TransactionType.Renda,
     };
@@ -51,19 +52,19 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
     <Formulario size="small" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <label htmlFor="descript">Descrição</label>
-        <input id="descript" type="text" {...register("titulo")} />
+        <input id="descript" type="text" {...register("description")} />
         <StyledIconForm size={size} icon={faNewspaper} />
-        <span>{errors.titulo?.message}</span>
+        <span>{errors.description?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="value">Valor</label>
-        <input id="value" type="text" {...register("valor")} />
+        <input id="value" type="text" {...register("amount")} />
         <StyledIconForm size={size} icon={faCalculator} />
-        <span>{errors.valor?.message}</span>
+        <span>{errors.amount?.message}</span>
       </div>
       <div className="input-wrapper">
         <label htmlFor="cat-receita">Categoria</label>
-        <select id="cat-receita" {...register("categoriaId")}>
+        <select id="cat-receita" {...register("categoryId")}>
           <option value="">Selecione uma categoria</option>
           {receita.map((cat) => (
             <option key={cat.id} value={cat.id}>
@@ -72,17 +73,17 @@ const FormReceita = ({ size }: ChildrenFormProps) => {
           ))}
         </select>
         <StyledIconForm size={size} icon={faTags} />
-        <span>{errors.categoriaId?.message}</span>
+        <span>{errors.categoryId?.message}</span>
       </div>
       <div className="input-wrapper">
-        <label htmlFor="dataMovimentacao">Data</label>
+        <label htmlFor="transactionDate">Data</label>
 
         <input
-          id="dataMovimentacao"
+          id="transactionDate"
           type="date"
-          {...register("dataMovimentacao")}
+          {...register("transactionDate")}
         />
-        <span>{errors.dataMovimentacao?.message}</span>
+        <span>{errors.transactionDate?.message}</span>
       </div>
       <div className="input-check">
         <input id="recurrency" type="checkbox" {...register("isRecurring")} />

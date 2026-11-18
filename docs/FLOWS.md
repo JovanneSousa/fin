@@ -74,8 +74,8 @@ flowchart LR
 ```
 
 ### Operações e Efeitos no Estado
-- **Criar (`createTransaction` → `POST api/transacoes/novo`):** adiciona o item em `periodoSelecionado.items` e atualiza `getSaldoTotal` localmente (`+valor` se `TransactionType.Renda`, `-valor` se `Despesa`).
-- **Atualizar (`updateTransaction` → `PUT api/transacoes/:id`):** substitui o item em `periodoSelecionado.items` (não recalcula `getSaldoTotal`).
+- **Criar (`createTransaction` → `POST api/transacoes/novo`):** envia `CreateTransactionRequest` (contrato em inglês: `type`, `description`, `amount`, `categoryId`, `transactionDate`, `isRecurring`, `parcelas`), recebe `TransacaoDTO` (`Transacao`), adiciona o item em `periodoSelecionado.items` e atualiza `getSaldoTotal` localmente (`+valor` se `TransactionType.Renda`, `-valor` se `Despesa`).
+- **Atualizar (`updateTransaction` → `PUT api/transacoes/:id`):** envia `Transacao` (`TransacaoDTO` em português) e substitui o item em `periodoSelecionado.items` (não recalcula `getSaldoTotal`).
 - **Deletar (`deleteTransactions` → `DELETE api/transacoes/:id`):** remove o item de `periodoSelecionado.items` e reverte o impacto em `getSaldoTotal`.
 - **Buscar por ID (`getTransacao` → `GET api/transacoes/:id`):** preenche `itemById.item` para edição em `EditTransaction`.
 - **Saldo Total (`fetchSaldoTotal` → `GET api/transacoes/saldo`)** e **Comparativo (`fetchTransactionsPeriodoComparativo` → `GET api/transacoes/saldo-mes`)**.

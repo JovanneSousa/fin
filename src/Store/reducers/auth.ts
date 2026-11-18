@@ -189,22 +189,6 @@ export const registrarUsuario = createAsyncThunk<
   }
 });
 
-export const wake = createAsyncThunk<string, void, { rejectValue: string }>(
-  "wake-up",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await apiAuth.get<string>(`api/auth/wake-up`);
-      return response.data;
-    } catch (err: unknown) {
-      if (axios.isAxiosError<ErrorResponse>(err)) {
-        const data = err.response?.data.errors[0];
-        if (data) return rejectWithValue(data);
-      }
-      return rejectWithValue("Erro ao acordar API");
-    }
-  },
-);
-
 const authSlice = createSlice({
   name: "auth",
   initialState,

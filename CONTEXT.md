@@ -10,9 +10,8 @@
 - **Stack principal:** React 19, TypeScript (`~5.9.3`), Vite (`7.2.2`), Redux Toolkit + React-Redux, React Router DOM v7, Styled Components v6, React Hook Form + Yup, Recharts, Axios, FontAwesome.
 - **Deploy:** SPA hospedada na Vercel ([`vercel.json`](vercel.json) reescreve todas as rotas para `/`).
 - **Ecossistema de APIs externas:**
-  - `Auth.Api` (`VITE_API_URL_LOGIN`): login, registro, recuperação/reset de senha, refresh token e health/wake-up.
+  - `Auth.Api` (`VITE_API_URL_LOGIN`): login, registro, recuperação/reset de senha e refresh token.
   - `Fin-API` (`VITE_API_URL`): transações, saldos, categorias, ícones, cores e dados do usuário.
-  - `Email Service` (`VITE_API_EMAIL_URL`): health check no cold start da página de auth.
 
 ---
 
@@ -39,7 +38,6 @@ npm run preview  # Preview local do build
 | :--- | :--- | :--- |
 | `VITE_API_URL` | Base URL da `Fin-API` | [`src/Services/api.ts`](src/Services/api.ts) |
 | `VITE_API_URL_LOGIN` | Base URL da `Auth.Api` | [`src/Services/apiAuth.ts`](src/Services/apiAuth.ts) |
-| `VITE_API_EMAIL_URL` | Base URL do serviço de e-mail (health check) | [`src/Hooks/useHealthApi.ts`](src/Hooks/useHealthApi.ts) |
 | `VITE_SYSTEM_NAME` | Identificador do sistema no `Auth.Api` (ex: `fin`) | [`src/Services/systemName.ts`](src/Services/systemName.ts) |
 | `VITE_LOGIN_VISIT` | E-mail do botão "Logar como visitante" | [`src/Hooks/useAuth.ts`](src/Hooks/useAuth.ts) |
 | `VITE_PASS_VISIT` | Senha do botão "Logar como visitante" | [`src/Hooks/useAuth.ts`](src/Hooks/useAuth.ts) |
@@ -80,7 +78,7 @@ src/
 
 > Detalhamento completo com diagramas e endpoints em **[`docs/FLOWS.md`](docs/FLOWS.md)**.
 
-1. **Autenticação & Refresh:** [`AuthPage`](src/pages/AuthPage.tsx) acorda as 3 APIs via [`useHealthApi`](src/Hooks/useHealthApi.ts). Login salva tokens e claims no `localStorage` via [`authStorage`](src/Services/authStorage.ts). Toda action Redux passa pelo [`authMiddleware`](src/Store/middleware/authMiddleware.ts), que verifica `authStorage.isExpired()` e dispara `refreshUsuario` ou `logout`.
+1. **Autenticação & Refresh:** Login salva tokens e claims no `localStorage` via [`authStorage`](src/Services/authStorage.ts). Toda action Redux passa pelo [`authMiddleware`](src/Store/middleware/authMiddleware.ts), que verifica `authStorage.isExpired()` e dispara `refreshUsuario` ou `logout`.
 2. **Bootstrap do Usuário Logado:** [`DefaultLayout`](src/Layouts/DefaultLayout/index.tsx) verifica `statusPeriodo`, `statusComparativo` e `status` (categorias) e, quando `"idle"`, carrega automaticamente transações do último mês, comparativo de 3 meses e categorias.
 3. **Transações & Hidratação:** [`useTransactions`](src/Hooks/useTransactions.ts) hidrata cada transação com sua categoria (caso `item.categoria` venha vazio da API) usando `categorias.receita` / `categorias.despesa`, e aplica em memória: filtro por tipo (`todos`/`receita`/`despesa`), filtro de texto (`normalizaTexto`), filtro do modal (categorias/recorrência) e ordenação por coluna.
 4. **Categorias:** [`categoriesSlice`](src/Store/reducers/categories.ts) separa `items.receita` (`TransactionType.Renda = 0`) e `items.despesa` (`TransactionType.Despesa = 1`). [`useCategory`](src/Hooks/useCategory.ts) hidrata ícones e cores via `Map`.

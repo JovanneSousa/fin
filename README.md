@@ -107,6 +107,14 @@ VITE_SYSTEM_NAME=fin
 
 ---
 
+## 🤖 Documentação & Estratégia AI-First
+
+* **[CONTEXT.md](CONTEXT.md):** Ponto de entrada rápido para agentes de IA e devs (arquitetura, regras de TS/ESLint, variáveis de ambiente e pontos de atenção).
+* **[docs/FLOWS.md](docs/FLOWS.md):** Mapeamento detalhado dos fluxos existentes e endpoints consumidos.
+* **[docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md):** Convenções de branches (`branch -> preview -> main`), commits e templates de PR.
+
+---
+
 ## 📝 Licença
 
 Desenvolvido para fins de estudo e portfólio por **Jovane Sousa**.
